@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("***REMOVED***FAE04EC0-301F-11D3-BF4B-00C04F79EFBC***REMOVED***") = "PrQuantifier", "src\PrQuantifier\PrQuantifier.csproj", "***REMOVED***24E11D61-9A32-47CF-8154-6050428097D5***REMOVED***"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		***REMOVED***24E11D61-9A32-47CF-8154-6050428097D5***REMOVED***.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		***REMOVED***24E11D61-9A32-47CF-8154-6050428097D5***REMOVED***.Debug|Any CPU.Build.0 = Debug|Any CPU
+		***REMOVED***24E11D61-9A32-47CF-8154-6050428097D5***REMOVED***.Release|Any CPU.ActiveCfg = Release|Any CPU
+		***REMOVED***24E11D61-9A32-47CF-8154-6050428097D5***REMOVED***.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
