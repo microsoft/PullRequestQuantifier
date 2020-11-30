@@ -17,10 +17,20 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="YamlDotNet" Version="9.1.0" />
+        <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\src\PrQuantifier\PrQuantifier.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="QuantifierOptions.yml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestGitIgnore.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

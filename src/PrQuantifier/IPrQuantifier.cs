@@ -1,16 +1,13 @@
 namespace PrQuantifier
 {
-    /// <summary>
-    /// Assumes invocation from a directory that is part of a
-    /// git repository.
-    /// </summary>
     public interface IPrQuantifier
     {
         /// <summary>
         /// Quantifies unstaged changes in current branch.
         /// </summary>
-        /// <returns></returns>
-        QuantifierResult Quantify();
+        /// <param name="path">Path to any item in the repository.</param>
+        /// <returns>QuantifierResult.</returns>
+        QuantifierResult Quantify(string path);
 
         /// <summary>
         /// Quantifies current branch against a base branch.

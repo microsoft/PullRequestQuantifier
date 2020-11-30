@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.47
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier", "src\PrQuantifier\PrQuantifier.csproj", "{24E11D61-9A32-47CF-8154-6050428097D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier.Tests", "src\PrQuantifier.Tests\PrQuantifier.Tests\PrQuantifier.Tests.csproj", "{583C4A78-31EC-4C63-9877-2AD7AEC8DCD9}"

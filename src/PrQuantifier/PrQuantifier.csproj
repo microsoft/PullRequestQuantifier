@@ -7,4 +7,12 @@
         <AssemblyName>PrQuantifier</AssemblyName>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.IO.Abstractions" Version="13.2.2" />
+    </ItemGroup>
+
 </Project>
