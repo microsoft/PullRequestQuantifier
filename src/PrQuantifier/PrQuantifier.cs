@@ -2,17 +2,25 @@ namespace PrQuantifier
 {
     public class PrQuantifier : IPrQuantifier
     {
+        private readonly QuantifierOptions options;
+
         public PrQuantifier(string optionsYamlFile)
         {
         }
 
         public PrQuantifier(QuantifierOptions options)
         {
+            this.options = options;
         }
 
+        /// <inheritdoc />
         public QuantifierResult Quantify()
         {
-            throw new System.NotImplementedException();
+            // get count of current changes
+
+            // return result
+            var quantifierResult = new QuantifierResult();
+            return quantifierResult;
         }
 
         public QuantifierResult QuantifyAgainstBranch(string baseBranch)

@@ -2,9 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <LangVersion>Latest</LangVersion>
-        <RootNamespace>PrQuantifier</RootNamespace>
-        <AssemblyName>PrQuantifier</AssemblyName>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+    </ItemGroup>
 
 </Project>
