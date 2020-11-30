@@ -1,6 +1,6 @@
-namespace PrQuantifier
+namespace PrQuantifier.Core
 ***REMOVED***
-    public enum OperationType
+    public enum GitOperationType
     ***REMOVED***
         Add,
         Delete

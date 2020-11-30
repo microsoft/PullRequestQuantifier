@@ -1,5 +1,8 @@
 namespace PrQuantifier
 ***REMOVED***
+    using System.Collections.Generic;
+    using global::PrQuantifier.Core;
+
     public class PrQuantifier : IPrQuantifier
     ***REMOVED***
         private readonly QuantifierOptions options;
@@ -14,12 +17,23 @@ namespace PrQuantifier
 ***REMOVED***
 
         /// <inheritdoc />
-        public QuantifierResult Quantify()
+        public QuantifierResult Quantify(string path)
         ***REMOVED***
-            // get count of current changes
+            // get git tree changes
+            var gitEngine = new GitEngine();
+            var gitChangeCounts = gitEngine.GetGitChangeCounts(path);
 
-            // return result
-            var quantifierResult = new QuantifierResult();
+            // TODO: Categorize changes into a size bucket
+
+            var quantifierResult = new QuantifierResult
+            ***REMOVED***
+                ChangeCounts = new Dictionary<OperationType, int>
+                ***REMOVED***
+                    ***REMOVED*** OperationType.Add, gitChangeCounts[GitOperationType.Add] ***REMOVED***,
+                    ***REMOVED*** OperationType.Delete, gitChangeCounts[GitOperationType.Delete] ***REMOVED***
+        ***REMOVED***
+    ***REMOVED***;
+            
             return quantifierResult;
 ***REMOVED***
 

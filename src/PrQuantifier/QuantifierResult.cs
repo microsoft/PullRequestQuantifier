@@ -9,12 +9,12 @@ namespace PrQuantifier
         /// number less than NumCategories in the QuantifierOptions.
         /// Smallest size is Category 0.
         /// </summary>
-        public int Category ***REMOVED*** get; ***REMOVED***
+        public int Category ***REMOVED*** get; internal set; ***REMOVED***
 
         /// <summary>
         /// Map of change counts by operation type as identifed
         /// by the quantifier.
         /// </summary>
-        public IDictionary<OperationType, int> ChangeCounts ***REMOVED*** get; ***REMOVED***
+        public IDictionary<OperationType, int> ChangeCounts ***REMOVED*** get; internal set; ***REMOVED***
 ***REMOVED***
 ***REMOVED***
