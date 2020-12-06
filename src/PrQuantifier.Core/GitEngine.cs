@@ -4,7 +4,7 @@ namespace PrQuantifier.Core
     using System.Linq;
     using LibGit2Sharp;
 
-    public class GitEngine
+    public sealed class GitEngine
     ***REMOVED***
         /// <summary>
         /// Get the change counts in terms of lines.

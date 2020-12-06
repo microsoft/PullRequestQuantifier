@@ -12,7 +12,7 @@ namespace PrQuantifier
         public int Category ***REMOVED*** get; internal set; ***REMOVED***
 
         /// <summary>
-        /// Map of change counts by operation type as identifed
+        /// Map of change counts by operation type as identified
         /// by the quantifier.
         /// </summary>
         public IDictionary<OperationType, int> ChangeCounts ***REMOVED*** get; internal set; ***REMOVED***

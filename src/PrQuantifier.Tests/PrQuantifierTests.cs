@@ -9,7 +9,7 @@
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
 
-    public class PrQuantifierTests : IDisposable
+    public sealed class PrQuantifierTests : IDisposable
     ***REMOVED***
         private readonly QuantifierOptions quantifierOptions;
 
@@ -39,8 +39,8 @@
 
             // Init test git repository with gitignore
             Repository.Init(repoPath);
-            var gitignoreContent = fileSystem.File.ReadAllText("TestGitIgnore.txt");
-            fileSystem.File.WriteAllText(fileSystem.Path.Combine(repoPath, ".gitignore"), gitignoreContent);
+            var gitIgnoreContent = fileSystem.File.ReadAllText("TestGitIgnore.txt");
+            fileSystem.File.WriteAllText(fileSystem.Path.Combine(repoPath, ".gitignore"), gitIgnoreContent);
             CommitFilesToRepo();
 ***REMOVED***
 
