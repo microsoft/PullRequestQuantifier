@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <LangVersion>Latest</LangVersion>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,7 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\PrQuantifier\PrQuantifier.csproj" />
+      <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
+      <ProjectReference Include="..\PrQuantifier\PrQuantifier.csproj" />
     </ItemGroup>
 
     <ItemGroup>

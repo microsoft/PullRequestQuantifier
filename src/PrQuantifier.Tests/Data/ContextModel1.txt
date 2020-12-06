@@ -1,0 +1,13 @@
+Allow: 
+Ignore: 
+GitOperationType: 
+Thresholds:
+- GitOperationType: 
+  Value: 80
+  Label: 1
+- GitOperationType: 
+  Value: 60
+  Label: 2
+- GitOperationType: 
+  Value: 50
+  Label: 3
