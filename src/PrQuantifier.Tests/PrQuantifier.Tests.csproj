@@ -3,7 +3,12 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <LangVersion>Latest</LangVersion>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Remove="D:\PrQuantifier\\stylecop.json" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
@@ -22,14 +27,24 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\PrQuantifier\PrQuantifier.csproj" />
+      <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
+      <ProjectReference Include="..\PrQuantifier\PrQuantifier.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="QuantifierOptions.yml">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <None Update="Data\ContextModel4.txt">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="TestGitIgnore.txt">
+        <None Update="Data\ContextModel3.txt">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Data\ContextModel2.txt">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Data\ContextModel1.txt">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Data\TestGitIgnore.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>

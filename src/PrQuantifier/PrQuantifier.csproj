@@ -5,7 +5,13 @@
         <LangVersion>Latest</LangVersion>
         <RootNamespace>PrQuantifier</RootNamespace>
         <AssemblyName>PrQuantifier</AssemblyName>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
     </PropertyGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Remove="D:\PrQuantifier\\stylecop.json" />
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />

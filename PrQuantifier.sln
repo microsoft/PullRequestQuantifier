@@ -3,11 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier", "src\PrQuantifier\PrQuantifier.csproj", "{24E11D61-9A32-47CF-8154-6050428097D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrQuantifier", "src\PrQuantifier\PrQuantifier.csproj", "{24E11D61-9A32-47CF-8154-6050428097D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier.Tests", "src\PrQuantifier.Tests\PrQuantifier.Tests\PrQuantifier.Tests.csproj", "{583C4A78-31EC-4C63-9877-2AD7AEC8DCD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrQuantifier.Core", "src\PrQuantifier.Core\PrQuantifier.Core.csproj", "{E0444228-06A3-4C48-925D-1DB836DD0B0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier.Core", "src\PrQuantifier.Core\PrQuantifier.Core.csproj", "{E0444228-06A3-4C48-925D-1DB836DD0B0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrQuantifier.Tests", "src\PrQuantifier.Tests\PrQuantifier.Tests.csproj", "{8FBE0BFA-D3CD-4993-81B1-676A8E92080C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{113A67BC-21CF-45D1-98A5-28EBC75E2584}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier.Local.Client", "src\Clients\PrQuantifier.Local.Client\PrQuantifier.Local.Client.csproj", "{AE180A89-EBAD-40FD-A327-7CE6C153DCB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier.Local.Context", "src\Clients\PrQuantifier.Local.Context\PrQuantifier.Local.Context.csproj", "{E0E51BB5-216E-4A07-9366-E52D42E344AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleContexts", "SampleContexts", "{7BC8D1D7-BA30-42ED-9C3D-8352BB8A5EC4}"
+	ProjectSection(SolutionItems) = preProject
+		src\SampleContexts\ContextModelSampleOne.txt = src\SampleContexts\ContextModelSampleOne.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier.Vsix.Client", "src\Clients\PrQuantifier.Vsix.Client\PrQuantifier.Vsix.Client.csproj", "{4103199E-7FF1-48FA-8DA4-1382BB8E7757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,13 +32,36 @@ Global
 		{24E11D61-9A32-47CF-8154-6050428097D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E11D61-9A32-47CF-8154-6050428097D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E11D61-9A32-47CF-8154-6050428097D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{583C4A78-31EC-4C63-9877-2AD7AEC8DCD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{583C4A78-31EC-4C63-9877-2AD7AEC8DCD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{583C4A78-31EC-4C63-9877-2AD7AEC8DCD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{583C4A78-31EC-4C63-9877-2AD7AEC8DCD9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0444228-06A3-4C48-925D-1DB836DD0B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0444228-06A3-4C48-925D-1DB836DD0B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0444228-06A3-4C48-925D-1DB836DD0B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0444228-06A3-4C48-925D-1DB836DD0B0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FBE0BFA-D3CD-4993-81B1-676A8E92080C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FBE0BFA-D3CD-4993-81B1-676A8E92080C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FBE0BFA-D3CD-4993-81B1-676A8E92080C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FBE0BFA-D3CD-4993-81B1-676A8E92080C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE180A89-EBAD-40FD-A327-7CE6C153DCB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE180A89-EBAD-40FD-A327-7CE6C153DCB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE180A89-EBAD-40FD-A327-7CE6C153DCB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE180A89-EBAD-40FD-A327-7CE6C153DCB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0E51BB5-216E-4A07-9366-E52D42E344AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0E51BB5-216E-4A07-9366-E52D42E344AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0E51BB5-216E-4A07-9366-E52D42E344AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0E51BB5-216E-4A07-9366-E52D42E344AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4103199E-7FF1-48FA-8DA4-1382BB8E7757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4103199E-7FF1-48FA-8DA4-1382BB8E7757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4103199E-7FF1-48FA-8DA4-1382BB8E7757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4103199E-7FF1-48FA-8DA4-1382BB8E7757}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AE180A89-EBAD-40FD-A327-7CE6C153DCB6} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
+		{E0E51BB5-216E-4A07-9366-E52D42E344AE} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
+		{4103199E-7FF1-48FA-8DA4-1382BB8E7757} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B8F5E1E3-3A8D-4D1C-8A8B-CA608A972B61}
 	EndGlobalSection
 EndGlobal

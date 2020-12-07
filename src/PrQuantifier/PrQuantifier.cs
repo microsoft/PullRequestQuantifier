@@ -1,50 +1,41 @@
 namespace PrQuantifier
 {
-    using System.Collections.Generic;
-    using global::PrQuantifier.Core;
+    using System;
+    using System.Linq;
+    using global::PrQuantifier.Core.Context;
 
     public class PrQuantifier : IPrQuantifier
     {
-        private readonly QuantifierOptions options;
+        private readonly Context context;
 
-        public PrQuantifier(string optionsYamlFile)
+        public PrQuantifier(Context context)
         {
-        }
-
-        public PrQuantifier(QuantifierOptions options)
-        {
-            this.options = options;
+            this.context = context;
         }
 
         /// <inheritdoc />
-        public QuantifierResult Quantify(string path)
+        public QuantifierResult Quantify(QuantifierInput quantifierInput)
         {
-            // get git tree changes
-            var gitEngine = new GitEngine();
-            var gitChangeCounts = gitEngine.GetGitChangeCounts(path);
+            if (quantifierInput == null)
+            {
+                throw new ArgumentNullException(nameof(quantifierInput));
+            }
 
-            // TODO: Categorize changes into a size bucket
+            // todo execute quantifier for this context and this particular input
+            return Compute(quantifierInput);
+        }
 
+        private QuantifierResult Compute(QuantifierInput quantifierInput)
+        {
             var quantifierResult = new QuantifierResult
             {
-                ChangeCounts = new Dictionary<OperationType, int>
-                {
-                    { OperationType.Add, gitChangeCounts[GitOperationType.Add] },
-                    { OperationType.Delete, gitChangeCounts[GitOperationType.Delete] }
-                }
+                QuantifierInput = quantifierInput,
+                QuantifiedLinesAdded = quantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded),
+                QuantifiedLinesDeleted = quantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)
             };
-            
+
+            // todo involve context and compute
             return quantifierResult;
-        }
-
-        public QuantifierResult QuantifyAgainstBranch(string baseBranch)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public QuantifierResult QuantifyCommit(string commitSha)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

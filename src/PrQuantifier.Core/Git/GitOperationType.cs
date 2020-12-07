@@ -1,4 +1,4 @@
-namespace PrQuantifier.Core
+namespace PrQuantifier.Core.Git
 {
     public enum GitOperationType
     {

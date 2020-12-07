@@ -2,10 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+      <PackageReference Include="YamlDotNet" Version="9.1.0" />
     </ItemGroup>
 
 </Project>

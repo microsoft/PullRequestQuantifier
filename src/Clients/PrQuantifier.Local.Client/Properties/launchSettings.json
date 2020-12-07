@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PrQuantifier.Local.Client": {
+      "commandName": "Project",
+      "commandLineArgs": "../../../../../SampleContexts/ContextModelSampleOne.txt"
+    }
+  }
+}
