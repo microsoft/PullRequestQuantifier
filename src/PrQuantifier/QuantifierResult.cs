@@ -1,20 +1,32 @@
 namespace PrQuantifier
 ***REMOVED***
-    using System.Collections.Generic;
-
     public class QuantifierResult
     ***REMOVED***
         /// <summary>
-        /// The output category as quantified. This is a
-        /// number less than NumCategories in the QuantifierOptions.
-        /// Smallest size is Category 0.
+        /// Gets the output label as quantified.
         /// </summary>
-        public int Category ***REMOVED*** get; internal set; ***REMOVED***
+        public string Label ***REMOVED*** get; internal set; ***REMOVED***
 
         /// <summary>
-        /// Map of change counts by operation type as identifed
-        /// by the quantifier.
+        /// Gets the output explanation.
         /// </summary>
-        public IDictionary<OperationType, int> ChangeCounts ***REMOVED*** get; internal set; ***REMOVED***
+        public string Explanation ***REMOVED*** get; internal set; ***REMOVED***
+
+        /// <summary>
+        /// Gets or sets the quantified total number of lines added in this diff.
+        /// Will be determined in the specific context.
+        /// </summary>
+        public int QuantifiedLinesAdded ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets or sets the quantified total number of lines deleted in this diff.
+        /// Will be determined in the specific context.
+        /// </summary>
+        public int QuantifiedLinesDeleted ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets quantifier input.
+        /// </summary>
+        public QuantifierInput QuantifierInput ***REMOVED*** get; internal set; ***REMOVED***
 ***REMOVED***
 ***REMOVED***

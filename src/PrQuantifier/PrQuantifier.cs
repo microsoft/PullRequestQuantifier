@@ -1,50 +1,41 @@
 namespace PrQuantifier
 ***REMOVED***
-    using System.Collections.Generic;
-    using global::PrQuantifier.Core;
+    using System;
+    using System.Linq;
+    using global::PrQuantifier.Core.Context;
 
     public class PrQuantifier : IPrQuantifier
     ***REMOVED***
-        private readonly QuantifierOptions options;
+        private readonly Context context;
 
-        public PrQuantifier(string optionsYamlFile)
+        public PrQuantifier(Context context)
         ***REMOVED***
-***REMOVED***
-
-        public PrQuantifier(QuantifierOptions options)
-        ***REMOVED***
-            this.options = options;
+            this.context = context;
 ***REMOVED***
 
         /// <inheritdoc />
-        public QuantifierResult Quantify(string path)
+        public QuantifierResult Quantify(QuantifierInput quantifierInput)
         ***REMOVED***
-            // get git tree changes
-            var gitEngine = new GitEngine();
-            var gitChangeCounts = gitEngine.GetGitChangeCounts(path);
+            if (quantifierInput == null)
+            ***REMOVED***
+                throw new ArgumentNullException(nameof(quantifierInput));
+    ***REMOVED***
 
-            // TODO: Categorize changes into a size bucket
+            // todo execute quantifier for this context and this particular input
+            return Compute(quantifierInput);
+***REMOVED***
 
+        private QuantifierResult Compute(QuantifierInput quantifierInput)
+        ***REMOVED***
             var quantifierResult = new QuantifierResult
             ***REMOVED***
-                ChangeCounts = new Dictionary<OperationType, int>
-                ***REMOVED***
-                    ***REMOVED*** OperationType.Add, gitChangeCounts[GitOperationType.Add] ***REMOVED***,
-                    ***REMOVED*** OperationType.Delete, gitChangeCounts[GitOperationType.Delete] ***REMOVED***
-        ***REMOVED***
+                QuantifierInput = quantifierInput,
+                QuantifiedLinesAdded = quantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded),
+                QuantifiedLinesDeleted = quantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)
     ***REMOVED***;
-            
+
+            // todo involve context and compute
             return quantifierResult;
-***REMOVED***
-
-        public QuantifierResult QuantifyAgainstBranch(string baseBranch)
-        ***REMOVED***
-            throw new System.NotImplementedException();
-***REMOVED***
-
-        public QuantifierResult QuantifyCommit(string commitSha)
-        ***REMOVED***
-            throw new System.NotImplementedException();
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
