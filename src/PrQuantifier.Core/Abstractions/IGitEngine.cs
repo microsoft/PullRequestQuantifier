@@ -19,5 +19,13 @@
         /// <param name="path">The path to the repository.</param>
         /// <returns>returns a collection of commits.</returns>
         IEnumerable<Commit> GetAllCommits(string path);
+
+        /// <summary>
+        /// Get all historical changes for this particular path to Parent branch.
+        /// </summary>
+        /// <param name="path">The path to the repository.</param>
+        /// <returns>returns a collection with changes.
+        /// string is the sha1 of the commit and values represents the changes.</returns>
+        IReadOnlyDictionary<GitCommit, IEnumerable<GitFilePatch>> GetGitHistoricalChangesToParent(string path);
     }
 }

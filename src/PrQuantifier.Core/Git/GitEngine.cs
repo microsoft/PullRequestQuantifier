@@ -1,5 +1,6 @@
 namespace PrQuantifier.Core.Git
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using LibGit2Sharp;
@@ -40,6 +41,45 @@ namespace PrQuantifier.Core.Git
         public IEnumerable<Commit> GetAllCommits(string path)
         {
             var ret = new List<Commit>();
+            var repoRoot = Repository.Discover(path);
+            using var repo = new Repository(repoRoot);
+
+            ret.AddRange(repo.Commits);
+
+            return ret;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<GitCommit, IEnumerable<GitFilePatch>> GetGitHistoricalChangesToParent(string path)
+        {
+            var ret = new Dictionary<GitCommit, IEnumerable<GitFilePatch>>();
+            var repoRoot = Repository.Discover(path);
+            using var repo = new Repository(repoRoot);
+
+            var commits = repo.Commits.QueryBy(new CommitFilter
+            {
+                SortBy = CommitSortStrategies.Reverse | CommitSortStrategies.Time
+            });
+            foreach (var commit in commits)
+            {
+                var gotCommit = new GitCommit
+                {
+                    AuthorName = commit.Author.Name,
+                    DateTimeOffset = commit.Author.When,
+                    Sha = commit.Sha,
+                    Title = commit.MessageShort
+                };
+
+                var changes = new List<GitFilePatch>();
+                ret[gotCommit] = changes;
+
+                foreach (var parent in commit.Parents)
+                {
+                    var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
+                    changes.AddRange(GetGitFilePatch(patch));
+                }
+            }
+
             return ret;
         }
 
@@ -53,6 +93,7 @@ namespace PrQuantifier.Core.Git
                 ret.Add(new GitFilePatch
                 {
                     DiffContent = patches.Current.Patch,
+                    DiffContentLines = patches.Current.Patch.Split("\n", StringSplitOptions.RemoveEmptyEntries),
                     AbsoluteLinesAdded = patches.Current.LinesAdded,
                     AbsoluteLinesDeleted = patches.Current.LinesDeleted,
                     FilePath = patches.Current.Path,

@@ -6,4 +6,8 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
+  </ItemGroup>
+
 </Project>

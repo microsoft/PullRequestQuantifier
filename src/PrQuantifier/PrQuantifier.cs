@@ -4,6 +4,8 @@ namespace PrQuantifier
     using System.Linq;
     using System.Threading.Tasks;
     using global::PrQuantifier.Core.Context;
+    using global::PrQuantifier.Core.Extensions;
+    using global::PrQuantifier.Core.Git;
 
     public class PrQuantifier : IPrQuantifier
     {
@@ -22,7 +24,7 @@ namespace PrQuantifier
                 throw new ArgumentNullException(nameof(quantifierInput));
             }
 
-            // todo execute quantifier for this context and this particular input
+            // execute quantifier for this context and this particular input
             return await Compute(quantifierInput);
         }
 
@@ -34,15 +36,60 @@ namespace PrQuantifier
             {
                 quantifierResult = new QuantifierResult
                 {
-                    QuantifierInput = quantifierInput,
-                    QuantifiedLinesAdded = quantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded),
-                    QuantifiedLinesDeleted = quantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)
+                    QuantifierInput = quantifierInput
                 };
 
                 // todo involve context and compute
+                foreach (GitFilePatch quantifierInputChange in quantifierInput.Changes)
+                {
+                    ApplyLanguageContext(quantifierInputChange);
+                }
+
+                CountChanges(quantifierInput, quantifierResult);
             });
 
             return quantifierResult;
+        }
+
+        private void ApplyLanguageContext(GitFilePatch quantifierInputChange)
+        {
+            // no language context found continue without
+            if (context.LanguageOptions == null)
+            {
+                return;
+            }
+
+            if (context.LanguageOptions.IgnoreSpaces)
+            {
+                quantifierInputChange.RemoveWhiteSpacesChanges();
+            }
+
+            if (context.LanguageOptions.IgnoreComments)
+            {
+                quantifierInputChange.RemoveCommentsChanges();
+            }
+
+            if (context.LanguageOptions.IgnoreCodeBlockSeparator)
+            {
+                quantifierInputChange.RemoveCodeBlockSeparatorChanges();
+            }
+        }
+
+        private void CountChanges(
+            QuantifierInput quantifierInput,
+            QuantifierResult quantifierResult)
+        {
+            // do the final count of changes
+            foreach (GitFilePatch quantifierInputChange in quantifierInput.Changes)
+            {
+                // todo for now remove from counting renamed or copied files, expose this in the context
+                quantifierInputChange.RemoveRenamedChanges();
+                quantifierInputChange.RemoveCopiedChanges();
+                quantifierInputChange.ComputeChanges();
+            }
+
+            quantifierResult.QuantifiedLinesAdded = quantifierInput.Changes.Sum(c => c.QuantifiedLinesAdded);
+            quantifierResult.QuantifiedLinesDeleted = quantifierInput.Changes.Sum(c => c.QuantifiedLinesDeleted);
         }
     }
 }
