@@ -2,6 +2,7 @@ namespace PrQuantifier
 ***REMOVED***
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using global::PrQuantifier.Core.Context;
 
     public class PrQuantifier : IPrQuantifier
@@ -14,7 +15,7 @@ namespace PrQuantifier
 ***REMOVED***
 
         /// <inheritdoc />
-        public QuantifierResult Quantify(QuantifierInput quantifierInput)
+        public async Task<QuantifierResult> Quantify(QuantifierInput quantifierInput)
         ***REMOVED***
             if (quantifierInput == null)
             ***REMOVED***
@@ -22,19 +23,25 @@ namespace PrQuantifier
     ***REMOVED***
 
             // todo execute quantifier for this context and this particular input
-            return Compute(quantifierInput);
+            return await Compute(quantifierInput);
 ***REMOVED***
 
-        private QuantifierResult Compute(QuantifierInput quantifierInput)
+        private async Task<QuantifierResult> Compute(QuantifierInput quantifierInput)
         ***REMOVED***
-            var quantifierResult = new QuantifierResult
-            ***REMOVED***
-                QuantifierInput = quantifierInput,
-                QuantifiedLinesAdded = quantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded),
-                QuantifiedLinesDeleted = quantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)
-    ***REMOVED***;
+            QuantifierResult quantifierResult = null;
 
-            // todo involve context and compute
+            await Task.Factory.StartNew(() =>
+            ***REMOVED***
+                quantifierResult = new QuantifierResult
+                ***REMOVED***
+                    QuantifierInput = quantifierInput,
+                    QuantifiedLinesAdded = quantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded),
+                    QuantifiedLinesDeleted = quantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)
+        ***REMOVED***;
+
+                // todo involve context and compute
+    ***REMOVED***);
+
             return quantifierResult;
 ***REMOVED***
 ***REMOVED***

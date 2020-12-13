@@ -1,11 +1,13 @@
 ﻿namespace PrQuantifier.Tests.Helpers
 ***REMOVED***
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.IO.Abstractions;
     using System.Linq;
     using LibGit2Sharp;
 
+    [ExcludeFromCodeCoverage]
     internal sealed class GitRepoTestHelpers
     ***REMOVED***
         private IFileSystem fileSystem;

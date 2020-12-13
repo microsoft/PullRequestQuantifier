@@ -3,8 +3,10 @@ namespace PrQuantifier.Core.Git
     using System.Collections.Generic;
     using System.Linq;
     using LibGit2Sharp;
+    using PrQuantifier.Core.Abstractions;
+    using PrQuantifier.Core.Extensions;
 
-    public sealed class GitEngine
+    public sealed class GitEngine : IGitEngine
     ***REMOVED***
         private static readonly StatusOptions RepoStatusOptions = new StatusOptions
         ***REMOVED***
@@ -13,11 +15,7 @@ namespace PrQuantifier.Core.Git
             IncludeIgnored = false
 ***REMOVED***;
 
-        /// <summary>
-        /// Get the git changes.
-        /// </summary>
-        /// <param name="path">Path to any item in the repository.</param>
-        /// <returns>Dictionary of counts by operation type.</returns>
+        /// <inheritdoc />
         public IEnumerable<GitFilePatch> GetGitChanges(string path)
         ***REMOVED***
             var ret = new List<GitFilePatch>();
@@ -38,6 +36,13 @@ namespace PrQuantifier.Core.Git
             return ret;
 ***REMOVED***
 
+        /// <inheritdoc />
+        public IEnumerable<Commit> GetAllCommits(string path)
+        ***REMOVED***
+            var ret = new List<Commit>();
+            return ret;
+***REMOVED***
+
         private IEnumerable<GitFilePatch> GetGitFilePatch(Patch filesPatch)
         ***REMOVED***
             var ret = new List<GitFilePatch>();
@@ -51,7 +56,7 @@ namespace PrQuantifier.Core.Git
                     AbsoluteLinesAdded = patches.Current.LinesAdded,
                     AbsoluteLinesDeleted = patches.Current.LinesDeleted,
                     FilePath = patches.Current.Path,
-                    ChangeType = patches.Current.Status
+                    ChangeType = patches.Current.Status.ConvertToChangeType()
         ***REMOVED***);
     ***REMOVED***
 

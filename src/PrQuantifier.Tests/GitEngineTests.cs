@@ -1,11 +1,13 @@
 ﻿namespace PrQuantifier.Tests
 ***REMOVED***
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using global::PrQuantifier.Core.Git;
     using global::PrQuantifier.Tests.Helpers;
     using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public sealed class GitEngineTests
     ***REMOVED***
         private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();

@@ -3,14 +3,15 @@
     using System;
     using System.IO;
     using System.Text.Json;
+    using System.Threading.Tasks;
     using global::PrQuantifier.Core.Context;
     using global::PrQuantifier.Core.Git;
 
-    internal static class Program
+    public static class Program
     ***REMOVED***
         private const string PrQuantifierResults = "PrQuantifierResults";
 
-        private static void Main(string[] args)
+        public static async Task Main(string[] args)
         ***REMOVED***
             CheckArgs(args);
 
@@ -19,7 +20,7 @@
 
             // quantify the changes
             var prQuantifier = new PrQuantifier(ContextFactory.Load(args[0]));
-            var quantifierResult = prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // write the results
             var quantifierResultJson = JsonSerializer.Serialize(quantifierResult);
