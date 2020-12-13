@@ -30,6 +30,12 @@
         public string DiffContent ***REMOVED*** get; set; ***REMOVED***
 
         /// <summary>
+        /// Gets or sets the DiffContentLines.
+        /// This will store lines used for final counting.
+        /// </summary>
+        public string[] DiffContentLines ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
         /// Gets or sets the path of the changed file.
         /// </summary>
         public string FilePath ***REMOVED*** get; set; ***REMOVED***
@@ -38,5 +44,11 @@
         /// Gets or sets the kind of change reported by diff.
         /// </summary>
         public GitChangeType ChangeType ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets or sets a value indicating whether discard from counting.
+        /// In case we want to remove this file from the final counting mark this as true.
+        /// </summary>
+        public bool DiscardFromCounting ***REMOVED*** get; set; ***REMOVED***
 ***REMOVED***
 ***REMOVED***
