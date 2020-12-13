@@ -1,11 +1,14 @@
 ﻿namespace PrQuantifier.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Threading.Tasks;
     using global::PrQuantifier.Core.Context;
     using global::PrQuantifier.Core.Git;
     using global::PrQuantifier.Tests.Helpers;
     using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public sealed class PrQuantifierTests : IDisposable
     {
         private readonly Context context;
@@ -20,7 +23,7 @@
         }
 
         [Fact]
-        public void Quantify_NoChanges_ReturnsZeroCounts()
+        public async Task Quantify_NoChanges_ReturnsZeroCounts()
         {
             // Arrange
             var prQuantifier = new PrQuantifier(context);
@@ -28,7 +31,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
             Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
@@ -37,7 +40,7 @@
         }
 
         [Fact]
-        public void Quantify_UntrackedFilesOnly()
+        public async Task Quantify_UntrackedFilesOnly()
         {
             // Arrange
             gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
@@ -46,7 +49,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
             Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
@@ -55,7 +58,7 @@
         }
 
         [Fact]
-        public void Quantify_ChangedTrackedFiles()
+        public async Task Quantify_ChangedTrackedFiles()
         {
             // Arrange
             gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
@@ -68,7 +71,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
             Assert.True(string.IsNullOrEmpty(quantifierResult.Label));

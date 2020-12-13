@@ -1,5 +1,7 @@
 namespace PrQuantifier
 {
+    using System.Threading.Tasks;
+
     public interface IPrQuantifier
     {
         /// <summary>
@@ -7,6 +9,6 @@ namespace PrQuantifier
         /// </summary>
         /// <param name="quantifierInput">Input quantifier.</param>
         /// <returns>returns a quantifier result.</returns>
-        QuantifierResult Quantify(QuantifierInput quantifierInput);
+        Task<QuantifierResult> Quantify(QuantifierInput quantifierInput);
     }
 }

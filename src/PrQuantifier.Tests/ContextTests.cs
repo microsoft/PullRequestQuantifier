@@ -1,11 +1,13 @@
 ﻿namespace PrQuantifier.Tests
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using global::PrQuantifier.Core.Context;
     using global::PrQuantifier.Core.Exceptions;
     using global::PrQuantifier.Core.Git;
     using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public sealed class ContextTests
     {
         [Fact]

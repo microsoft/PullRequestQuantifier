@@ -1,7 +1,5 @@
 ﻿namespace PrQuantifier.Core.Git
 {
-    using LibGit2Sharp;
-
     public sealed class GitFilePatch
     {
         /// <summary>
@@ -39,6 +37,6 @@
         /// <summary>
         /// Gets or sets the kind of change reported by diff.
         /// </summary>
-        public ChangeKind ChangeType { get; set; }
+        public GitChangeType ChangeType { get; set; }
     }
 }

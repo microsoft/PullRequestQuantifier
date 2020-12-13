@@ -2,6 +2,7 @@ namespace PrQuantifier
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using global::PrQuantifier.Core.Context;
 
     public class PrQuantifier : IPrQuantifier
@@ -14,7 +15,7 @@ namespace PrQuantifier
         }
 
         /// <inheritdoc />
-        public QuantifierResult Quantify(QuantifierInput quantifierInput)
+        public async Task<QuantifierResult> Quantify(QuantifierInput quantifierInput)
         {
             if (quantifierInput == null)
             {
@@ -22,19 +23,25 @@ namespace PrQuantifier
             }
 
             // todo execute quantifier for this context and this particular input
-            return Compute(quantifierInput);
+            return await Compute(quantifierInput);
         }
 
-        private QuantifierResult Compute(QuantifierInput quantifierInput)
+        private async Task<QuantifierResult> Compute(QuantifierInput quantifierInput)
         {
-            var quantifierResult = new QuantifierResult
-            {
-                QuantifierInput = quantifierInput,
-                QuantifiedLinesAdded = quantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded),
-                QuantifiedLinesDeleted = quantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)
-            };
+            QuantifierResult quantifierResult = null;
 
-            // todo involve context and compute
+            await Task.Factory.StartNew(() =>
+            {
+                quantifierResult = new QuantifierResult
+                {
+                    QuantifierInput = quantifierInput,
+                    QuantifiedLinesAdded = quantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded),
+                    QuantifiedLinesDeleted = quantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)
+                };
+
+                // todo involve context and compute
+            });
+
             return quantifierResult;
         }
     }
