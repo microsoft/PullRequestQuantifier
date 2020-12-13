@@ -27,21 +27,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PrQuantifier.Common.Tests\PrQuantifier.Common.Tests.csproj" />
       <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
       <ProjectReference Include="..\PrQuantifier\PrQuantifier.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Data\ContextModel4.txt">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <None Update="Data\ContextModel3.txt">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Data\ContextModel2.txt">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Data\ContextModel1.txt">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Data\TestGitIgnore.txt">

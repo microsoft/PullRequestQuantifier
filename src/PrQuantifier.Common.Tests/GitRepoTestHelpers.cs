@@ -1,4 +1,4 @@
-﻿namespace PrQuantifier.Tests.Helpers
+﻿namespace PrQuantifier.Common.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -8,13 +8,13 @@
     using LibGit2Sharp;
 
     [ExcludeFromCodeCoverage]
-    internal sealed class GitRepoTestHelpers
+    public sealed class GitRepoTestHelpers
     {
         private IFileSystem fileSystem;
 
-        internal string RepoPath { get; private set; }
+        public string RepoPath { get; private set; }
 
-        internal void CreateRepo()
+        public void CreateRepo()
         {
             // Setup test directory for git
             fileSystem = new FileSystem();
@@ -34,7 +34,7 @@
             CommitFilesToRepo();
         }
 
-        internal void CommitFilesToRepo()
+        public void CommitFilesToRepo()
         {
             var repo = new Repository(RepoPath);
             Commands.Stage(repo, "*");
@@ -42,7 +42,7 @@
             repo.Commit("Adding files", author, author);
         }
 
-        internal void AddUntrackedFileToRepo(string relativePath, int numLines)
+        public void AddUntrackedFileToRepo(string relativePath, int numLines)
         {
             string lineContent = $"Fake content line.{Environment.NewLine}";
             fileSystem.File.WriteAllText(fileSystem.Path.Combine(RepoPath, relativePath), string.Concat(Enumerable.Repeat(lineContent, numLines)));
@@ -51,7 +51,7 @@
         // This implementation of delete directory is based on the stack overflow
         // answer https://stackoverflow.com/questions/1701457/directory-delete-doesnt-work-access-denied-error-but-under-windows-explorer-it.
         // Otherwise this runs into access issues during direct deletion sometimes.
-        internal void DeleteRepoDirectory()
+        public void DeleteRepoDirectory()
         {
             var dirInfo = fileSystem.DirectoryInfo.FromDirectoryName(RepoPath);
             if (dirInfo.Exists)

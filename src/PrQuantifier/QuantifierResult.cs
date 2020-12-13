@@ -1,6 +1,6 @@
 namespace PrQuantifier
 {
-    public class QuantifierResult
+    public sealed class QuantifierResult
     {
         /// <summary>
         /// Gets the output label as quantified.

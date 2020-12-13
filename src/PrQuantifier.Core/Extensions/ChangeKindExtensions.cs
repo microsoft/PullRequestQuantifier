@@ -8,33 +8,21 @@
     {
         public static GitChangeType ConvertToChangeType(this ChangeKind changeKind)
         {
-            switch (changeKind)
+            return changeKind switch
             {
-                case ChangeKind.Unmodified:
-                    return GitChangeType.Unmodified;
-                case ChangeKind.Added:
-                    return GitChangeType.Added;
-                case ChangeKind.Deleted:
-                    return GitChangeType.Deleted;
-                case ChangeKind.Modified:
-                    return GitChangeType.Modified;
-                case ChangeKind.Renamed:
-                    return GitChangeType.Renamed;
-                case ChangeKind.Copied:
-                    return GitChangeType.Copied;
-                case ChangeKind.Ignored:
-                    return GitChangeType.Ignored;
-                case ChangeKind.Untracked:
-                    return GitChangeType.Untracked;
-                case ChangeKind.TypeChanged:
-                    return GitChangeType.TypeChanged;
-                case ChangeKind.Unreadable:
-                    return GitChangeType.Unreadable;
-                case ChangeKind.Conflicted:
-                    return GitChangeType.Conflicted;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(changeKind), changeKind, null);
-            }
+                ChangeKind.Unmodified => GitChangeType.Unmodified,
+                ChangeKind.Added => GitChangeType.Added,
+                ChangeKind.Deleted => GitChangeType.Deleted,
+                ChangeKind.Modified => GitChangeType.Modified,
+                ChangeKind.Renamed => GitChangeType.Renamed,
+                ChangeKind.Copied => GitChangeType.Copied,
+                ChangeKind.Ignored => GitChangeType.Ignored,
+                ChangeKind.Untracked => GitChangeType.Untracked,
+                ChangeKind.TypeChanged => GitChangeType.TypeChanged,
+                ChangeKind.Unreadable => GitChangeType.Unreadable,
+                ChangeKind.Conflicted => GitChangeType.Conflicted,
+                _ => throw new ArgumentOutOfRangeException(nameof(changeKind), changeKind, null)
+            };
         }
     }
 }
