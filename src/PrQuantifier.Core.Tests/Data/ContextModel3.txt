@@ -1,0 +1,20 @@
+Included:
+- value1
+- value2
+
+Excluded:
+- '*.csproj'
+GitOperationType:
+- Add
+- Delete
+
+Thresholds:
+- GitOperationType: 
+  Value: 100
+  Label: 1
+- GitOperationType: 
+  Value: 60
+  Label: 2
+- GitOperationType: 
+  Value: 50
+  Label: 3

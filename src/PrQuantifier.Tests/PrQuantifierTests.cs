@@ -3,9 +3,9 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
+    using global::PrQuantifier.Common.Tests;
     using global::PrQuantifier.Core.Context;
     using global::PrQuantifier.Core.Git;
-    using global::PrQuantifier.Tests.Helpers;
     using Xunit;
 
     [ExcludeFromCodeCoverage]

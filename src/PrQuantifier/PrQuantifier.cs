@@ -7,7 +7,7 @@ namespace PrQuantifier
     using global::PrQuantifier.Core.Extensions;
     using global::PrQuantifier.Core.Git;
 
-    public class PrQuantifier : IPrQuantifier
+    public sealed class PrQuantifier : IPrQuantifier
     ***REMOVED***
         private readonly Context context;
 

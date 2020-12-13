@@ -1,11 +1,11 @@
-﻿namespace PrQuantifier.Tests
+﻿namespace PrQuantifier.Core.Tests
 ***REMOVED***
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using global::PrQuantifier.Core.Abstractions;
-    using global::PrQuantifier.Core.Git;
-    using global::PrQuantifier.Tests.Helpers;
+    using PrQuantifier.Common.Tests;
+    using PrQuantifier.Core.Abstractions;
+    using PrQuantifier.Core.Git;
     using Xunit;
 
     [ExcludeFromCodeCoverage]

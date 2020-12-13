@@ -11,9 +11,9 @@ Project("***REMOVED***9A19103F-16F7-4668-BE54-9A1E7A4F7556***REMOVED***") = "PrQ
 EndProject
 Project("***REMOVED***2150E333-8FDC-42A3-9474-1A3956D46DE8***REMOVED***") = "Clients", "Clients", "***REMOVED***113A67BC-21CF-45D1-98A5-28EBC75E2584***REMOVED***"
 EndProject
-Project("***REMOVED***FAE04EC0-301F-11D3-BF4B-00C04F79EFBC***REMOVED***") = "PrQuantifier.Local.Client", "src\Clients\PrQuantifier.Local.Client\PrQuantifier.Local.Client.csproj", "***REMOVED***AE180A89-EBAD-40FD-A327-7CE6C153DCB6***REMOVED***"
+Project("***REMOVED***9A19103F-16F7-4668-BE54-9A1E7A4F7556***REMOVED***") = "PrQuantifier.Local.Client", "src\Clients\PrQuantifier.Local.Client\PrQuantifier.Local.Client.csproj", "***REMOVED***AE180A89-EBAD-40FD-A327-7CE6C153DCB6***REMOVED***"
 EndProject
-Project("***REMOVED***FAE04EC0-301F-11D3-BF4B-00C04F79EFBC***REMOVED***") = "PrQuantifier.Local.Context", "src\Clients\PrQuantifier.Local.Context\PrQuantifier.Local.Context.csproj", "***REMOVED***E0E51BB5-216E-4A07-9366-E52D42E344AE***REMOVED***"
+Project("***REMOVED***9A19103F-16F7-4668-BE54-9A1E7A4F7556***REMOVED***") = "PrQuantifier.Local.Context", "src\Clients\PrQuantifier.Local.Context\PrQuantifier.Local.Context.csproj", "***REMOVED***E0E51BB5-216E-4A07-9366-E52D42E344AE***REMOVED***"
 EndProject
 Project("***REMOVED***2150E333-8FDC-42A3-9474-1A3956D46DE8***REMOVED***") = "SampleContexts", "SampleContexts", "***REMOVED***7BC8D1D7-BA30-42ED-9C3D-8352BB8A5EC4***REMOVED***"
 	ProjectSection(SolutionItems) = preProject
@@ -21,6 +21,10 @@ Project("***REMOVED***2150E333-8FDC-42A3-9474-1A3956D46DE8***REMOVED***") = "Sam
 	EndProjectSection
 EndProject
 Project("***REMOVED***FAE04EC0-301F-11D3-BF4B-00C04F79EFBC***REMOVED***") = "PrQuantifier.Vsix.Client", "src\Clients\PrQuantifier.Vsix.Client\PrQuantifier.Vsix.Client.csproj", "***REMOVED***4103199E-7FF1-48FA-8DA4-1382BB8E7757***REMOVED***"
+EndProject
+Project("***REMOVED***FAE04EC0-301F-11D3-BF4B-00C04F79EFBC***REMOVED***") = "PrQuantifier.Core.Tests", "src\PrQuantifier.Core.Tests\PrQuantifier.Core.Tests.csproj", "***REMOVED***E4C7263F-772C-4AB8-9476-F7457BF37E0B***REMOVED***"
+EndProject
+Project("***REMOVED***FAE04EC0-301F-11D3-BF4B-00C04F79EFBC***REMOVED***") = "PrQuantifier.Common.Tests", "src\PrQuantifier.Common.Tests\PrQuantifier.Common.Tests.csproj", "***REMOVED***68B79591-49EE-4BD9-B94B-82157E1CFEA0***REMOVED***"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +56,14 @@ Global
 		***REMOVED***4103199E-7FF1-48FA-8DA4-1382BB8E7757***REMOVED***.Debug|Any CPU.Build.0 = Debug|Any CPU
 		***REMOVED***4103199E-7FF1-48FA-8DA4-1382BB8E7757***REMOVED***.Release|Any CPU.ActiveCfg = Release|Any CPU
 		***REMOVED***4103199E-7FF1-48FA-8DA4-1382BB8E7757***REMOVED***.Release|Any CPU.Build.0 = Release|Any CPU
+		***REMOVED***E4C7263F-772C-4AB8-9476-F7457BF37E0B***REMOVED***.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		***REMOVED***E4C7263F-772C-4AB8-9476-F7457BF37E0B***REMOVED***.Debug|Any CPU.Build.0 = Debug|Any CPU
+		***REMOVED***E4C7263F-772C-4AB8-9476-F7457BF37E0B***REMOVED***.Release|Any CPU.ActiveCfg = Release|Any CPU
+		***REMOVED***E4C7263F-772C-4AB8-9476-F7457BF37E0B***REMOVED***.Release|Any CPU.Build.0 = Release|Any CPU
+		***REMOVED***68B79591-49EE-4BD9-B94B-82157E1CFEA0***REMOVED***.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		***REMOVED***68B79591-49EE-4BD9-B94B-82157E1CFEA0***REMOVED***.Debug|Any CPU.Build.0 = Debug|Any CPU
+		***REMOVED***68B79591-49EE-4BD9-B94B-82157E1CFEA0***REMOVED***.Release|Any CPU.ActiveCfg = Release|Any CPU
+		***REMOVED***68B79591-49EE-4BD9-B94B-82157E1CFEA0***REMOVED***.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
