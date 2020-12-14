@@ -27,5 +27,12 @@
         /// <returns>returns a collection with changes.
         /// string is the sha1 of the commit and values represents the changes.</returns>
         IReadOnlyDictionary<GitCommit, IEnumerable<GitFilePatch>> GetGitHistoricalChangesToParent(string path);
+
+        /// <summary>
+        /// Gets a repo root from a path.
+        /// </summary>
+        /// <param name="path">The path to the repository.</param>
+        /// <returns>returns repo root.</returns>
+        string GetRepoRoot(string path);
     }
 }

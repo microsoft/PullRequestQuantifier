@@ -8,6 +8,7 @@
     using global::PrQuantifier.Core.Git;
     using Xunit;
 
+    // todo add  more tests using different contexts
     [ExcludeFromCodeCoverage]
     public sealed class PrQuantifierTests : IDisposable
     {

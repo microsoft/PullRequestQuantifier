@@ -1,8 +1,10 @@
 ﻿namespace PrQuantifier.Core.Context
 {
     using System;
+    using System.IO;
     using System.Linq;
     using PrQuantifier.Core.Exceptions;
+    using YamlDotNet.Serialization;
 
     public static class ContextExtensions
     {
@@ -73,6 +75,18 @@
 
             // todo regex/paths validation
             return context;
+        }
+
+        /// <summary>
+        /// Serialize context to a yaml file.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="filePath">The file path.</param>
+        public static void SerializeToYaml(
+            this Context context,
+            string filePath)
+        {
+            File.WriteAllText(filePath, new SerializerBuilder().Build().Serialize(context));
         }
     }
 }

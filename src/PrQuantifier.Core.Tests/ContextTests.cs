@@ -123,14 +123,17 @@
             Assert.True(context.Validate() != null);
         }
 
-        [Fact]
-        public void Load_ReturnsValidContext()
+        [Theory]
+        [InlineData("ContextModel1.txt")]
+        [InlineData("ContextModel2.txt")]
+        [InlineData("ContextModel3.txt")]
+        [InlineData("ContextModel4.txt")]
+        [InlineData("ContextModel5.txt")]
+        [InlineData("ContextModel6.txt")]
+        public void Load_ReturnsValidContext(string file)
         {
             // Act, Assert
-            Assert.True(ContextFactory.Load(@"Data\ContextModel1.txt") != null);
-            Assert.True(ContextFactory.Load(@"Data\ContextModel2.txt") != null);
-            Assert.True(ContextFactory.Load(@"Data\ContextModel3.txt") != null);
-            Assert.True(ContextFactory.Load(@"Data\ContextModel4.txt") != null);
+            Assert.True(ContextFactory.Load(@$"Data\{file}") != null);
         }
     }
 }

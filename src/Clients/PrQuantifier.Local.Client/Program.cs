@@ -25,11 +25,15 @@
             // write the results
             var quantifierResultJson = JsonSerializer.Serialize(quantifierResult);
 
+            var outputFilePath = Path.Combine(Environment.CurrentDirectory, PrQuantifierResults, $"{Guid.NewGuid()}.prQuantifier.json");
             File.WriteAllText(
-                Path.Combine(PrQuantifierResults, $"{Guid.NewGuid()}.prQuantifier.json"),
+                outputFilePath,
                 quantifierResultJson);
 
-            Console.WriteLine(quantifierResultJson);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"Label = {quantifierResult.Label}\tDiff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted}");
+            Console.ResetColor();
+            Console.WriteLine($"More details here: {outputFilePath}");
 
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
         }
