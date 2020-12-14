@@ -1,13 +1,17 @@
 ﻿namespace PrQuantifier.Core
 ***REMOVED***
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using MathNet.Numerics.Statistics;
 
-    public sealed class ComputePercentile
+    public static class ComputePercentile
     ***REMOVED***
-        public float Percentile(int[] data, int value)
+        /// <summary>
+        /// Compute the percentile position of t he value within  the data array.
+        /// In other words showing the percent of values form data array bellow our given value.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="value">The given value.</param>
+        /// <returns>returns the percentile.</returns>
+        public static float Percentile(int[] data, int value)
         ***REMOVED***
             Array.Sort(data);
             var maxValue = data[^1];
@@ -15,33 +19,17 @@
 
             if (value > maxValue)
             ***REMOVED***
-                Array.Resize(ref data, data.Length + 1);
-                data[^1] = value;
+                return 100f;
     ***REMOVED***
 
             if (value < minValue)
             ***REMOVED***
-                Array.Resize(ref data, data.Length + 1);
-                data[^1] = value;
-                Array.Sort(data);
+                return 0f;
     ***REMOVED***
 
-            var percentData = MapData(data);
+            int idxBellowValues = Array.FindIndex(data, d => value <= d);
 
-            return percentData.Percentile((int)MapValue(data, value));
-***REMOVED***
-
-        private IEnumerable<float> MapData(int[] data)
-        ***REMOVED***
-            return data.Select(d => MapValue(data, d)).ToList();
-***REMOVED***
-
-        private float MapValue(int[] data, int value)
-        ***REMOVED***
-            var maxValue = data[^1];
-            var minValue = data[0];
-
-            return (value - minValue) * 100f / (maxValue - minValue);
+            return idxBellowValues / (data.Length - 1f) * 100f;
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

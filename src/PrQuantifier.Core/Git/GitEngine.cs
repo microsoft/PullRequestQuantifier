@@ -83,6 +83,12 @@ namespace PrQuantifier.Core.Git
             return ret;
 ***REMOVED***
 
+        /// <inheritdoc />
+        public string GetRepoRoot(string path)
+        ***REMOVED***
+            return Repository.Discover(path);
+***REMOVED***
+
         private IEnumerable<GitFilePatch> GetGitFilePatch(Patch filesPatch)
         ***REMOVED***
             var ret = new List<GitFilePatch>();

@@ -53,5 +53,15 @@ namespace PrQuantifier.Core.Context
         /// will look into the local git merge history.
         /// </summary>
         public bool DynamicBehaviour ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets  or sets AdditionPercentile. Used in quantifier final computation.
+        /// </summary>
+        public SortedDictionary<int, float> AdditionPercentile ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets  or sets DeletionPercentile. Used in quantifier final computation.
+        /// </summary>
+        public SortedDictionary<int, float> DeletionPercentile ***REMOVED*** get; set; ***REMOVED***
 ***REMOVED***
 ***REMOVED***
