@@ -26,12 +26,13 @@
             var quantifierResultJson = JsonSerializer.Serialize(quantifierResult);
 
             var outputFilePath = Path.Combine(Environment.CurrentDirectory, PrQuantifierResults, $"{Guid.NewGuid()}.prQuantifier.json");
-            File.WriteAllText(
+            await File.WriteAllTextAsync(
                 outputFilePath,
                 quantifierResultJson);
 
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"Label = {quantifierResult.Label}\tDiff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted}");
+            Console.WriteLine($"Label = {quantifierResult.Label}\tDiff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted}" +
+                              $"\tYour are at {quantifierResult.PercentileAddition} percentile for additions changes and at {quantifierResult.PercentileDeletion} for deletions.");
             Console.ResetColor();
             Console.WriteLine($"More details here: {outputFilePath}");
 

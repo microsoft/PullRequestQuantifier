@@ -1,8 +1,10 @@
 namespace PrQuantifier.Core.Git
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using LibGit2Sharp;
     using PrQuantifier.Core.Abstractions;
     using PrQuantifier.Core.Extensions;
@@ -52,7 +54,7 @@ namespace PrQuantifier.Core.Git
         /// <inheritdoc />
         public IReadOnlyDictionary<GitCommit, IEnumerable<GitFilePatch>> GetGitHistoricalChangesToParent(string path)
         {
-            var ret = new Dictionary<GitCommit, IEnumerable<GitFilePatch>>();
+            var ret = new ConcurrentDictionary<GitCommit, IEnumerable<GitFilePatch>>();
             var repoRoot = Repository.Discover(path);
             using var repo = new Repository(repoRoot);
 
@@ -60,7 +62,7 @@ namespace PrQuantifier.Core.Git
             {
                 SortBy = CommitSortStrategies.Reverse | CommitSortStrategies.Time
             });
-            foreach (var commit in commits)
+            Parallel.ForEach(commits, commit =>
             {
                 var gotCommit = new GitCommit
                 {
@@ -78,7 +80,7 @@ namespace PrQuantifier.Core.Git
                     var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
                     changes.AddRange(GetGitFilePatch(patch));
                 }
-            }
+            });
 
             return ret;
         }

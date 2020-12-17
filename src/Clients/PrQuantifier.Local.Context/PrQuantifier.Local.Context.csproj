@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
+    <ProjectReference Include="..\..\PrQuantifier\PrQuantifier.csproj" />
   </ItemGroup>
 
 </Project>
