@@ -2,7 +2,6 @@ namespace PrQuantifier
 ***REMOVED***
     using System;
     using System.Linq;
-    using System.Runtime.InteropServices.ComTypes;
     using System.Threading.Tasks;
     using global::PrQuantifier.Core.Context;
     using global::PrQuantifier.Core.Extensions;
@@ -98,7 +97,7 @@ namespace PrQuantifier
 
         private void SetLabel(QuantifierResult quantifierResult)
         ***REMOVED***
-            // in case no addition/deletion percentile found  then we won't be able to set the label.
+            // in case no addition/deletion found then we won't be able to set the label.
             if (context.AdditionPercentile == null
                 || context.DeletionPercentile == null
                 || context.AdditionPercentile.Count == 0
@@ -107,17 +106,20 @@ namespace PrQuantifier
                 return;
     ***REMOVED***
 
-            var additionPercentile = GetPercentile(quantifierResult, true);
-            var deletionPercentile = GetPercentile(quantifierResult, false);
+            quantifierResult.PercentileAddition = GetPercentile(quantifierResult, true);
+            quantifierResult.PercentileDeletion = GetPercentile(quantifierResult, false);
 
             // todo come up with a better way combine addition and deletion, maybe use weights
-            var avgPercentile = (additionPercentile + deletionPercentile) / 2;
-
+            // for now to set the label use the absolute values addition/deletion and compare them with the thresholds
+            // the percentile will be displayed saying that if your change has this number
+            // of lines additions then you are at this percentile within this context
+            // consider the avg for addition and deletion
+            var changeNumber = (quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted) / 2;
             foreach (var contextThreshold in context.Thresholds.OrderBy(t => t.Value))
             ***REMOVED***
                 // we set the label from the thresholds and exit when we have first value threshold grater then percentile
                 quantifierResult.Label = contextThreshold.Label;
-                if (contextThreshold.Value >= avgPercentile)
+                if (changeNumber <= contextThreshold.Value)
                 ***REMOVED***
                     return;
         ***REMOVED***

@@ -25,6 +25,16 @@ namespace PrQuantifier
         public int QuantifiedLinesDeleted ***REMOVED*** get; set; ***REMOVED***
 
         /// <summary>
+        /// Gets or sets the deletion percentile within the context for this quantified results.
+        /// </summary>
+        public float PercentileDeletion ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets or sets the addition percentile within the context for this quantified results.
+        /// </summary>
+        public float PercentileAddition ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
         /// Gets quantifier input.
         /// </summary>
         public QuantifierInput QuantifierInput ***REMOVED*** get; internal set; ***REMOVED***

@@ -13,23 +13,25 @@
         /// <returns>returns the percentile.</returns>
         public static float Percentile(int[] data, int value)
         ***REMOVED***
-            Array.Sort(data);
             var maxValue = data[^1];
             var minValue = data[0];
 
+            // if our value is greater then the  max value then we are at 100 percentile
             if (value > maxValue)
             ***REMOVED***
                 return 100f;
     ***REMOVED***
 
+            // if it's less then we are at zero
             if (value < minValue)
             ***REMOVED***
                 return 0f;
     ***REMOVED***
 
-            int idxBellowValues = Array.FindIndex(data, d => value <= d);
+            // get the number of values less or equal then our value for wich we calculate the percentile
+            int idxBellowValues = Array.FindLastIndex(data, d => d <= value) + 1;
 
-            return idxBellowValues / (data.Length - 1f) * 100f;
+            return idxBellowValues / (data.Length + 0f) * 100f;
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
