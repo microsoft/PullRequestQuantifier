@@ -58,7 +58,7 @@
                 return;
     ***REMOVED***
 
-            gitFilePatch.DiffContentLines = new List<string>().ToArray();
+            gitFilePatch.DiscardFromCounting = true;
 ***REMOVED***
 
         public static void RemoveCopiedChanges(this GitFilePatch gitFilePatch)
@@ -68,7 +68,7 @@
                 return;
     ***REMOVED***
 
-            gitFilePatch.DiffContentLines = new List<string>().ToArray();
+            gitFilePatch.DiscardFromCounting = true;
 ***REMOVED***
 
         public static void ComputeChanges(this GitFilePatch gitFilePatch)
@@ -76,6 +76,12 @@
             if (gitFilePatch == null)
             ***REMOVED***
                 throw new ArgumentNullException(nameof(gitFilePatch));
+    ***REMOVED***
+
+            // if file change was discarded from the counted do nothing.
+            if (gitFilePatch.DiscardFromCounting)
+            ***REMOVED***
+                return;
     ***REMOVED***
 
             // consider all lines that accounts for addition or deletion, exclude those with multiple ++ or --

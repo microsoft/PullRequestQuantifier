@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\PrQuantifier\PrQuantifier.csproj" />
+    <ProjectReference Include="..\PrQuantifier.Client\PrQuantifier.Client.csproj" />
   </ItemGroup>
 
 </Project>

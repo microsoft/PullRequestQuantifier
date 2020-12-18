@@ -1,4 +1,4 @@
-﻿namespace PrQuantifier.Local.Client
+﻿namespace PrQuantifier.Client
 ***REMOVED***
     using System;
     using System.Text.Json;
@@ -6,12 +6,13 @@
     using global::PrQuantifier.Core.Abstractions;
     using global::PrQuantifier.Core.Git;
 
-    internal sealed class Quantify
+    /// <inheritdoc />
+    public sealed class QuantifyClient : IQuantifyClient
     ***REMOVED***
         private readonly string gitRepoPath;
         private readonly IPrQuantifier prQuantifier;
 
-        internal Quantify(
+        public QuantifyClient(
             IPrQuantifier prQuantifier,
             string gitRepoPath)
         ***REMOVED***
@@ -20,9 +21,11 @@
             GitEngine = new GitEngine();
 ***REMOVED***
 
-        internal IGitEngine GitEngine ***REMOVED*** get; ***REMOVED***
+        /// <inheritdoc />
+        public IGitEngine GitEngine ***REMOVED*** get; ***REMOVED***
 
-        internal async Task<string> Compute()
+        /// <inheritdoc />
+        public async Task<QuantifierResult> Compute()
         ***REMOVED***
             // get current location changes
             var quantifierInput = GetChanges(gitRepoPath);
@@ -30,10 +33,22 @@
             // quantify the changes
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
-            var quantifierResultJson = PrintQuantifierResult(quantifierResult);
+            PrintQuantifierResult(quantifierResult);
 
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
-            return quantifierResultJson;
+            return quantifierResult;
+***REMOVED***
+
+        /// <inheritdoc />
+        public async Task<QuantifierResult> Compute(QuantifierInput quantifierInput)
+        ***REMOVED***
+            // quantify the changes
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+
+            PrintQuantifierResult(quantifierResult);
+
+            // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
+            return quantifierResult;
 ***REMOVED***
 
         private QuantifierInput GetChanges(string repoPath)
@@ -44,7 +59,7 @@
             return quantifierInput;
 ***REMOVED***
 
-        private string PrintQuantifierResult(QuantifierResult quantifierResult)
+        private void PrintQuantifierResult(QuantifierResult quantifierResult)
         ***REMOVED***
             // write the results
             var quantifierResultJson = JsonSerializer.Serialize(quantifierResult);
@@ -60,8 +75,6 @@
                 $"\tWithin the team your are at ***REMOVED***quantifierResult.PercentileAddition***REMOVED*** percentile for " +
                 $"additions changes and at ***REMOVED***quantifierResult.PercentileDeletion***REMOVED*** for deletions.");
             Console.ResetColor();
-
-            return quantifierResultJson;
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

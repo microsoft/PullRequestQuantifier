@@ -25,22 +25,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\ContextModel1.txt">
+    <None Update="Data\ContextModel1.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\ContextModel2.txt">
+    <None Update="Data\ContextModel2.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\ContextModel3.txt">
+    <None Update="Data\ContextModel3.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\ContextModel6.txt">
+    <None Update="Data\ContextModel6.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\ContextModel5.txt">
+    <None Update="Data\ContextModel5.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\ContextModel4.txt">
+    <None Update="Data\ContextModel4.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Data\TestGitIgnore.txt">

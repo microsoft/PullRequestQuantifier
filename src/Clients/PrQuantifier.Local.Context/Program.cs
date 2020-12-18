@@ -33,7 +33,7 @@
             context.DeletionPercentile = new SortedDictionary<int, float>(Percentile(historicalChanges, false));
 
             // serialize the new context
-            var filePath = Path.Combine(PrQuantifierContexts, $"Context_***REMOVED***Guid.NewGuid()***REMOVED***.txt");
+            var filePath = Path.Combine(PrQuantifierContexts, $"Context_***REMOVED***Guid.NewGuid()***REMOVED***.yaml");
             context.SerializeToYaml(filePath);
             Console.WriteLine(
                 $"Generate context for Repo located on '***REMOVED***GitEngine.GetRepoRoot(args[0])***REMOVED***'" +
