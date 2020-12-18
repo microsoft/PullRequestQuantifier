@@ -1,98 +1,83 @@
 ﻿namespace PrQuantifier.Tests
 ***REMOVED***
     using System;
-    using System.IO;
-    using System.IO.Abstractions;
-    using System.Linq;
-    using LibGit2Sharp;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Threading.Tasks;
+    using global::PrQuantifier.Common.Tests;
+    using global::PrQuantifier.Core.Context;
+    using global::PrQuantifier.Core.Git;
     using Xunit;
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NamingConventions;
 
+    // todo add  more tests using different contexts
+    [ExcludeFromCodeCoverage]
     public sealed class PrQuantifierTests : IDisposable
     ***REMOVED***
-        private readonly QuantifierOptions quantifierOptions;
-
-        private readonly IFileSystem fileSystem;
-
-        private readonly string repoPath;
+        private readonly Context context;
+        private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();
+        private readonly GitEngine gitEngine = new GitEngine();
 
         public PrQuantifierTests()
         ***REMOVED***
             // Setup QuantifierOptions for all tests
-            var yamlDeserializer = new DeserializerBuilder()
-                .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                .Build();
-            var optionsYaml = File.ReadAllText("QuantifierOptions.yml");
-            quantifierOptions = yamlDeserializer.Deserialize<QuantifierOptions>(optionsYaml);
-
-            // Setup test directory for git
-            fileSystem = new FileSystem();
-            var tempPath = fileSystem.Path.GetTempPath();
-            repoPath = fileSystem.Path.Combine(tempPath, $"fakeRepo-***REMOVED***Guid.NewGuid()***REMOVED***");
-            if (fileSystem.Directory.Exists(repoPath))
-            ***REMOVED***
-                fileSystem.Directory.Delete(repoPath, true);
-    ***REMOVED***
-
-            fileSystem.Directory.CreateDirectory(repoPath);
-
-            // Init test git repository with gitignore
-            Repository.Init(repoPath);
-            var gitIgnoreContent = fileSystem.File.ReadAllText("TestGitIgnore.txt");
-            fileSystem.File.WriteAllText(fileSystem.Path.Combine(repoPath, ".gitignore"), gitIgnoreContent);
-            CommitFilesToRepo();
+            context = ContextFactory.Load(@"Data\ContextModel3.yaml");
+            gitRepoHelpers.CreateRepo();
 ***REMOVED***
 
         [Fact]
-        public void Quantify_NoChanges_ReturnsZeroCounts()
+        public async Task Quantify_NoChanges_ReturnsZeroCounts()
         ***REMOVED***
             // Arrange
-            var prQuantifier = new PrQuantifier(quantifierOptions);
+            var prQuantifier = new PrQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = prQuantifier.Quantify(repoPath);
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.Equal(0, quantifierResult.Category);
-            Assert.Equal(0, quantifierResult.ChangeCounts[OperationType.Add]);
-            Assert.Equal(0, quantifierResult.ChangeCounts[OperationType.Delete]);
+            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(0, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***
 
         [Fact]
-        public void Quantify_UntrackedFilesOnly()
+        public async Task Quantify_UntrackedFilesOnly()
         ***REMOVED***
             // Arrange
-            AddUntrackedFileToRepo("fake.cs", 2);
-            var prQuantifier = new PrQuantifier(quantifierOptions);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
+            var prQuantifier = new PrQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = prQuantifier.Quantify(repoPath);
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.Equal(0, quantifierResult.Category);
-            Assert.Equal(2, quantifierResult.ChangeCounts[OperationType.Add]);
-            Assert.Equal(0, quantifierResult.ChangeCounts[OperationType.Delete]);
+            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(2, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***
 
         [Fact]
-        public void Quantify_ChangedTrackedFiles()
+        public async Task Quantify_ChangedTrackedFiles()
         ***REMOVED***
             // Arrange
-            AddUntrackedFileToRepo("fake.cs", 2);
-            AddUntrackedFileToRepo("fake2.cs", 4);
-            CommitFilesToRepo();
-            AddUntrackedFileToRepo("fake.cs", 5);
-            AddUntrackedFileToRepo("fake2.cs", 2);
-            var prQuantifier = new PrQuantifier(quantifierOptions);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 4);
+            gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            var prQuantifier = new PrQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = prQuantifier.Quantify(repoPath);
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.Equal(0, quantifierResult.Category);
-            Assert.Equal(3, quantifierResult.ChangeCounts[OperationType.Add]);
-            Assert.Equal(2, quantifierResult.ChangeCounts[OperationType.Delete]);
+            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(3, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(2, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***
 
         [Fact]
@@ -109,48 +94,7 @@
 
         public void Dispose()
         ***REMOVED***
-            DeleteRepoDirectory();
-***REMOVED***
-
-        private void CommitFilesToRepo()
-        ***REMOVED***
-            var repo = new Repository(repoPath);
-            Commands.Stage(repo, "*");
-            var author = new Signature("FakeUser", "fakeemail", DateTimeOffset.Now);
-            repo.Commit("Adding files", author, author);
-***REMOVED***
-
-        private void AddUntrackedFileToRepo(string relativePath, int numLines)
-        ***REMOVED***
-            string lineContent = $"Fake content line.***REMOVED***Environment.NewLine***REMOVED***";
-            fileSystem.File.WriteAllText(fileSystem.Path.Combine(repoPath, relativePath), string.Concat(Enumerable.Repeat(lineContent, numLines)));
-***REMOVED***
-
-        // This implementation of delete directory is based on the stack overflow
-        // answer https://stackoverflow.com/questions/1701457/directory-delete-doesnt-work-access-denied-error-but-under-windows-explorer-it.
-        // Otherwise this runs into access issues during direct deletion sometimes.
-        private void DeleteRepoDirectory()
-        ***REMOVED***
-            var dirInfo = fileSystem.DirectoryInfo.FromDirectoryName(repoPath);
-            if (dirInfo.Exists)
-            ***REMOVED***
-                SetNormalAttribute(dirInfo);
-    ***REMOVED***
-
-            dirInfo.Delete(true);
-***REMOVED***
-
-        private void SetNormalAttribute(IDirectoryInfo dirInfo)
-        ***REMOVED***
-            foreach (var subDir in dirInfo.GetDirectories())
-            ***REMOVED***
-                SetNormalAttribute(subDir);
-    ***REMOVED***
-
-            foreach (var file in dirInfo.GetFiles())
-            ***REMOVED***
-                file.Attributes = FileAttributes.Normal;
-    ***REMOVED***
+            gitRepoHelpers.DeleteRepoDirectory();
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
