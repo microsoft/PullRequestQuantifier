@@ -1,4 +1,4 @@
-namespace PrQuantifier.Core
+namespace PrQuantifier.Core.Git
 ***REMOVED***
     public enum GitOperationType
     ***REMOVED***
