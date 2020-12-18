@@ -19,7 +19,7 @@
         public PrQuantifierTests()
         {
             // Setup QuantifierOptions for all tests
-            context = ContextFactory.Load(@"Data\ContextModel3.txt");
+            context = ContextFactory.Load(@"Data\ContextModel3.yaml");
             gitRepoHelpers.CreateRepo();
         }
 

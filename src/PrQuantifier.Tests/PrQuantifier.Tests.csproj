@@ -33,7 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Data\ContextModel3.txt">
+        <None Update="Data\ContextModel3.yaml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Data\TestGitIgnore.txt">

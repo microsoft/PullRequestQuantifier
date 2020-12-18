@@ -107,12 +107,12 @@
         }
 
         [Theory]
-        [InlineData("ContextModel1.txt")]
-        [InlineData("ContextModel2.txt")]
-        [InlineData("ContextModel3.txt")]
-        [InlineData("ContextModel4.txt")]
-        [InlineData("ContextModel5.txt")]
-        [InlineData("ContextModel6.txt")]
+        [InlineData("ContextModel1.yaml")]
+        [InlineData("ContextModel2.yaml")]
+        [InlineData("ContextModel3.yaml")]
+        [InlineData("ContextModel4.yaml")]
+        [InlineData("ContextModel5.yaml")]
+        [InlineData("ContextModel6.yaml")]
         public void Load_ReturnsValidContext(string file)
         {
             // Act, Assert

@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using global::PrQuantifier.Client;
     using global::PrQuantifier.Core.Context;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +41,7 @@
             }
 
             // in case service is not set or false then run once and exit
-            await serviceProvider?.GetService<Quantify>()?.Compute();
+            await serviceProvider?.GetService<IQuantifyClient>()?.Compute();
         }
 
         private static void Quantify()
@@ -53,7 +54,7 @@
                     continue;
                 }
 
-                serviceProvider.GetService<Quantify>()?.Compute().Wait();
+                serviceProvider.GetService<IQuantifyClient>()?.Compute().Wait();
                 changedEventDateTime = DateTimeOffset.MaxValue;
             }
         }
@@ -64,7 +65,7 @@
         {
             serviceProvider = new ServiceCollection()
                 .AddSingleton<IPrQuantifier>(p => new PrQuantifier(ContextFactory.Load(contextFilePath)))
-                .AddSingleton(p => new Quantify(
+                .AddSingleton<IQuantifyClient>(p => new QuantifyClient(
                     p.GetRequiredService<IPrQuantifier>(),
                     gitRepoPath))
                 .BuildServiceProvider();
@@ -93,7 +94,7 @@
                 // Create a new FileSystemWatcher and set its properties.
                 using FileSystemWatcher watcher = new FileSystemWatcher
                 {
-                    Path = new DirectoryInfo(serviceProvider.GetService<Quantify>()?.GitEngine.GetRepoRoot(gitRepoPath)).Parent
+                    Path = new DirectoryInfo(serviceProvider.GetService<IQuantifyClient>()?.GitEngine.GetRepoRoot(gitRepoPath)).Parent
                         .FullName,
                     NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime,
                     IncludeSubdirectories = true,
