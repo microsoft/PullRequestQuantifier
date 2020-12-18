@@ -37,12 +37,12 @@
             var maxValue = context.Thresholds.Max(t => t.Value);
             var minValue = context.Thresholds.Min(t => t.Value);
 
-            if (maxValue > 100
+            if (maxValue > 1000
                 || maxValue < 0
-                || minValue > 100
+                || minValue > 1000
                 || minValue < 0)
             ***REMOVED***
-                throw new ThresholdException("All values should be between 0 and 100!");
+                throw new ThresholdException("All values should be between 0 and 1000!");
     ***REMOVED***
 
             // validate thresholds are not the same
@@ -59,12 +59,6 @@
 
                 // we don't allow 2 upper bound thresholds to have the same value
                 throw new ThresholdException("At least two upper bound thresholds have the same values!");
-    ***REMOVED***
-
-            // we have to have onn value 100(the upper bound)
-            if (maxValue != 100)
-            ***REMOVED***
-                throw new ThresholdException("One threshold value has to be 100!");
     ***REMOVED***
 
             // validate labels are not empty

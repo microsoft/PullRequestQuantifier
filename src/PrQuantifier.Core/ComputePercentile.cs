@@ -28,7 +28,7 @@
                 return 0f;
     ***REMOVED***
 
-            // get the number of values less or equal then our value for wich we calculate the percentile
+            // get the number of values less or equal then our value for which we calculate the percentile
             int idxBellowValues = Array.FindLastIndex(data, d => d <= value) + 1;
 
             return idxBellowValues / (data.Length + 0f) * 100f;

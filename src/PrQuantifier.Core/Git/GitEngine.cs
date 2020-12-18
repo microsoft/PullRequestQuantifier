@@ -101,7 +101,8 @@ namespace PrQuantifier.Core.Git
                 ret.Add(new GitFilePatch
                 ***REMOVED***
                     DiffContent = patches.Current.Patch,
-                    DiffContentLines = patches.Current.Patch.Split("\n", StringSplitOptions.RemoveEmptyEntries),
+                    DiffContentLines = patches.Current.Patch.Split("\n", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(l => l.Trim()).ToArray(),
                     AbsoluteLinesAdded = patches.Current.LinesAdded,
                     AbsoluteLinesDeleted = patches.Current.LinesDeleted,
                     FilePath = patches.Current.Path,

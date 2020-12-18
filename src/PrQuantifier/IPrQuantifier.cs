@@ -1,9 +1,15 @@
 namespace PrQuantifier
 ***REMOVED***
     using System.Threading.Tasks;
+    using global::PrQuantifier.Core.Context;
 
     public interface IPrQuantifier
     ***REMOVED***
+        /// <summary>
+        /// Gets quantifier context.
+        /// </summary>
+        Context Context ***REMOVED*** get; ***REMOVED***
+
         /// <summary>
         /// Quantifies based on the input.
         /// </summary>

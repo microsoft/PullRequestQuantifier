@@ -27,7 +27,7 @@
             var context = new Context();
             var thresholds = new List<Threshold>
             ***REMOVED***
-                new Threshold ***REMOVED*** Value = 200, Label = "1" ***REMOVED***,
+                new Threshold ***REMOVED*** Value = 2000, Label = "1" ***REMOVED***,
                 new Threshold ***REMOVED*** Value = 60, Label = "2" ***REMOVED***,
                 new Threshold ***REMOVED*** Value = 50, Label = "3" ***REMOVED***
     ***REMOVED***;
@@ -45,23 +45,6 @@
             var thresholds = new List<Threshold>
             ***REMOVED***
                 new Threshold ***REMOVED*** Value = 200, Label = "1" ***REMOVED***,
-                new Threshold ***REMOVED*** Value = 50, Label = "3" ***REMOVED***
-    ***REMOVED***;
-            context.Thresholds = thresholds;
-
-            // Act, Assert
-            Assert.Throws<ThresholdException>(() => context.Validate());
-***REMOVED***
-
-        [Fact]
-        public void Validate_Value100Missing_ReturnsInvalidContext()
-        ***REMOVED***
-            // Setup
-            var context = new Context();
-            var thresholds = new List<Threshold>
-            ***REMOVED***
-                new Threshold ***REMOVED*** Value = 80, Label = "1" ***REMOVED***,
-                new Threshold ***REMOVED*** Value = 60, Label = "2" ***REMOVED***,
                 new Threshold ***REMOVED*** Value = 50, Label = "3" ***REMOVED***
     ***REMOVED***;
             context.Thresholds = thresholds;
