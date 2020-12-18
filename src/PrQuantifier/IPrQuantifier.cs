@@ -1,9 +1,15 @@
 namespace PrQuantifier
 {
     using System.Threading.Tasks;
+    using global::PrQuantifier.Core.Context;
 
     public interface IPrQuantifier
     {
+        /// <summary>
+        /// Gets quantifier context.
+        /// </summary>
+        Context Context { get; }
+
         /// <summary>
         /// Quantifies based on the input.
         /// </summary>
