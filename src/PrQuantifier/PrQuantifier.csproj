@@ -10,6 +10,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <AdditionalFiles Remove="D:\PrQuantifier\\stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
     </ItemGroup>
 

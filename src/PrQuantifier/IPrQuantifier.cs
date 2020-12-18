@@ -1,27 +1,20 @@
 namespace PrQuantifier
 {
+    using System.Threading.Tasks;
+    using global::PrQuantifier.Core.Context;
+
     public interface IPrQuantifier
     {
         /// <summary>
-        /// Quantifies unstaged changes in current branch.
+        /// Gets quantifier context.
         /// </summary>
-        /// <param name="path">Path to any item in the repository.</param>
-        /// <returns>QuantifierResult.</returns>
-        QuantifierResult Quantify(string path);
+        Context Context { get; }
 
         /// <summary>
-        /// Quantifies current branch against a base branch.
-        /// Includes all missing commits and unstaged changes.
+        /// Quantifies based on the input.
         /// </summary>
-        /// <param name="baseBranch">Branch to quantify against (eg. refs/heads/main).</param>
-        /// <returns></returns>
-        QuantifierResult QuantifyAgainstBranch(string baseBranch);
-
-        /// <summary>
-        /// Quantifies a given commit in the current branch.
-        /// </summary>
-        /// <param name="commitSha">Commit SHA.</param>
-        /// <returns></returns>
-        QuantifierResult QuantifyCommit(string commitSha);
+        /// <param name="quantifierInput">Input quantifier.</param>
+        /// <returns>returns a quantifier result.</returns>
+        Task<QuantifierResult> Quantify(QuantifierInput quantifierInput);
     }
 }

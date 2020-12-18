@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PrQuantifier.Local.Client": {
+      "commandName": "Project",
+      "commandLineArgs": "ContextPath=../../../../../SampleContexts/ContextModelSampleOne.yaml Service=true"
+    }
+  }
+}
