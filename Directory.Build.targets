@@ -4,11 +4,6 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
 
-  <PropertyGroup Label="Signing" Condition="'$(PublicRelease)'=='true' AND '$(IsTestProject)'!='true'">
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-  </PropertyGroup>
-
   <PropertyGroup Label="Analyzers Log Output">
     <AnalyzersLogDirectory Condition="'$(AnalyzersLogDirectory)'==''">$(IntermediateOutputPath)\CodeAnalysisLogs\</AnalyzersLogDirectory>
     <ErrorLog>$(AnalyzersLogDirectory)\$(MSBuildProjectName).sarif</ErrorLog>
@@ -18,13 +13,6 @@
   <PropertyGroup Label="Documentation">
     <GenerateDocumentationFile Condition="'$(IsTestProject)'!='true'">true</GenerateDocumentationFile>
   </PropertyGroup>
-
-  <!-- Outputs output target path if DelaySign is on -->
-  <Target Name="GetDelaySignTargetPath" Returns="@(DelaySignTargetPath)">
-    <ItemGroup>
-      <DelaySignTargetPath Include="$(TargetPath)" Condition="'$(DelaySign)'=='true'" />
-    </ItemGroup>
-  </Target>
 
   <Target Name="CreateDirectories" BeforeTargets="CoreCompile">
     <MakeDir Directories="$(AnalyzersLogDirectory)"/>

@@ -9,8 +9,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
-    <ProjectReference Include="..\..\PrQuantifier\PrQuantifier.csproj" />
+    <ProjectReference Include="..\..\PrQuantifier.Core\PrQuantifier.Core.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\PrQuantifier\PrQuantifier.csproj" PrivateAssets="all" />
   </ItemGroup>
+
+  <!--
+    The following solves the problem that 'dotnet pack' does not include the DLLs from referenced projects.
+    See https://github.com/NuGet/Home/issues/3891 for a description of the problem
+    and for newer versions / workarounds / built-in methods.
+  -->
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /F /R /Y /I &quot;$(ProjectDir)$(OutDir)*.*&quot; &quot;../../distribution/$(ConfigurationName)/$(ProjectName)&quot;" />
+  </Target>
 
 </Project>
