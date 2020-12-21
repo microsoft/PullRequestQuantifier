@@ -11,13 +11,16 @@
     {
         private readonly string gitRepoPath;
         private readonly IPrQuantifier prQuantifier;
+        private readonly bool printJson;
 
         public QuantifyClient(
             IPrQuantifier prQuantifier,
-            string gitRepoPath)
+            string gitRepoPath,
+            bool printJson)
         {
             this.prQuantifier = prQuantifier;
             this.gitRepoPath = gitRepoPath;
+            this.printJson = printJson;
             GitEngine = new GitEngine();
         }
 
@@ -61,20 +64,44 @@
 
         private void PrintQuantifierResult(QuantifierResult quantifierResult)
         {
-            // write the results
-            var quantifierResultJson = JsonSerializer.Serialize(quantifierResult);
+            if (printJson)
+            {
+                 Console.WriteLine(JsonSerializer.Serialize(quantifierResult));
+            }
+            else
+            {
+               Console.ForegroundColor = GetColor(quantifierResult.Color);
+               Console.WriteLine(
+                    $"PrQuantified = {quantifierResult.Label}\t" +
+                    $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})" +
+                    $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
+                    $", deletions = {quantifierResult.PercentileDeletion}%.");
+               Console.ResetColor();
+            }
+        }
 
-            Console.ForegroundColor = quantifierResult.Label.Contains("medium", StringComparison.InvariantCultureIgnoreCase)
-                ? ConsoleColor.Yellow
-                : quantifierResult.Label.Contains("large", StringComparison.InvariantCultureIgnoreCase)
-                    ? ConsoleColor.Red
-                    : ConsoleColor.Green;
-
-            Console.WriteLine(
-                $"Label = {quantifierResult.Label}\tDiff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted}" +
-                $"\tWithin the team your are at {quantifierResult.PercentileAddition} percentile for " +
-                $"additions changes and at {quantifierResult.PercentileDeletion} for deletions.");
-            Console.ResetColor();
+        private ConsoleColor GetColor(string color)
+        {
+            return color switch
+            {
+                nameof(ConsoleColor.Black) => ConsoleColor.Black,
+                nameof(ConsoleColor.DarkBlue) => ConsoleColor.DarkBlue,
+                nameof(ConsoleColor.DarkGreen) => ConsoleColor.DarkGreen,
+                nameof(ConsoleColor.DarkCyan) => ConsoleColor.DarkCyan,
+                nameof(ConsoleColor.DarkRed) => ConsoleColor.DarkRed,
+                nameof(ConsoleColor.DarkMagenta) => ConsoleColor.DarkMagenta,
+                nameof(ConsoleColor.DarkYellow) => ConsoleColor.DarkYellow,
+                nameof(ConsoleColor.Gray) => ConsoleColor.Gray,
+                nameof(ConsoleColor.DarkGray) => ConsoleColor.DarkGray,
+                nameof(ConsoleColor.Blue) => ConsoleColor.Blue,
+                nameof(ConsoleColor.Green) => ConsoleColor.Green,
+                nameof(ConsoleColor.Cyan) => ConsoleColor.Cyan,
+                nameof(ConsoleColor.Red) => ConsoleColor.Red,
+                nameof(ConsoleColor.Magenta) => ConsoleColor.Magenta,
+                nameof(ConsoleColor.Yellow) => ConsoleColor.Yellow,
+                nameof(ConsoleColor.White) => ConsoleColor.White,
+                _ => ConsoleColor.DarkGray,
+            };
         }
     }
 }

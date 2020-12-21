@@ -11,9 +11,15 @@ Thresholds:
 - GitOperationType: 
   Value: 100
   Label: 1
+  Color: Green
+  Formula: Sum
 - GitOperationType: 
   Value: 60
   Label: 2
+  Color: Yellow
+  Formula: Sum
 - GitOperationType: 
   Value: 50
   Label: 3
+  Color: Red
+  Formula: Sum

@@ -20,5 +20,15 @@
         /// Gets  or sets the label name we want to output.
         /// </summary>
         public string Label { get; set; }
+
+        /// <summary>
+        /// Gets  or sets the color we want to output.
+        /// </summary>
+        public string Color { get; set; }
+
+        /// <summary>
+        /// Gets or sets the formula based onn which  we will combine the additions and deletions.
+        /// </summary>
+        public ThresholdFormula Formula { get; set; }
     }
 }

@@ -11,30 +11,35 @@ Thresholds:
   Value: 9
   Label: Extra Small
   Color: Green
+  Formula: Sum
 - GitOperationType:
   - Add
   - Delete
   Value: 29
   Label: Small
   Color: Green
+  Formula: Sum
 - GitOperationType:
   - Add
   - Delete
   Value: 99
   Label: Medium
   Color: Yellow
+  Formula: Sum
 - GitOperationType:
   - Add
   - Delete
   Value: 499
   Label: Large
   Color: Red
+  Formula: Sum
 - GitOperationType:
   - Add
   - Delete
   Value: 999
   Label: Extra Large
   Color: Red
+  Formula: Sum
 LanguageOptions:
   IgnoreSpaces: true
   IgnoreComments: true

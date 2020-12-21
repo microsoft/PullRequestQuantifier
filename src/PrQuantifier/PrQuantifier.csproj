@@ -14,11 +14,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
+      <PackageReference Include="System.Text.Json" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.IO.Abstractions" Version="13.2.6" />
+      <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
     </ItemGroup>
 
 </Project>
