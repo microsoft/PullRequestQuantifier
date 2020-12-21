@@ -7,9 +7,13 @@
     using System.Threading.Tasks;
     using global::PrQuantifier.Client;
     using global::PrQuantifier.Core.Context;
+    using global::PrQuantifier.Core.Git;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Parameters accepted: GitRepoPath=***REMOVED******REMOVED*** ContextPath=***REMOVED******REMOVED*** Service=True/False(default is false) PrintJson=True/False(default is false).
+    /// </summary>
     public static class Program
     ***REMOVED***
         private static ServiceProvider serviceProvider;
@@ -20,13 +24,26 @@
             var builder = new ConfigurationBuilder();
             builder.AddCommandLine(args);
             var config = builder.Build();
-            var contextPath = config["ContextPath"];
+
             var gitRepoPath = config["GitRepoPath"] ?? Environment.CurrentDirectory;
 
-            CheckArgs(config);
+            var repoRootPath = new GitEngine().GetRepoRoot(gitRepoPath);
+
+            // if no repo was found  to this path then exit, don't crash
+            if (string.IsNullOrWhiteSpace(repoRootPath))
+            ***REMOVED***
+                Console.WriteLine("GitRepoPath couldn't be found!");
+                return;
+    ***REMOVED***
+
+            var contextPath = config["ContextPath"]
+                              ?? Path.Combine(
+                                  new DirectoryInfo(repoRootPath).Parent?.FullName,
+                                  ".prquantifier");
             Dependencies(
                 contextPath,
-                gitRepoPath);
+                gitRepoPath,
+                config["PrintJson"] ?? "false");
 
             // run this as a service in case is configured otherwise only run once
             var service = config["Service"];
@@ -41,7 +58,7 @@
     ***REMOVED***
 
             // in case service is not set or false then run once and exit
-            await serviceProvider?.GetService<IQuantifyClient>()?.Compute();
+            await serviceProvider.GetService<IQuantifyClient>().Compute();
 ***REMOVED***
 
         private static void Quantify()
@@ -61,28 +78,18 @@
 
         private static void Dependencies(
             string contextFilePath,
-            string gitRepoPath)
+            string gitRepoPath,
+            string printJson)
         ***REMOVED***
+            bool.TryParse(printJson, out var jsonFormat);
+
             serviceProvider = new ServiceCollection()
                 .AddSingleton<IPrQuantifier>(p => new PrQuantifier(ContextFactory.Load(contextFilePath)))
                 .AddSingleton<IQuantifyClient>(p => new QuantifyClient(
                     p.GetRequiredService<IPrQuantifier>(),
-                    gitRepoPath))
+                    gitRepoPath,
+                    jsonFormat))
                 .BuildServiceProvider();
-***REMOVED***
-
-        private static void CheckArgs(IConfigurationRoot configurationRoot)
-        ***REMOVED***
-            if (configurationRoot == null || !configurationRoot.GetChildren().Any())
-            ***REMOVED***
-                throw new ArgumentException("Context model  file path is missing!");
-    ***REMOVED***
-
-            var contextPath = configurationRoot["ContextPath"];
-            if (string.IsNullOrWhiteSpace(contextPath) || !File.Exists(contextPath))
-            ***REMOVED***
-                throw new FileNotFoundException(contextPath);
-    ***REMOVED***
 ***REMOVED***
 
         private static async Task Run(

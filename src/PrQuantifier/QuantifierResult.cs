@@ -1,11 +1,25 @@
 namespace PrQuantifier
 ***REMOVED***
+    using System.Text.Json.Serialization;
+    using global::PrQuantifier.Core.Context;
+
     public sealed class QuantifierResult
     ***REMOVED***
         /// <summary>
         /// Gets the output label as quantified.
         /// </summary>
         public string Label ***REMOVED*** get; internal set; ***REMOVED***
+
+        /// <summary>
+        /// Gets the output color as quantified.
+        /// </summary>
+        public string Color ***REMOVED*** get; internal set; ***REMOVED***
+
+        /// <summary>
+        /// Gets the formula based onn which  we will combine the additions and deletions.
+        /// </summary>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public ThresholdFormula Formula ***REMOVED*** get; internal set; ***REMOVED***
 
         /// <summary>
         /// Gets the output explanation.

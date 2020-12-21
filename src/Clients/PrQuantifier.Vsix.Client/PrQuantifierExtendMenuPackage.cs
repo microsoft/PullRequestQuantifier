@@ -1,6 +1,7 @@
 ﻿namespace PrQuantifier.Vsix.Client
 ***REMOVED***
     using System;
+    using System.Runtime.InteropServices;
     using System.Threading;
     using Microsoft.VisualStudio.Shell;
     using Task = System.Threading.Tasks.Task;
@@ -23,12 +24,25 @@
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    public sealed class PrQuantifier : AsyncPackage
+    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [Guid(PackageGuidString)]
+    public sealed class PrQuantifierExtendMenuPackage : AsyncPackage
     ***REMOVED***
-         /// <summary>
-        /// PrQuantifier.Vsix.ClientPackage GUID string.
+        /// <summary>
+        /// PrQuantifierExtendMenuPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "0537ee0a-5efa-4e3b-a067-b863375977a0";
+        public const string PackageGuidString = "474f9026-f077-41b5-9425-594257470430";
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrQuantifierExtendMenuPackage"/> class.
+        /// </summary>
+        public PrQuantifierExtendMenuPackage()
+        ***REMOVED***
+            // Inside this method you can place any initialization code that does not require
+            // any Visual Studio service because at this point the package object is created but
+            // not sited yet inside Visual Studio environment. The place to do all the other
+            // initialization is the Initialize method.
+***REMOVED***
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
@@ -42,6 +56,7 @@
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await PrQuantifierExtendMenu.InitializeAsync(this);
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

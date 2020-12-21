@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
     <ProjectReference Include="..\..\PrQuantifier\PrQuantifier.csproj" />
+    <ProjectReference Include="..\PrQuantifier.Client\PrQuantifier.Client.csproj" />
   </ItemGroup>
 
 </Project>

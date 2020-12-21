@@ -1,8 +1,7 @@
 ***REMOVED***
   "profiles": ***REMOVED***
     "PrQuantifier.Local.Client": ***REMOVED***
-      "commandName": "Project",
-      "commandLineArgs": "ContextPath=../../../../../SampleContexts/ContextModelSampleOne.yaml Service=true"
+      "commandName": "Project"
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***

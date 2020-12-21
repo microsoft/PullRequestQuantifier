@@ -1,6 +1,7 @@
 namespace PrQuantifier
 ***REMOVED***
     using System;
+    using System.Drawing;
     using System.Linq;
     using System.Threading.Tasks;
     using global::PrQuantifier.Core.Context;
@@ -107,20 +108,21 @@ namespace PrQuantifier
             if (quantifierResult.QuantifiedLinesDeleted == 0 && quantifierResult.QuantifiedLinesAdded == 0)
             ***REMOVED***
                 quantifierResult.Label = "No Changes";
+                quantifierResult.Color = nameof(Color.Green);
                 return;
     ***REMOVED***
 
-            // todo come up with a better way combine addition and deletion, maybe use weights
             // for now to set the label use the absolute values addition/deletion and compare them with the thresholds
             // the percentile will be displayed saying that if your change has this number
             // of lines additions then you are at this percentile within this context
-            // consider the sum for addition and deletion
-            var changeNumber = quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted;
             foreach (var contextThreshold in Context.Thresholds.OrderBy(t => t.Value))
             ***REMOVED***
                 // we set the label from the thresholds and exit when we have first value threshold grater then percentile
                 quantifierResult.Label = contextThreshold.Label;
-                if (changeNumber <= contextThreshold.Value)
+                quantifierResult.Color = contextThreshold.Color;
+                quantifierResult.Formula = contextThreshold.Formula;
+
+                if (GetChangeNumber(quantifierResult, contextThreshold.Formula) <= contextThreshold.Value)
                 ***REMOVED***
                     return;
         ***REMOVED***
@@ -166,6 +168,20 @@ namespace PrQuantifier
 
             // todo here change this and compute accurately
             return Math.Min(lowerBoundPercentile, upperBoundPercentile);
+***REMOVED***
+
+        private int GetChangeNumber(
+            QuantifierResult quantifierResult,
+            ThresholdFormula formula)
+        ***REMOVED***
+            return formula switch
+            ***REMOVED***
+                ThresholdFormula.Sum => quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted,
+                ThresholdFormula.Avg => (quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted) / 2,
+                ThresholdFormula.Min => Math.Min(quantifierResult.QuantifiedLinesAdded, quantifierResult.QuantifiedLinesDeleted),
+                ThresholdFormula.Max => Math.Max(quantifierResult.QuantifiedLinesAdded, quantifierResult.QuantifiedLinesDeleted),
+                _ => 0
+    ***REMOVED***;
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

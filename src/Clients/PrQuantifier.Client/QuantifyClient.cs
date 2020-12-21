@@ -11,13 +11,16 @@
     ***REMOVED***
         private readonly string gitRepoPath;
         private readonly IPrQuantifier prQuantifier;
+        private readonly bool printJson;
 
         public QuantifyClient(
             IPrQuantifier prQuantifier,
-            string gitRepoPath)
+            string gitRepoPath,
+            bool printJson)
         ***REMOVED***
             this.prQuantifier = prQuantifier;
             this.gitRepoPath = gitRepoPath;
+            this.printJson = printJson;
             GitEngine = new GitEngine();
 ***REMOVED***
 
@@ -61,20 +64,44 @@
 
         private void PrintQuantifierResult(QuantifierResult quantifierResult)
         ***REMOVED***
-            // write the results
-            var quantifierResultJson = JsonSerializer.Serialize(quantifierResult);
+            if (printJson)
+            ***REMOVED***
+                 Console.WriteLine(JsonSerializer.Serialize(quantifierResult));
+    ***REMOVED***
+            else
+            ***REMOVED***
+               Console.ForegroundColor = GetColor(quantifierResult.Color);
+               Console.WriteLine(
+                    $"PrQuantified = ***REMOVED***quantifierResult.Label***REMOVED***\t" +
+                    $"Diff +***REMOVED***quantifierResult.QuantifiedLinesAdded***REMOVED*** -***REMOVED***quantifierResult.QuantifiedLinesDeleted***REMOVED*** (Formula = ***REMOVED***quantifierResult.Formula***REMOVED***)" +
+                    $"\tTeam percentiles: additions = ***REMOVED***quantifierResult.PercentileAddition***REMOVED***%" +
+                    $", deletions = ***REMOVED***quantifierResult.PercentileDeletion***REMOVED***%.");
+               Console.ResetColor();
+    ***REMOVED***
+***REMOVED***
 
-            Console.ForegroundColor = quantifierResult.Label.Contains("medium", StringComparison.InvariantCultureIgnoreCase)
-                ? ConsoleColor.Yellow
-                : quantifierResult.Label.Contains("large", StringComparison.InvariantCultureIgnoreCase)
-                    ? ConsoleColor.Red
-                    : ConsoleColor.Green;
-
-            Console.WriteLine(
-                $"Label = ***REMOVED***quantifierResult.Label***REMOVED***\tDiff +***REMOVED***quantifierResult.QuantifiedLinesAdded***REMOVED*** -***REMOVED***quantifierResult.QuantifiedLinesDeleted***REMOVED***" +
-                $"\tWithin the team your are at ***REMOVED***quantifierResult.PercentileAddition***REMOVED*** percentile for " +
-                $"additions changes and at ***REMOVED***quantifierResult.PercentileDeletion***REMOVED*** for deletions.");
-            Console.ResetColor();
+        private ConsoleColor GetColor(string color)
+        ***REMOVED***
+            return color switch
+            ***REMOVED***
+                nameof(ConsoleColor.Black) => ConsoleColor.Black,
+                nameof(ConsoleColor.DarkBlue) => ConsoleColor.DarkBlue,
+                nameof(ConsoleColor.DarkGreen) => ConsoleColor.DarkGreen,
+                nameof(ConsoleColor.DarkCyan) => ConsoleColor.DarkCyan,
+                nameof(ConsoleColor.DarkRed) => ConsoleColor.DarkRed,
+                nameof(ConsoleColor.DarkMagenta) => ConsoleColor.DarkMagenta,
+                nameof(ConsoleColor.DarkYellow) => ConsoleColor.DarkYellow,
+                nameof(ConsoleColor.Gray) => ConsoleColor.Gray,
+                nameof(ConsoleColor.DarkGray) => ConsoleColor.DarkGray,
+                nameof(ConsoleColor.Blue) => ConsoleColor.Blue,
+                nameof(ConsoleColor.Green) => ConsoleColor.Green,
+                nameof(ConsoleColor.Cyan) => ConsoleColor.Cyan,
+                nameof(ConsoleColor.Red) => ConsoleColor.Red,
+                nameof(ConsoleColor.Magenta) => ConsoleColor.Magenta,
+                nameof(ConsoleColor.Yellow) => ConsoleColor.Yellow,
+                nameof(ConsoleColor.White) => ConsoleColor.White,
+                _ => ConsoleColor.DarkGray,
+    ***REMOVED***;
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
