@@ -4,6 +4,7 @@
     using System.Runtime.InteropServices;
     using System.Threading;
     using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Shell.Interop;
     using Task = System.Threading.Tasks.Task;
 
     /// <summary>
@@ -24,7 +25,7 @@
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
     [Guid(PackageGuidString)]
     public sealed class PrQuantifierExtendMenuPackage : AsyncPackage
     ***REMOVED***
