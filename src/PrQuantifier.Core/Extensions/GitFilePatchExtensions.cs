@@ -1,13 +1,68 @@
 ﻿namespace PrQuantifier.Core.Extensions
 ***REMOVED***
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using Ignore;
     using PrQuantifier.Core.Git;
 
     // todo for some of the extensions we need language specific implementation for now just do it for c sharp
     // todo optimize this part to have only one iteration pass over the changes and lines, trim once ...
     public static class GitFilePatchExtensions
     ***REMOVED***
+        /// <summary>
+        /// Discard from counting if the file should be excluded.
+        /// Handles both <see cref="Context.Context.Included"/> and <see cref="Context.Context.Excluded"/>.
+        /// </summary>
+        /// <param name="gitFilePatch">Git file patch.</param>
+        /// <param name="includedPatterns">Gitignore style patterns to include.</param>
+        /// <param name="excludedPatterns">Gitignore style patterns to exclude.</param>
+        /// <returns>True if the file patch is excluded, false otherwise.</returns>
+        public static bool RemoveNotIncludedOrExcluded(
+            this GitFilePatch gitFilePatch,
+            IEnumerable<string> includedPatterns,
+            IEnumerable<string> excludedPatterns)
+        ***REMOVED***
+            if (gitFilePatch == null)
+            ***REMOVED***
+                throw new ArgumentNullException(nameof(gitFilePatch));
+    ***REMOVED***
+
+            var ignore = new Ignore();
+
+            // if included patterns are specified, do not consider excluded patterns
+            var includedPatternList = includedPatterns?.ToList();
+            if (includedPatternList != null && includedPatternList.Any())
+            ***REMOVED***
+                ignore.Add(includedPatternList);
+
+                // not ignored by ignore effectively means this is not a match
+                // and must be excluded
+                if (!ignore.IsIgnored(gitFilePatch.FilePath))
+                ***REMOVED***
+                    gitFilePatch.DiscardFromCounting = true;
+                    return true;
+        ***REMOVED***
+
+                return false;
+    ***REMOVED***
+
+            var excludedPatternList = excludedPatterns?.ToList();
+            if (excludedPatternList == null)
+            ***REMOVED***
+                return false;
+    ***REMOVED***
+
+            ignore.Add(excludedPatternList);
+            if (ignore.IsIgnored(gitFilePatch.FilePath))
+            ***REMOVED***
+                gitFilePatch.DiscardFromCounting = true;
+                return true;
+    ***REMOVED***
+
+            return false;
+***REMOVED***
+
         public static void RemoveWhiteSpacesChanges(this GitFilePatch gitFilePatch)
         ***REMOVED***
             if (gitFilePatch == null)

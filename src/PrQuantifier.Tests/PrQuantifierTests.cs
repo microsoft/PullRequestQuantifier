@@ -59,6 +59,72 @@
 ***REMOVED***
 
         [Fact]
+        public async Task Quantify_WithIncludedFilterOnly()
+        ***REMOVED***
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.csproj", 2);
+            context.Included = new[] ***REMOVED*** "*.cs" ***REMOVED***;
+            context.Excluded = new string[] ***REMOVED*** ***REMOVED***;
+            var prQuantifier = new PrQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+
+            // Act
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+
+            // Assert
+            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(4, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+***REMOVED***
+
+        [Fact]
+        public async Task Quantify_WithExcludedFilterOnly()
+        ***REMOVED***
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.xml", 2);
+            context.Included = new string[] ***REMOVED*** ***REMOVED***;
+            context.Excluded = new[] ***REMOVED*** "*.xml" ***REMOVED***;
+            var prQuantifier = new PrQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+
+            // Act
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+
+            // Assert
+            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(4, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+***REMOVED***
+
+        [Fact]
+        public async Task Quantify_WithBothIncludedAndExcludedFilters()
+        ***REMOVED***
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepo("fake.xml", 2);
+            context.Included = new[] ***REMOVED*** "*.xml" ***REMOVED***;
+            context.Excluded = new[] ***REMOVED*** "*.xml" ***REMOVED***;
+            var prQuantifier = new PrQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+
+            // Act
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+
+            // Assert
+            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(2, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+***REMOVED***
+
+        [Fact]
         public async Task Quantify_ChangedTrackedFiles()
         ***REMOVED***
             // Arrange

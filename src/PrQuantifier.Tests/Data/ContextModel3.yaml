@@ -1,7 +1,4 @@
 Included:
-- value1
-- value2
-
 Excluded:
 - '*.csproj'
 GitOperationType:
