@@ -66,17 +66,17 @@
         {
             if (printJson)
             {
-                 Console.WriteLine(JsonSerializer.Serialize(quantifierResult));
+                Console.WriteLine(JsonSerializer.Serialize(quantifierResult, new JsonSerializerOptions { WriteIndented = true }));
             }
             else
             {
-               Console.ForegroundColor = GetColor(quantifierResult.Color);
-               Console.WriteLine(
+                Console.ForegroundColor = GetColor(quantifierResult.Color);
+                Console.WriteLine(
                     $"PrQuantified = {quantifierResult.Label}\t" +
                     $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})" +
                     $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
                     $", deletions = {quantifierResult.PercentileDeletion}%.");
-               Console.ResetColor();
+                Console.ResetColor();
             }
         }
 

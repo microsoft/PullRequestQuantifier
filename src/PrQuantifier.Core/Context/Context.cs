@@ -10,21 +10,22 @@ namespace PrQuantifier.Core.Context
     public sealed class Context
     {
         /// <summary>
-        /// Gets  or sets included.
-        /// Will have a list of expressions (paths,files similar to git ignore)
-        /// to filter out all other files not part of the allowed list.
-        /// If this will be empty everything will be allowed.
+        /// Gets  or sets <see cref="Included"/>.
+        /// Will have a list of expressions (paths, files similar to gitignore)
+        /// to filter out all other files not part of the included list.
+        /// If this will be empty everything will be included.
         /// Supports .gitignore type patterns.
         /// </summary>
         public IEnumerable<string> Included { get; set; }
 
         /// <summary>
-        /// Gets  or sets excluded.
-        /// Will have a list of expressions (paths,files similar to git ignore)
-        /// to filter out all other files part of the ignored list.
-        /// This is a reverse for the allowed. The idea to have both allowed and ignored is to allow users,
-        /// in case not all files extensions or paths are known, to only allow specific paths/extensions
-        /// (for example cc,cs extensions) in which case the ignore will be treat it like an empty list.
+        /// Gets  or sets <see cref="Excluded"/>.
+        /// Will have a list of expressions (paths, files similar to gitignore)
+        /// to filter out all files part of the excluded list.
+        /// This is a reverse of <see cref="Included"/>.
+        /// The idea of having both included and excluded is to allow users,
+        /// in case not all file extensions or paths are known, to only include specific paths/extensions
+        /// (for example cc, cs extensions), in which case the excluded list will be treated like an empty list.
         /// Supports .gitignore type patterns.
         /// </summary>
         public IEnumerable<string> Excluded { get;  set; }

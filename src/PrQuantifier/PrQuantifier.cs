@@ -57,6 +57,12 @@ namespace PrQuantifier
 
         private void ApplyContext(GitFilePatch quantifierInputChange)
         {
+            if (quantifierInputChange.RemoveNotIncludedOrExcluded(Context.Included, Context.Excluded))
+            {
+                // no need to evaluate remaining context if file is already excluded
+                return;
+            }
+
             // no language context found continue without
             if (Context.LanguageOptions != null)
             {
