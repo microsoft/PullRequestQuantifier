@@ -3,7 +3,7 @@
     using System;
     using System.Text.Json;
     using System.Threading.Tasks;
-    using global::PrQuantifier.Core.Abstractions;
+    using global::PrQuantifier.Core.Context;
     using global::PrQuantifier.Core.Git;
 
     /// <inheritdoc />
@@ -12,20 +12,18 @@
         private readonly string gitRepoPath;
         private readonly IPrQuantifier prQuantifier;
         private readonly bool printJson;
+        private readonly GitEngine gitEngine;
 
         public QuantifyClient(
-            IPrQuantifier prQuantifier,
             string gitRepoPath,
+            string contextFilePath,
             bool printJson)
         {
-            this.prQuantifier = prQuantifier;
+            prQuantifier = new PrQuantifier(ContextFactory.Load(contextFilePath));
             this.gitRepoPath = gitRepoPath;
             this.printJson = printJson;
-            GitEngine = new GitEngine();
+            gitEngine = new GitEngine();
         }
-
-        /// <inheritdoc />
-        public IGitEngine GitEngine { get; }
 
         /// <inheritdoc />
         public async Task<QuantifierResult> Compute()
@@ -57,7 +55,7 @@
         private QuantifierInput GetChanges(string repoPath)
         {
             var quantifierInput = new QuantifierInput();
-            quantifierInput.Changes.AddRange(GitEngine.GetGitChanges(repoPath));
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(repoPath));
 
             return quantifierInput;
         }

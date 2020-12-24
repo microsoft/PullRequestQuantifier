@@ -26,8 +26,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrQuantifier.Common.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrQuantifier.Client", "src\Clients\PrQuantifier.Client\PrQuantifier.Client.csproj", "{3B592A72-1370-4803-BFBB-C23CA528FF86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrQuantifier.Vsix.Client", "src\Clients\PrQuantifier.Vsix.Client\PrQuantifier.Vsix.Client.csproj", "{799CC74E-9095-4F04-9922-8915A1F4F24C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,10 +64,6 @@ Global
 		{3B592A72-1370-4803-BFBB-C23CA528FF86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B592A72-1370-4803-BFBB-C23CA528FF86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B592A72-1370-4803-BFBB-C23CA528FF86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{799CC74E-9095-4F04-9922-8915A1F4F24C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{799CC74E-9095-4F04-9922-8915A1F4F24C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{799CC74E-9095-4F04-9922-8915A1F4F24C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{799CC74E-9095-4F04-9922-8915A1F4F24C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,7 +72,6 @@ Global
 		{AE180A89-EBAD-40FD-A327-7CE6C153DCB6} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 		{E0E51BB5-216E-4A07-9366-E52D42E344AE} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 		{3B592A72-1370-4803-BFBB-C23CA528FF86} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
-		{799CC74E-9095-4F04-9922-8915A1F4F24C} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8F5E1E3-3A8D-4D1C-8A8B-CA608A972B61}

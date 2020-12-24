@@ -1,15 +1,9 @@
 ﻿namespace PrQuantifier.Client
 {
     using System.Threading.Tasks;
-    using global::PrQuantifier.Core.Abstractions;
 
     public interface IQuantifyClient
     {
-        /// <summary>
-        /// Gets a git engine for local evaluation.
-        /// </summary>
-        public IGitEngine GitEngine { get; }
-
         /// <summary>
         /// Compute using git local evaluation.
         /// </summary>
