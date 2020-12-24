@@ -6,8 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using global::PrQuantifier.Client;
-    using global::PrQuantifier.Core.Context;
-    using global::PrQuantifier.Core.Git;
+    using LibGit2Sharp;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +26,7 @@
 
             var gitRepoPath = config["GitRepoPath"] ?? Environment.CurrentDirectory;
 
-            var repoRootPath = new GitEngine().GetRepoRoot(gitRepoPath);
+            var repoRootPath = Repository.Discover(gitRepoPath);
 
             // if no repo was found  to this path then exit, don't crash
             if (string.IsNullOrWhiteSpace(repoRootPath))
@@ -84,10 +83,9 @@
             bool.TryParse(printJson, out var jsonFormat);
 
             serviceProvider = new ServiceCollection()
-                .AddSingleton<IPrQuantifier>(p => new PrQuantifier(ContextFactory.Load(contextFilePath)))
                 .AddSingleton<IQuantifyClient>(p => new QuantifyClient(
-                    p.GetRequiredService<IPrQuantifier>(),
                     gitRepoPath,
+                    contextFilePath,
                     jsonFormat))
                 .BuildServiceProvider();
 ***REMOVED***
@@ -101,7 +99,7 @@
                 // Create a new FileSystemWatcher and set its properties.
                 using FileSystemWatcher watcher = new FileSystemWatcher
                 ***REMOVED***
-                    Path = new DirectoryInfo(serviceProvider.GetService<IQuantifyClient>()?.GitEngine.GetRepoRoot(gitRepoPath)).Parent
+                    Path = new DirectoryInfo(Repository.Discover(gitRepoPath)).Parent
                         .FullName,
                     NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime,
                     IncludeSubdirectories = true,
