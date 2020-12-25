@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <RootNamespace>PrQuantifier.Client</RootNamespace>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PrQuantifier.Core\PrQuantifier.Core.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\PrQuantifier.Abstractions\PrQuantifier.Abstractions.csproj" />
+    <ProjectReference Include="..\..\PrQuantifier.GitEngine\PrQuantifier.GitEngine.csproj" />
     <ProjectReference Include="..\..\PrQuantifier\PrQuantifier.csproj" PrivateAssets="all" />
   </ItemGroup>
 

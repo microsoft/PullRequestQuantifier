@@ -3,10 +3,9 @@
     using System;
     using System.IO;
     using System.Threading.Tasks;
+    using Abstractions.Context;
+    using GitEngine;
     using global::PrQuantifier.Client;
-    using global::PrQuantifier.Core.Abstractions;
-    using global::PrQuantifier.Core.Context;
-    using global::PrQuantifier.Core.Git;
 
     public static class Program
     ***REMOVED***

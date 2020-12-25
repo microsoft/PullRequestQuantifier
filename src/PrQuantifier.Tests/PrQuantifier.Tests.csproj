@@ -4,6 +4,7 @@
         <TargetFramework>net5.0</TargetFramework>
         <LangVersion>Latest</LangVersion>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <RootNamespace>PrQuantifier.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,8 +28,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PrQuantifier.Abstractions\PrQuantifier.Abstractions.csproj" />
       <ProjectReference Include="..\PrQuantifier.Common.Tests\PrQuantifier.Common.Tests.csproj" />
-      <ProjectReference Include="..\PrQuantifier.Core\PrQuantifier.Core.csproj" />
+      <ProjectReference Include="..\PrQuantifier.GitEngine\PrQuantifier.GitEngine.csproj" />
       <ProjectReference Include="..\PrQuantifier\PrQuantifier.csproj" />
     </ItemGroup>
 

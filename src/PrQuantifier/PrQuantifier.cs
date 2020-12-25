@@ -4,9 +4,9 @@ namespace PrQuantifier
     using System.Drawing;
     using System.Linq;
     using System.Threading.Tasks;
-    using global::PrQuantifier.Core.Context;
-    using global::PrQuantifier.Core.Extensions;
-    using global::PrQuantifier.Core.Git;
+    using global::PrQuantifier.Abstractions.Context;
+    using global::PrQuantifier.Abstractions.Core;
+    using global::PrQuantifier.Abstractions.Git;
 
     public sealed class PrQuantifier : IPrQuantifier
     ***REMOVED***

@@ -1,7 +1,7 @@
 ﻿namespace PrQuantifier.Client
 ***REMOVED***
     using System.Threading.Tasks;
-    using global::PrQuantifier.Core.Context;
+    using global::PrQuantifier.Abstractions.Context;
 
     public interface IContextGenerator
     ***REMOVED***

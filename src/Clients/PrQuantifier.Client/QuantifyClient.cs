@@ -3,8 +3,9 @@
     using System;
     using System.Text.Json;
     using System.Threading.Tasks;
-    using global::PrQuantifier.Core.Context;
-    using global::PrQuantifier.Core.Git;
+    using global::PrQuantifier.Abstractions.Context;
+    using global::PrQuantifier.Abstractions.Core;
+    using global::PrQuantifier.GitEngine;
 
     /// <inheritdoc />
     public sealed class QuantifyClient : IQuantifyClient
@@ -24,6 +25,9 @@
             this.printJson = printJson;
             gitEngine = new GitEngine();
 ***REMOVED***
+
+        /// <inheritdoc />
+        public Context Context => prQuantifier.Context;
 
         /// <inheritdoc />
         public async Task<QuantifierResult> Compute()

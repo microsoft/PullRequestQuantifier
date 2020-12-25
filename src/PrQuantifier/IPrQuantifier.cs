@@ -1,7 +1,8 @@
 namespace PrQuantifier
 ***REMOVED***
     using System.Threading.Tasks;
-    using global::PrQuantifier.Core.Context;
+    using global::PrQuantifier.Abstractions.Context;
+    using global::PrQuantifier.Abstractions.Core;
 
     public interface IPrQuantifier
     ***REMOVED***
