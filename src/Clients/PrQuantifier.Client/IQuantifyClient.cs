@@ -1,9 +1,16 @@
 ﻿namespace PrQuantifier.Client
 {
     using System.Threading.Tasks;
+    using global::PrQuantifier.Abstractions.Context;
+    using global::PrQuantifier.Abstractions.Core;
 
     public interface IQuantifyClient
     {
+        /// <summary>
+        /// Gets quantifier context.
+        /// </summary>
+        Context Context { get; }
+
         /// <summary>
         /// Compute using git local evaluation.
         /// </summary>

@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using global::PrQuantifier.Core;
-    using global::PrQuantifier.Core.Abstractions;
-    using global::PrQuantifier.Core.Context;
-    using global::PrQuantifier.Core.Git;
+    using global::PrQuantifier.Abstractions.Context;
+    using global::PrQuantifier.Abstractions.Core;
+    using global::PrQuantifier.Abstractions.Git;
+    using global::PrQuantifier.GitEngine;
 
     public sealed class ContextGenerator : IContextGenerator
     {

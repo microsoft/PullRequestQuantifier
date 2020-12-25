@@ -157,7 +157,7 @@
 
         private static void PrintThresholds()
         {
-            var thresholds = serviceProvider?.GetService<IPrQuantifier>().Context.Thresholds;
+            var thresholds = serviceProvider?.GetService<IQuantifyClient>()?.Context.Thresholds;
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine();
             Console.WriteLine("Thresholds: " + string.Join(" ", thresholds.Select(t => $"\"{t.Label} = {t.Value}\"")));
@@ -166,8 +166,8 @@
 
         private static void PrintPercentiles(bool addition)
         {
-            var prQuantifier = serviceProvider?.GetService<IPrQuantifier>();
-            var percentile = addition ? prQuantifier.Context.AdditionPercentile : prQuantifier.Context.DeletionPercentile;
+            var quantifyClient = serviceProvider?.GetService<IQuantifyClient>();
+            var percentile = addition ? quantifyClient.Context.AdditionPercentile : quantifyClient.Context.DeletionPercentile;
             string label = addition ? "Addition" : "Deletion";
 
             Console.ForegroundColor = ConsoleColor.Blue;

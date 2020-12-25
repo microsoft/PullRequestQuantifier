@@ -3,9 +3,10 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
+    using Abstractions.Context;
+    using Abstractions.Core;
+    using global::PrQuantifier.GitEngine;
     using global::PrQuantifier.Common.Tests;
-    using global::PrQuantifier.Core.Context;
-    using global::PrQuantifier.Core.Git;
     using Xunit;
 
     // todo add  more tests using different contexts
@@ -13,8 +14,8 @@
     public sealed class PrQuantifierTests : IDisposable
     {
         private readonly Context context;
-        private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();
-        private readonly GitEngine gitEngine = new GitEngine();
+        private readonly GitRepoTestHelpers gitRepoHelpers = new ();
+        private readonly GitEngine gitEngine = new ();
 
         public PrQuantifierTests()
         {
