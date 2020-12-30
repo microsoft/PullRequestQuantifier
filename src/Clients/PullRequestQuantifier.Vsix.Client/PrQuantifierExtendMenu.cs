@@ -4,11 +4,13 @@
     using System.ComponentModel.Design;
     using System.Diagnostics;
     using System.IO;
+    using System.Threading.Tasks;
     using EnvDTE;
     using Microsoft;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
     using Microsoft.VisualStudio.Threading;
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Task = System.Threading.Tasks.Task;
 
@@ -115,10 +117,7 @@
                     };
 
                     process.Start();
-                    process.WaitForExit((int)TimeSpan.FromSeconds(2).TotalMilliseconds);
-
-                    var line = await process.StandardOutput.ReadToEndAsync();
-                    Print(statusBar, line);
+                    Print(statusBar, await ReadOutputAsync(process));
 
                     if (changedEventDateTime == default)
                     {
@@ -129,8 +128,8 @@
                 }
                 catch (Exception ex)
                 {
-                    Print(statusBar, $"PrQuantifier extension has encountered an error, please report it to ... Exception {ex.Message}");
-                    return;
+                     statusBar.SetText($"PrQuantifier extension has encountered an error, please report it to ... Exception {ex.Message}");
+                     return;
                 }
             }
         }
@@ -140,13 +139,31 @@
            changedEventDateTime = DateTimeOffset.Now;
         }
 
+        private async Task<JObject> ReadOutputAsync(System.Diagnostics.Process process)
+        {
+            var result = string.Empty;
+            while (string.IsNullOrEmpty(result))
+            {
+                result = await process.StandardOutput.ReadToEndAsync();
+                try
+                {
+                     var jObject = JObject.Parse(result);
+                     return jObject;
+                }
+                catch
+                {
+                    result = string.Empty;
+                }
+            }
+
+            throw new JsonReaderException();
+        }
+
         private void Print(
             IVsStatusbar statusBar,
-            string quantifierResultJson)
+            JObject quantifierResult)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-
-            JObject quantifierResult = JObject.Parse(quantifierResultJson);
 
             string output = $"PrQuantified = {quantifierResult["Label"]}\t" +
                     $"Diff +{quantifierResult["QuantifiedLinesAdded"]} -{quantifierResult["QuantifiedLinesDeleted"]} (Formula = {quantifierResult["Formula"]})" +
