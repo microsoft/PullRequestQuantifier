@@ -1,5 +1,5 @@
 # Pull Request Quantifier
-
+![Build](https://github.com/microsoft/PullRequestQuantifier/workflows/Build/badge.svg?branch=main)
 TODO
 
 ## Contributing
