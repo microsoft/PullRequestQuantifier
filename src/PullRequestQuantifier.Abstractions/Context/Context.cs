@@ -1,0 +1,64 @@
+﻿namespace PullRequestQuantifier.Abstractions.Context
+***REMOVED***
+    using System.Collections.Generic;
+    using PullRequestQuantifier.Abstractions.Git;
+
+    public sealed class Context
+    ***REMOVED***
+        /// <summary>
+        /// Gets  or sets <see cref="Included"/>.
+        /// Will have a list of expressions (paths, files similar to gitignore)
+        /// to filter out all other files not part of the included list.
+        /// If this will be empty everything will be included.
+        /// Supports .gitignore type patterns.
+        /// </summary>
+        public IEnumerable<string> Included ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets  or sets <see cref="Excluded"/>.
+        /// Will have a list of expressions (paths, files similar to gitignore)
+        /// to filter out all files part of the excluded list.
+        /// This is a reverse of <see cref="Included"/>.
+        /// The idea of having both included and excluded is to allow users,
+        /// in case not all file extensions or paths are known, to only include specific paths/extensions
+        /// (for example cc, cs extensions), in which case the excluded list will be treated like an empty list.
+        /// Supports .gitignore type patterns.
+        /// </summary>
+        public IEnumerable<string> Excluded ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets  or sets gitOperationType.
+        /// If empty all operations will be considered,
+        /// otherwise if something specified.
+        /// </summary>
+        public IEnumerable<GitOperationType> GitOperationType ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets  or sets thresholds.
+        /// Thresholds for this model.
+        /// </summary>
+        public IEnumerable<Threshold> Thresholds ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets or sets language specific options when we quantify.
+        /// </summary>
+        public LanguageOptions LanguageOptions ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets or sets a value indicating whether gets or sets the DynamicBehaviour.
+        /// this setting will allow the behaviour to be adjusted based on the previous previous
+        /// will look into the local git merge history.
+        /// </summary>
+        public bool DynamicBehaviour ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets  or sets AdditionPercentile. Used in quantifier final computation.
+        /// </summary>
+        public SortedDictionary<int, float> AdditionPercentile ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
+        /// Gets  or sets DeletionPercentile. Used in quantifier final computation.
+        /// </summary>
+        public SortedDictionary<int, float> DeletionPercentile ***REMOVED*** get; set; ***REMOVED***
+***REMOVED***
+***REMOVED***
