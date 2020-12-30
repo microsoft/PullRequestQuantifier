@@ -18,7 +18,8 @@
         {
             // Setup test directory for git
             fileSystem = new FileSystem();
-            RepoPath = fileSystem.Path.Combine(Environment.CurrentDirectory, $"fakeRepo-{Guid.NewGuid()}");
+            var tempPath = fileSystem.Path.GetTempPath();
+            RepoPath = fileSystem.Path.Combine(tempPath, $"fakeRepo-{Guid.NewGuid()}");
             if (fileSystem.Directory.Exists(RepoPath))
             {
                 fileSystem.Directory.Delete(RepoPath, true);

@@ -26,14 +26,14 @@ jobs:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     - name: Build
       run: dotnet build PullRequestQuantifier.sln --configuration Release --no-restore
-    - name: Test
-      run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --filter Category!=Watchdog --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
-    - name: Install and run report generator tool
-      run: |
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator.exe -reports:coverlet-results/**/*.xml -targetdir:./coverage-report -reporttypes:Html
-    - name: Upload code coverage results
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage-report
-        path: coverage-report/*
+    #- name: Test
+     # run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --filter Category!=Watchdog --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
+    #- name: Install and run report generator tool
+    #  run: |
+    #    dotnet tool install -g dotnet-reportgenerator-globaltool
+    #    reportgenerator.exe -reports:coverlet-results/**/*.xml -targetdir:./coverage-report -reporttypes:Html
+    #- name: Upload code coverage results
+    #  uses: actions/upload-artifact@v2
+    #  with:
+    #    name: coverage-report
+    #   path: coverage-report/*
