@@ -85,13 +85,6 @@
 
             DTE dte = (DTE)await ServiceProvider.GetServiceAsync(typeof(DTE));
             Assumes.Present(dte);
-            Projects projects = dte.Solution.Projects;
-            if (projects.Count == 0)
-            {
-                return;
-            }
-
-            Project project = projects.Item(1);
             var uri = new Uri(typeof(PrQuantifierExtendMenuPackage).Assembly.CodeBase, UriKind.Absolute);
 
             documentEvents = dte.Events.DocumentEvents;
@@ -99,31 +92,46 @@
 
             while (true)
             {
-                if (runPrQuantifierDateTime == changedEventDateTime
+                if ((runPrQuantifierDateTime == changedEventDateTime
                     && runPrQuantifierDateTime != default)
+                    || dte.Solution.Projects.Count == 0)
                 {
                     await Task.Delay(TimeSpan.FromMilliseconds(500));
                     continue;
                 }
 
-                using var process = new System.Diagnostics.Process()
+                try
                 {
-                    StartInfo = new ProcessStartInfo
+                    using var process = new System.Diagnostics.Process()
                     {
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PrQuantifier.Local.Client.exe"),
-                        Arguments = $"GitRepoPath={project.FullName} PrintJson=true"
+                        StartInfo = new ProcessStartInfo
+                        {
+                            RedirectStandardOutput = true,
+                            CreateNoWindow = true,
+                            UseShellExecute = false,
+                            FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PullRequestQuantifier.Local.Client.exe"),
+                            Arguments = $"GitRepoPath={dte.Solution.Projects.Item(1).FullName} PrintJson=true"
+                        }
+                    };
+
+                    process.Start();
+                    process.WaitForExit((int)TimeSpan.FromSeconds(2).TotalMilliseconds);
+
+                    var line = await process.StandardOutput.ReadToEndAsync();
+                    Print(statusBar, line);
+
+                    if (changedEventDateTime == default)
+                    {
+                        changedEventDateTime = DateTimeOffset.Now;
                     }
-                };
 
-                process.Start();
-                process.WaitForExit((int)TimeSpan.FromSeconds(2).TotalMilliseconds);
-
-                string line = await process.StandardOutput.ReadLineAsync();
-                Print(statusBar, line);
-                runPrQuantifierDateTime = changedEventDateTime;
+                    runPrQuantifierDateTime = changedEventDateTime;
+                }
+                catch (Exception ex)
+                {
+                    Print(statusBar, $"PrQuantifier extension has encountered an error, please report it to ... Exception {ex.Message}");
+                    return;
+                }
             }
         }
 
