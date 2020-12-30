@@ -2,7 +2,7 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="PrQuantifier.Vsix.Client.816ad7c3-b590-4671-942a-55c9d765b7e0" Version="1.0" Language="en-US" Publisher="Microsoft" />
-        <DisplayName>Pull request quantifier</DisplayName>
+        <DisplayName>Pull Request Quantifier</DisplayName>
         <Description xml:space="preserve">Pull request quantifier. Quantify pull requests in your team context accurately.</Description>
     </Metadata>
     <Installation>

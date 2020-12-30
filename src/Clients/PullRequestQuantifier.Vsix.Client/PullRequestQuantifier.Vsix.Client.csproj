@@ -19,8 +19,8 @@
     <ProjectGuid>***REMOVED***799CC74E-9095-4F04-9922-8915A1F4F24C***REMOVED***</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PrQuantifier.Vsix.Client</RootNamespace>
-    <AssemblyName>PrQuantifier.Vsix.Client</AssemblyName>
+    <RootNamespace>PullRequestQuantifier.Vsix.Client</RootNamespace>
+    <AssemblyName>PullRequestQuantifier.Vsix.Client</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <UseCodebase>true</UseCodebase>
