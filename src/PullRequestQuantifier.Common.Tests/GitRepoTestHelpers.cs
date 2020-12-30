@@ -18,8 +18,7 @@
         ***REMOVED***
             // Setup test directory for git
             fileSystem = new FileSystem();
-            var tempPath = fileSystem.Path.GetTempPath();
-            RepoPath = fileSystem.Path.Combine(tempPath, $"fakeRepo-***REMOVED***Guid.NewGuid()***REMOVED***");
+            RepoPath = fileSystem.Path.Combine(Environment.CurrentDirectory, $"fakeRepo-***REMOVED***Guid.NewGuid()***REMOVED***");
             if (fileSystem.Directory.Exists(RepoPath))
             ***REMOVED***
                 fileSystem.Directory.Delete(RepoPath, true);
