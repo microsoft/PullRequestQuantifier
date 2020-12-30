@@ -85,13 +85,6 @@
 
             DTE dte = (DTE)await ServiceProvider.GetServiceAsync(typeof(DTE));
             Assumes.Present(dte);
-            Projects projects = dte.Solution.Projects;
-            if (projects.Count == 0)
-            ***REMOVED***
-                return;
-    ***REMOVED***
-
-            Project project = projects.Item(1);
             var uri = new Uri(typeof(PrQuantifierExtendMenuPackage).Assembly.CodeBase, UriKind.Absolute);
 
             documentEvents = dte.Events.DocumentEvents;
@@ -99,31 +92,46 @@
 
             while (true)
             ***REMOVED***
-                if (runPrQuantifierDateTime == changedEventDateTime
+                if ((runPrQuantifierDateTime == changedEventDateTime
                     && runPrQuantifierDateTime != default)
+                    || dte.Solution.Projects.Count == 0)
                 ***REMOVED***
                     await Task.Delay(TimeSpan.FromMilliseconds(500));
                     continue;
         ***REMOVED***
 
-                using var process = new System.Diagnostics.Process()
+                try
                 ***REMOVED***
-                    StartInfo = new ProcessStartInfo
+                    using var process = new System.Diagnostics.Process()
                     ***REMOVED***
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PrQuantifier.Local.Client.exe"),
-                        Arguments = $"GitRepoPath=***REMOVED***project.FullName***REMOVED*** PrintJson=true"
+                        StartInfo = new ProcessStartInfo
+                        ***REMOVED***
+                            RedirectStandardOutput = true,
+                            CreateNoWindow = true,
+                            UseShellExecute = false,
+                            FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PullRequestQuantifier.Local.Client.exe"),
+                            Arguments = $"GitRepoPath=***REMOVED***dte.Solution.Projects.Item(1).FullName***REMOVED*** PrintJson=true"
+                ***REMOVED***
+            ***REMOVED***;
+
+                    process.Start();
+                    process.WaitForExit((int)TimeSpan.FromSeconds(2).TotalMilliseconds);
+
+                    var line = await process.StandardOutput.ReadToEndAsync();
+                    Print(statusBar, line);
+
+                    if (changedEventDateTime == default)
+                    ***REMOVED***
+                        changedEventDateTime = DateTimeOffset.Now;
             ***REMOVED***
-        ***REMOVED***;
 
-                process.Start();
-                process.WaitForExit((int)TimeSpan.FromSeconds(2).TotalMilliseconds);
-
-                string line = await process.StandardOutput.ReadLineAsync();
-                Print(statusBar, line);
-                runPrQuantifierDateTime = changedEventDateTime;
+                    runPrQuantifierDateTime = changedEventDateTime;
+        ***REMOVED***
+                catch (Exception ex)
+                ***REMOVED***
+                    Print(statusBar, $"PrQuantifier extension has encountered an error, please report it to ... Exception ***REMOVED***ex.Message***REMOVED***");
+                    return;
+        ***REMOVED***
     ***REMOVED***
 ***REMOVED***
 
