@@ -352,3 +352,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+#allow VSIX package depedencies
+!/src/Clients/PullRequestQuantifier.Vsix.Client/PrQuantifier/*
