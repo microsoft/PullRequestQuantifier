@@ -38,18 +38,6 @@ RUN dotnet build --configuration Release --no-restore
 ### Test
 #RUN dotnet test
 
-# ### Copy to final container
-# FROM mcr.microsoft.com/dotnet/aspnet:5.0
-
-# RUN useradd -m dotnet
-# USER dotnet
-
-# ### copy from previous phase to this one/
-# COPY --from=builder --chown=root /app/ ./app/
-
-# ### switch to the work directory.
-# WORKDIR /app
-
 USER root
 
 ENV AzureFunctionsJobHost__Logging__Console__IsEnabled=true
