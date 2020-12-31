@@ -1,0 +1,23 @@
+name: GitHub Service
+
+on:
+  push:
+    #branches: [ main ]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+      - name: 'Docker Login'
+        uses: azure/docker-login@v1
+        with:
+          login-server: prquantifier.azurecr.io
+          username: $***REMOVED******REMOVED*** secrets.REGISTRY_USERNAME ***REMOVED******REMOVED***
+          password: $***REMOVED******REMOVED*** secrets.REGISTRY_PASSWORD ***REMOVED******REMOVED***
+      - name: 'Build and push docker image'
+        run: |
+          docker build -t prquantifier.azurecr.io/prquantifier:latest -f src/Clients/PullRequestQuantifier.GitHub.Client/Dockerfile .
+          docker push prquantifier.azurecr.io/prquantifier:latest
