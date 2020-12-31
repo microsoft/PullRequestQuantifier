@@ -10,18 +10,21 @@
     /// <inheritdoc />
     public sealed class QuantifyClient : IQuantifyClient
     {
-        private readonly string gitRepoPath;
         private readonly IPullRequestQuantifier prQuantifier;
         private readonly bool printJson;
         private readonly GitEngine gitEngine;
 
         public QuantifyClient(
-            string gitRepoPath,
             string contextFilePath,
             bool printJson)
         {
-            prQuantifier = new PullRequestQuantifier(ContextFactory.Load(contextFilePath));
-            this.gitRepoPath = gitRepoPath;
+            var context = DefaultContext.Value;
+            if (!string.IsNullOrEmpty(contextFilePath))
+            {
+                context = ContextFactory.Load(contextFilePath);
+            }
+
+            prQuantifier = new PullRequestQuantifier(context);
             this.printJson = printJson;
             gitEngine = new GitEngine();
         }
@@ -30,7 +33,7 @@
         public Context Context => prQuantifier.Context;
 
         /// <inheritdoc />
-        public async Task<QuantifierResult> Compute()
+        public async Task<QuantifierResult> Compute(string gitRepoPath)
         {
             // get current location changes
             var quantifierInput = GetChanges(gitRepoPath);
@@ -68,7 +71,9 @@
         {
             if (printJson)
             {
-                Console.WriteLine(JsonSerializer.Serialize(quantifierResult, new JsonSerializerOptions { WriteIndented = true }));
+                Console.WriteLine(JsonSerializer.Serialize(
+                    quantifierResult,
+                    new JsonSerializerOptions { WriteIndented = true }));
             }
             else
             {

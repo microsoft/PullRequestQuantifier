@@ -14,8 +14,8 @@
     public sealed class PullRequestQuantifierTests : IDisposable
     {
         private readonly Context context;
-        private readonly GitRepoTestHelpers gitRepoHelpers = new ();
-        private readonly GitEngine gitEngine = new ();
+        private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();
+        private readonly GitEngine gitEngine = new GitEngine();
 
         public PullRequestQuantifierTests()
         {
