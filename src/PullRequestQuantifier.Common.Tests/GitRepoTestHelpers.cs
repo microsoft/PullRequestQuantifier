@@ -63,6 +63,11 @@
 
         private static void SetNormalAttribute(IDirectoryInfo dirInfo)
         {
+            if (!dirInfo.Exists)
+            {
+                return;
+            }
+
             foreach (var subDir in dirInfo.GetDirectories())
             {
                 SetNormalAttribute(subDir);
