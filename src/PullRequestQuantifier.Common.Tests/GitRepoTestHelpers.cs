@@ -57,6 +57,7 @@
             if (dirInfo.Exists)
             {
                 SetNormalAttribute(dirInfo);
+                dirInfo.Delete(true);
             }
         }
 
@@ -67,12 +68,14 @@
                 return;
             }
 
-            foreach (var subDir in dirInfo.GetDirectories())
+            var directories = dirInfo.GetDirectories().ToArray();
+            foreach (var subDir in directories)
             {
                 SetNormalAttribute(subDir);
             }
 
-            foreach (var file in dirInfo.GetFiles())
+            var files = dirInfo.GetFiles().ToArray();
+            foreach (var file in files)
             {
                 file.Attributes = FileAttributes.Normal;
             }
