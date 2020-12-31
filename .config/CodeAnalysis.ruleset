@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Repository wide code analysis ruleset" ToolsVersion="15.0">
+  <Include Path="Sdl\Sdl.Required.Error.ruleset" Action="Default" />
+  <Include Path="Sdl\Sdl.Required.Warning.ruleset" Action="Default" />
+  <Include Path="Sdl\Sdl.Recommended.Error.ruleset" Action="Default" />
+  <Include Path="Sdl\Sdl.Recommended.Warning.ruleset" Action="Default" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1034" Action="Info" /> <!-- Do not nest public types -->
+    <Rule Id="CA1062" Action="Info" /> <!-- Validate arguments for external methods -->
+    <Rule Id="CA1031" Action="Info" /> <!-- Catch specific exceptions -->
+    <Rule Id="CA1303" Action="None" /> <!-- Do not pass literals as localized values -->
+    <Rule Id="CA1812" Action="Info" /> <!-- Internal class not instantiated -->
+    <Rule Id="CA1819" Action="Info" /> <!-- Properties should not return arrays -->
+    <Rule Id="CA1822" Action="Info" /> <!-- Make method static -->
+    <Rule Id="CA2007" Action="None" /> <!-- ConfigureAwait -->
+    <Rule Id="CA2227" Action="Info" /> <!-- Make read-only by removing setter -->
+  </Rules>
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA0001" Action="None" /> <!-- XML comment analysis is disabled due to project configuration -->
+    <Rule Id="SA1101" Action="None" /> <!-- Do not prefix local calls with this if avoidable -->
+    <Rule Id="SA1413" Action="None" /> <!-- Use trailing comma in initializers -->
+    <Rule Id="SA1600" Action="None" /> <!-- Elements should be documented -->
+    <Rule Id="SA1601" Action="None" /> <!-- Partial elements should be documented -->
+    <Rule Id="SA1602" Action="None" /> <!-- Enumeration items should be documented -->
+    <Rule Id="SA1633" Action="None" /> <!-- The file header is missing -->
+  </Rules>
+</RuleSet>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <LangVersion>8.0</LangVersion>
+
+    <!-- Prevent NerdBank from loading in mono (which omnisharp uses on linux) /-->
+    <GenerateAssemblyVersionInfo Condition="'$(MSBuildRuntimeType)'=='Mono'">false</GenerateAssemblyVersionInfo>
+    <NoWarn>NU1701;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Assembly Info">
+    <Company>Microsoft Corporation</Company>
+    <Copyright>Copyright © $([System.DateTime]::Now.ToString(yyyy)) Microsoft Corporation. All rights reserved.</Copyright>
+    <Product Condition="'$(PublicRelease)'!='true'">Microsoft ® - Private (Built by $(USERNAME) on $(COMPUTERNAME)).</Product>
+    <Product Condition="'$(PublicRelease)'=='true'">Microsoft ® $(MSBuildProjectName)</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package Locking" Condition="'false'">
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode>$(PublicRelease)</RestoreLockedMode>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Roslyn Analyzers">
+    <!-- Roslyn analyzers settings -->
+    <CodeAnalysisRuleset>$(MSBuildThisFileDirectory)\.config\CodeAnalysis.ruleset</CodeAnalysisRuleset>
+
+    <!-- StyleCop settings -->
+    <!-- This property is disabled by default in Directory.Build.props because StyleCop is not a SDL requirement. -->
+    <StyleCopEnabled Condition="'$(StyleCopEnabled)'==''">true</StyleCopEnabled>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+   <!-- Ideally this is always enabled, but that tends to hurt developer productivity --> 
+   <TreatWarningsAsErrors>true</TreatWarningsAsErrors> 
+  </PropertyGroup> 
+ 
+  <ItemGroup Label="StyleCop Settings" Condition="'$(StyleCopEnabled)'=='true'">
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.3.37" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" Condition="'$(StyleCopEnabled)'=='true'" />
+  </ItemGroup>
+</Project>
