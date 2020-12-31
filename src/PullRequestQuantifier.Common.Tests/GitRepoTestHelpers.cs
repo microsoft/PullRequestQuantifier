@@ -56,8 +56,16 @@
             var dirInfo = fileSystem.DirectoryInfo.FromDirectoryName(RepoPath);
             if (dirInfo.Exists)
             {
-                SetNormalAttribute(dirInfo);
-                dirInfo.Delete(true);
+                try
+                {
+                    SetNormalAttribute(dirInfo);
+                    dirInfo.Delete(true);
+                }
+#pragma warning disable CA1031 // Do not catch general exception types
+                catch
+#pragma warning restore CA1031 // Do not catch general exception types
+                {
+                }
             }
         }
 
@@ -68,12 +76,14 @@
                 return;
             }
 
-            foreach (var subDir in dirInfo.GetDirectories())
+            var directories = dirInfo.GetDirectories().ToArray();
+            foreach (var subDir in directories)
             {
                 SetNormalAttribute(subDir);
             }
 
-            foreach (var file in dirInfo.GetFiles())
+            var files = dirInfo.GetFiles().ToArray();
+            foreach (var file in files)
             {
                 file.Attributes = FileAttributes.Normal;
             }
