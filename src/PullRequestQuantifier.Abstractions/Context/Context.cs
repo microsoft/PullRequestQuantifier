@@ -46,8 +46,8 @@
 
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets the DynamicBehaviour.
-        /// this setting will allow the behaviour to be adjusted based on the previous previous
-        /// will look into the local git merge history.
+        /// This setting will allow the behaviour to be adjusted based on the previous
+        /// local git merge history.
         /// </summary>
         public bool DynamicBehaviour { get; set; }
 

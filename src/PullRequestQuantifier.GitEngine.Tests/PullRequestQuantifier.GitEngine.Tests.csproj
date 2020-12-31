@@ -30,4 +30,9 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="Data\TestGitIgnore.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>
