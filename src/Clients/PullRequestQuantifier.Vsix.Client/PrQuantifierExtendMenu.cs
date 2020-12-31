@@ -112,7 +112,7 @@
                             CreateNoWindow = true,
                             UseShellExecute = false,
                             FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PullRequestQuantifier.Local.Client.exe"),
-                            Arguments = $"GitRepoPath=***REMOVED***dte.Solution.Projects.Item(1).FullName***REMOVED*** PrintJson=true"
+                            Arguments = $"-GitRepoPath=***REMOVED***dte.Solution.Projects.Item(1).FullName***REMOVED*** -PrintJson=true"
                 ***REMOVED***
             ***REMOVED***;
 

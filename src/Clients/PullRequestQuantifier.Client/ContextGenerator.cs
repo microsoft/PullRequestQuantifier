@@ -23,7 +23,7 @@
         ***REMOVED***
             // get historical changes
             var historicalChanges = gitEngine.GetGitHistoricalChangesToParent(repoPath);
-            var context = InitializeDefaultContext();
+            var context = DefaultContext.Value;
 
             // do the quantification based on th default context to get accurate numbers
             IPullRequestQuantifier prQuantifier = new PullRequestQuantifier(context);
@@ -58,63 +58,6 @@
     ***REMOVED***
 
             return ret;
-***REMOVED***
-
-        private static Context InitializeDefaultContext()
-        ***REMOVED***
-            // todo use exiting contexts to augment with the new data.
-            var context = new Context
-            ***REMOVED***
-                LanguageOptions = new LanguageOptions
-                ***REMOVED***
-                    IgnoreCodeBlockSeparator = true,
-                    IgnoreComments = true,
-                    IgnoreSpaces = true
-        ***REMOVED***,
-                DynamicBehaviour = false,
-                Thresholds = new List<Threshold>
-                ***REMOVED***
-                    new Threshold
-                    ***REMOVED***
-                        Label = "Extra Small",
-                        Value = 9,
-                        Color = "Green",
-                        GitOperationType = new List<GitOperationType> ***REMOVED*** GitOperationType.Add, GitOperationType.Delete ***REMOVED***
-            ***REMOVED***,
-                    new Threshold
-                    ***REMOVED***
-                        Label = "Small",
-                        Value = 29,
-                        Color = "Green",
-                        GitOperationType = new List<GitOperationType> ***REMOVED*** GitOperationType.Add, GitOperationType.Delete ***REMOVED***
-            ***REMOVED***,
-                    new Threshold
-                    ***REMOVED***
-                        Label = "Medium",
-                        Value = 99,
-                        Color = "Yellow",
-                        GitOperationType = new List<GitOperationType> ***REMOVED*** GitOperationType.Add, GitOperationType.Delete ***REMOVED***
-            ***REMOVED***,
-                    new Threshold
-                    ***REMOVED***
-                        Label = "Large",
-                        Value = 499,
-                        Color = "Red",
-                        GitOperationType = new List<GitOperationType> ***REMOVED*** GitOperationType.Add, GitOperationType.Delete ***REMOVED***
-            ***REMOVED***,
-                    new Threshold
-                    ***REMOVED***
-                        Label = "Extra Large",
-                        Value = 999,
-                        Color = "Red",
-                        GitOperationType = new List<GitOperationType> ***REMOVED*** GitOperationType.Add, GitOperationType.Delete ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***,
-                Excluded = new List<string> ***REMOVED*** "*.csproj" ***REMOVED***,
-                GitOperationType = new List<GitOperationType> ***REMOVED*** GitOperationType.Add, GitOperationType.Delete ***REMOVED***
-    ***REMOVED***;
-
-            return context;
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

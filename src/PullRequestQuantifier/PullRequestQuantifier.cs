@@ -99,18 +99,6 @@ namespace PullRequestQuantifier
 
         private void SetLabel(QuantifierResult quantifierResult)
         ***REMOVED***
-            // in case no addition/deletion found then we won't be able to set the label.
-            if (Context.AdditionPercentile == null
-                || Context.DeletionPercentile == null
-                || Context.AdditionPercentile.Count == 0
-                || Context.DeletionPercentile.Count == 0)
-            ***REMOVED***
-                return;
-    ***REMOVED***
-
-            quantifierResult.PercentileAddition = MathF.Round(GetPercentile(quantifierResult, true), 2);
-            quantifierResult.PercentileDeletion = MathF.Round(GetPercentile(quantifierResult, false), 2);
-
             if (quantifierResult.QuantifiedLinesDeleted == 0 && quantifierResult.QuantifiedLinesAdded == 0)
             ***REMOVED***
                 quantifierResult.Label = "No Changes";
@@ -133,6 +121,18 @@ namespace PullRequestQuantifier
                     return;
         ***REMOVED***
     ***REMOVED***
+
+            // in case no addition/deletion found then we won't be able to set the change percentile.
+            if (Context.AdditionPercentile == null
+                || Context.DeletionPercentile == null
+                || Context.AdditionPercentile.Count == 0
+                || Context.DeletionPercentile.Count == 0)
+            ***REMOVED***
+                return;
+    ***REMOVED***
+
+            quantifierResult.PercentileAddition = MathF.Round(GetPercentile(quantifierResult, true), 2);
+            quantifierResult.PercentileDeletion = MathF.Round(GetPercentile(quantifierResult, false), 2);
 ***REMOVED***
 
         private float GetPercentile(
