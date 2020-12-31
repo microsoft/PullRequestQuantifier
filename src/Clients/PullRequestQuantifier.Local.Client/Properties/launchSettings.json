@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "PrQuantifier.Local.Client": {
-      "commandName": "Project",
-      "commandLineArgs": "GitRepoPath=D:\\temp\\ConsoleApp3\\ConsoleApp3 Service=True"
-    }
-  }
-}
