@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <OutputType>exe</OutputType>
+        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+        <DefaultItemExcludes>$(DefaultItemExcludes);node_modules\**</DefaultItemExcludes>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PullRequestQuantifier.Local.Client\PullRequestQuantifier.Local.Client.csproj"/>
+    </ItemGroup>
+
+    <Target Name="PublishNodeApp" AfterTargets="Build">
+        <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+        <!-- Ensure Node.js is installed -->
+        <Exec Command="node --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+        </Exec>
+        <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE."/>
+        <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..."/>
+        <Exec Command="npm install"/>
+        <Exec Command="npm run build"/>
+       
+        <!-- Include the dlls in the js output -->
+        <ItemGroup>
+            <_CopyItems Include="bin\Release\net5.0\**"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="lib\%(RecursiveDir)"/>
+    </Target>
+
+</Project>
