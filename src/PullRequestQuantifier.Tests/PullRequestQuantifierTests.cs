@@ -36,7 +36,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal("No Changes", quantifierResult.Label);
             Assert.Equal(0, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***
@@ -54,7 +54,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(2, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***
@@ -76,7 +76,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(4, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***
@@ -98,7 +98,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(4, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***
@@ -120,7 +120,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(2, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***
@@ -142,7 +142,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(3, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(2, quantifierResult.QuantifiedLinesDeleted);
 ***REMOVED***

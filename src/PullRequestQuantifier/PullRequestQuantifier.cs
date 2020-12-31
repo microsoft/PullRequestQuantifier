@@ -118,7 +118,7 @@ namespace PullRequestQuantifier
 
                 if (GetChangeNumber(quantifierResult, contextThreshold.Formula) <= contextThreshold.Value)
                 ***REMOVED***
-                    return;
+                    break;
         ***REMOVED***
     ***REMOVED***
 

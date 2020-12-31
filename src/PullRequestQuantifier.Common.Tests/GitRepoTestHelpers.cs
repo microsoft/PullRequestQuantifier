@@ -57,13 +57,17 @@
             if (dirInfo.Exists)
             ***REMOVED***
                 SetNormalAttribute(dirInfo);
+                dirInfo.Delete(true);
     ***REMOVED***
-
-            dirInfo.Delete(true);
 ***REMOVED***
 
         private static void SetNormalAttribute(IDirectoryInfo dirInfo)
         ***REMOVED***
+            if (!dirInfo.Exists)
+            ***REMOVED***
+                return;
+    ***REMOVED***
+
             foreach (var subDir in dirInfo.GetDirectories())
             ***REMOVED***
                 SetNormalAttribute(subDir);
