@@ -57,9 +57,8 @@
             if (dirInfo.Exists)
             {
                 SetNormalAttribute(dirInfo);
+                dirInfo.Delete(true);
             }
-
-            dirInfo.Delete(true);
         }
 
         private static void SetNormalAttribute(IDirectoryInfo dirInfo)
