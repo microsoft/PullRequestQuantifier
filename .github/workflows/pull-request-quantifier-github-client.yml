@@ -2,7 +2,7 @@ name: GitHub Service
 
 on:
   push:
-    #branches: [ main ]
+    branches: [ main ]
 
 jobs:
   Build:
