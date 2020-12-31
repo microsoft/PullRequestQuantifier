@@ -94,6 +94,11 @@ async function quantify(context: WebhookEvent<EventPayloads.WebhookPayloadPullRe
 function convertToQuantifierInput(diff: any) {
   var changes: any = [];
   diff.data.forEach((patch: any) => {
+    // TODO: If patch is undefined (for large files), get content separately
+    if (!patch.patch) {
+      return;
+    }
+
     var changeType = 3;
     switch (patch.status) {
       case "added":
