@@ -56,8 +56,16 @@
             var dirInfo = fileSystem.DirectoryInfo.FromDirectoryName(RepoPath);
             if (dirInfo.Exists)
             ***REMOVED***
-                SetNormalAttribute(dirInfo);
-                dirInfo.Delete(true);
+                try
+                ***REMOVED***
+                    SetNormalAttribute(dirInfo);
+                    dirInfo.Delete(true);
+        ***REMOVED***
+#pragma warning disable CA1031 // Do not catch general exception types
+                catch
+#pragma warning restore CA1031 // Do not catch general exception types
+                ***REMOVED***
+        ***REMOVED***
     ***REMOVED***
 ***REMOVED***
 
@@ -68,12 +76,14 @@
                 return;
     ***REMOVED***
 
-            foreach (var subDir in dirInfo.GetDirectories())
+            var directories = dirInfo.GetDirectories().ToArray();
+            foreach (var subDir in directories)
             ***REMOVED***
                 SetNormalAttribute(subDir);
     ***REMOVED***
 
-            foreach (var file in dirInfo.GetFiles())
+            var files = dirInfo.GetFiles().ToArray();
+            foreach (var file in files)
             ***REMOVED***
                 file.Attributes = FileAttributes.Normal;
     ***REMOVED***
