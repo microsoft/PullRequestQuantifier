@@ -1,5 +1,5 @@
 # Pull Request Quantifier
-![.NET Core Build](https://github.com/microsoft/PullRequestQuantifier/workflows/.NET%20Core%20Build/badge.svg?branch=main)
+![.NET Core Build](https://github.com/microsoft/PullRequestQuantifier/workflows/.NET%20Core%20Build/badge.svg)
 - TODO
 
 ## Contributing
