@@ -94,6 +94,11 @@ async function quantify(context: WebhookEvent<EventPayloads.WebhookPayloadPullRe
 function convertToQuantifierInput(diff: any) ***REMOVED***
   var changes: any = [];
   diff.data.forEach((patch: any) => ***REMOVED***
+    // TODO: If patch is undefined (for large files), get content separately
+    if (!patch.patch) ***REMOVED***
+      return;
+***REMOVED***
+
     var changeType = 3;
     switch (patch.status) ***REMOVED***
       case "added":
