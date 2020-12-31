@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "PrQuantifier.Local.Client": {
+      "commandName": "Project"
+    }
+  }
+}
