@@ -33,7 +33,7 @@ jobs:
       run: dotnet build PullRequestQuantifier.sln --configuration Release --no-restore
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Build Windows Projects
-      run: msbuild $env:PullRequestQuantifierDotNetFull.sln /t:Restore /p:Configuration=Release
+      run: msbuild PullRequestQuantifierDotNetFull.sln /p:Configuration=Release
     - name: Test
       run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
     - name: Install and run report generator tool

@@ -79,8 +79,8 @@
             {
                 Console.ForegroundColor = GetColor(quantifierResult.Color);
                 Console.WriteLine(
-                    $"PrQuantified = {quantifierResult.Label}\t" +
-                    $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})" +
+                    $"PrQuantified = {quantifierResult.Label},\t" +
+                    $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})," +
                     $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
                     $", deletions = {quantifierResult.PercentileDeletion}%.");
                 Console.ResetColor();
