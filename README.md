@@ -1,6 +1,29 @@
 # Pull Request Quantifier
 ![.NET Core Build](https://github.com/microsoft/PullRequestQuantifier/workflows/.NET%20Core%20Build/badge.svg)
-- TODO
+
+A highly customizable tool to quantify a pull request within a repository context.
+
+## Quick Start
+## Clients
+## Developing
+
+PullRequestQuantifier uses `netstandard2.1` for the main library(PullRequestQuantifier.Client) and `netcoreapp3.1` for the unit tests (Xunit).
+
+### Build
+
+From the root directory
+
+```
+dotnet build .\PullRequestQuantifier.sln
+```
+
+### Test
+
+From the root directory
+
+```
+dotnet test .\PullRequestQuantifier.sln
+```
 
 ## Contributing
 
