@@ -9,7 +9,6 @@
     using Microsoft;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
-    using Microsoft.VisualStudio.Threading;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Task = System.Threading.Tasks.Task;
@@ -112,7 +111,7 @@
                             CreateNoWindow = true,
                             UseShellExecute = false,
                             FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PullRequestQuantifier.Local.Client.exe"),
-                            Arguments = $"-GitRepoPath=\"{dte.Solution.Projects.Item(1).FullName}\" -PrintJson=true"
+                            Arguments = $"-GitRepoPath \"{dte.Solution.Projects.Item(1).FullName}\" -PrintJson true"
                         }
                     };
 
@@ -145,6 +144,14 @@
             while (string.IsNullOrEmpty(result))
             {
                 result = await process.StandardOutput.ReadToEndAsync();
+
+                if (result.IndexOf(
+                    "GitRepoPath couldn't be found",
+                    StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    throw new ArgumentException("GitRepoPath couldn't be found");
+                }
+
                 try
                 {
                      var jObject = JObject.Parse(result);
