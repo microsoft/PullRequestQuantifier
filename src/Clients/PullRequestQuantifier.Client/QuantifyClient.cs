@@ -5,7 +5,9 @@
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Core;
+    using global::PullRequestQuantifier.Abstractions.Exceptions;
     using global::PullRequestQuantifier.GitEngine;
+    using YamlDotNet.Core;
 
     /// <inheritdoc />
     public sealed class QuantifyClient : IQuantifyClient
@@ -18,12 +20,7 @@
             string contextFilePath,
             bool printJson)
         {
-            var context = DefaultContext.Value;
-            if (!string.IsNullOrEmpty(contextFilePath))
-            {
-                context = ContextFactory.Load(contextFilePath);
-            }
-
+            var context = LoadContext(contextFilePath);
             prQuantifier = new PullRequestQuantifier(context);
             this.printJson = printJson;
             gitEngine = new GitEngine();
@@ -57,6 +54,37 @@
 
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
             return quantifierResult;
+        }
+
+        private Context LoadContext(string contextFilePathOrContent)
+        {
+            var context = DefaultContext.Value;
+            if (string.IsNullOrEmpty(contextFilePathOrContent))
+            {
+                return context;
+            }
+
+            // if no valid context will be loaded then load the default one, don't fail
+            try
+            {
+                var ctx = ContextFactory.Load(contextFilePathOrContent);
+                context = ctx;
+            }
+            catch (YamlException)
+            {
+            }
+            catch (ThresholdException ex)
+            {
+                // misconfiguration then print the exception
+                Console.WriteLine(ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                // misconfiguration then print the exception
+                Console.WriteLine(ex);
+            }
+
+            return context;
         }
 
         private QuantifierInput GetChanges(string repoPath)

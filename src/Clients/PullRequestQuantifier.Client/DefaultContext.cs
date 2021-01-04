@@ -4,7 +4,7 @@
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Git;
 
-    public class DefaultContext
+    public sealed class DefaultContext
     {
         internal static readonly Context Value = new Context
         {

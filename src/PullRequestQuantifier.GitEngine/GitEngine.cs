@@ -31,7 +31,9 @@ namespace PullRequestQuantifier.GitEngine
             if (status.Untracked.Any())
             {
                 var untrackedFilesPatch = repo.Diff.Compare<Patch>(
-                    status.Untracked.Select(u => u.FilePath), true, new ExplicitPathsOptions());
+                    status.Untracked.Select(u => u.FilePath),
+                    true,
+                    new ExplicitPathsOptions { ShouldFailOnUnmatchedPath = false });
                 ret.AddRange(GetGitFilePatch(untrackedFilesPatch));
             }
 
