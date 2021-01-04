@@ -1,4 +1,4 @@
-﻿namespace PrQuantifier.Local.Client
+﻿namespace PullRequestQuantifier.Local.Client
 {
     using System;
     using System.Collections.Generic;
@@ -34,7 +34,7 @@
         public bool PrintJson { get; set; }
 
         /// <summary>
-        /// If <see cref="QuantifierInputFile"/> is specified, this is given preference
+        /// Gets or sets if <see cref="QuantifierInputFile"/> is specified, this is given preference
         /// over <see cref="GitRepoPath"/>.
         /// </summary>
         public string QuantifierInputFile { get; set; }
@@ -55,12 +55,7 @@
 
                 if (optionName == "gitrepopath")
                 {
-                    if (option.Value == null)
-                    {
-                        throw new ArgumentException("Missing argument for -gitrepopath");
-                    }
-
-                    GitRepoPath = option.Value;
+                    GitRepoPath = option.Value ?? throw new ArgumentException("Missing argument for -gitrepopath");
                 }
                 else if (optionName == "service")
                 {
