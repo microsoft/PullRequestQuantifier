@@ -31,7 +31,8 @@ jobs:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     - name: Build
       run: dotnet build PullRequestQuantifier.sln --configuration Release --no-restore
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore Windows Projects
+      run: msbuild PullRequestQuantifierDotNetFull.sln /t:Restore /p:Configuration=Release 
     - name: Build Windows Projects
       run: msbuild PullRequestQuantifierDotNetFull.sln /p:Configuration=Release
     - name: Test
