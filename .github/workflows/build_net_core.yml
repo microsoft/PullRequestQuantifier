@@ -20,12 +20,18 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.100
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
     - name: Install dependencies
       run: dotnet restore PullRequestQuantifier.sln
       env:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     - name: Build
       run: dotnet build PullRequestQuantifier.sln --configuration Release --no-restore
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Build Windows Projects
+      run: msbuild $env:PullRequestQuantifierDotNetFull.sln /t:Restore /p:Configuration=Release
     - name: Test
       run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
     - name: Install and run report generator tool
@@ -37,22 +43,3 @@ jobs:
       with:
         name: coverage-report
         path: coverage-report/*
-        
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2
-    - name: Navigate to Workspace
-      run: cd $GITHUB_WORKSPACE
-    - name: Create Build Directory
-      run: mkdir _build
-    - name: Restore Packages
-      run: nuget restore PullRequestQuantifierDotNetFull.sln
-    - name: Build Solution
-      run: |
-        msbuild.exe PullRequestQuantifierDotNetFull.sln /p:platform="Any CPU" /p:configuration="Release"
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: PullRequestQuantifierBundle
-        path: "./_build"
