@@ -4,6 +4,7 @@
     using System.ComponentModel.Design;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using EnvDTE;
     using Microsoft;
@@ -11,6 +12,7 @@
     using Microsoft.VisualStudio.Shell.Interop;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using PullRequestQuantifier.Vsix.Client;
     using Task = System.Threading.Tasks.Task;
 
     /// <summary>
@@ -91,13 +93,22 @@
             documentEvents = dte.Events.DocumentEvents;
             documentEvents.DocumentSaved += DocumentEvents_DocumentSaved;
 
+            var projects = SolutionProjects.Projects();
+
             while (true)
             {
                 if ((runPrQuantifierDateTime == changedEventDateTime
                     && runPrQuantifierDateTime != default)
-                    || dte.Solution.Projects.Count == 0)
+                    || projects.Count() == 0)
                 {
                     await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+                    // refresh projects list in case is still empty
+                    if (projects.Count() == 0)
+                    {
+                        projects = SolutionProjects.Projects();
+                    }
+
                     continue;
                 }
 
@@ -111,7 +122,7 @@
                             CreateNoWindow = true,
                             UseShellExecute = false,
                             FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PullRequestQuantifier.Local.Client.exe"),
-                            Arguments = $"-GitRepoPath \"{dte.Solution.Projects.Item(1).FullName}\" -PrintJson true"
+                            Arguments = $"-GitRepoPath \"{projects.ElementAt(0).FullName}\" -PrintJson true"
                         }
                     };
 
