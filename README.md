@@ -3,13 +3,21 @@
 
 A highly customizable tool to quantify a pull request within a repository context.
 
-## Quick Start
 ## Clients
+#### Local client
+
+[Downlaod latest local client](https://github.com/microsoft/PullRequestQuantifier/releases)
+```
+PullRequestQuantifier.Local.Client.exe /?
+```
+
+#### GitHub client
+
 ## Developing
 
-PullRequestQuantifier uses `netstandard2.1` for the main library(PullRequestQuantifier.Client) and `netcoreapp3.1` for the unit tests (Xunit).
+PullRequestQuantifier uses `netstandard2.1` for the main library(PullRequestQuantifier.Client) and `net5.0` for the unit tests (Xunit).
 
-### Build
+#### Build
 
 From the root directory
 
@@ -17,7 +25,7 @@ From the root directory
 dotnet build .\PullRequestQuantifier.sln
 ```
 
-### Test
+#### Test
 
 From the root directory
 

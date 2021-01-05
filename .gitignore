@@ -355,3 +355,6 @@ MigrationBackup/
 
 #allow VSIX package depedencies
 !/src/Clients/PullRequestQuantifier.Vsix.Client/PrQuantifier/*
+#allow local client publish profile
+!/src/Clients/PullRequestQuantifier.Local.Client/Properties/PublishProfiles/*
+*.user

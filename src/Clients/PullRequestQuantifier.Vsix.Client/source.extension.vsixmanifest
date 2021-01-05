@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="PrQuantifier.Vsix.Client.816ad7c3-b590-4671-942a-55c9d765b7e0" Version="1.0" Language="en-US" Publisher="Microsoft" />
         <DisplayName>Pull Request Quantifier</DisplayName>
-        <Description xml:space="preserve">Pull request quantifier. Quantify pull requests in your team context accurately.</Description>
+        <Description xml:space="preserve">Pull request quantifier. A highly customizable tool to quantify a pull request within a repository context.</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />

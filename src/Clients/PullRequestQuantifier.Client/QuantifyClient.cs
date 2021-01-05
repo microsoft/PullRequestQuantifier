@@ -5,7 +5,9 @@
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Core;
+    using global::PullRequestQuantifier.Abstractions.Exceptions;
     using global::PullRequestQuantifier.GitEngine;
+    using YamlDotNet.Core;
 
     /// <inheritdoc />
     public sealed class QuantifyClient : IQuantifyClient
@@ -18,12 +20,7 @@
             string contextFilePath,
             bool printJson)
         ***REMOVED***
-            var context = DefaultContext.Value;
-            if (!string.IsNullOrEmpty(contextFilePath))
-            ***REMOVED***
-                context = ContextFactory.Load(contextFilePath);
-    ***REMOVED***
-
+            var context = LoadContext(contextFilePath);
             prQuantifier = new PullRequestQuantifier(context);
             this.printJson = printJson;
             gitEngine = new GitEngine();
@@ -59,6 +56,37 @@
             return quantifierResult;
 ***REMOVED***
 
+        private Context LoadContext(string contextFilePathOrContent)
+        ***REMOVED***
+            var context = DefaultContext.Value;
+            if (string.IsNullOrEmpty(contextFilePathOrContent))
+            ***REMOVED***
+                return context;
+    ***REMOVED***
+
+            // if no valid context will be loaded then load the default one, don't fail
+            try
+            ***REMOVED***
+                var ctx = ContextFactory.Load(contextFilePathOrContent);
+                context = ctx;
+    ***REMOVED***
+            catch (YamlException)
+            ***REMOVED***
+    ***REMOVED***
+            catch (ThresholdException ex)
+            ***REMOVED***
+                // misconfiguration then print the exception
+                Console.WriteLine(ex);
+    ***REMOVED***
+            catch (ArgumentNullException ex)
+            ***REMOVED***
+                // misconfiguration then print the exception
+                Console.WriteLine(ex);
+    ***REMOVED***
+
+            return context;
+***REMOVED***
+
         private QuantifierInput GetChanges(string repoPath)
         ***REMOVED***
             var quantifierInput = new QuantifierInput();
@@ -79,8 +107,8 @@
             ***REMOVED***
                 Console.ForegroundColor = GetColor(quantifierResult.Color);
                 Console.WriteLine(
-                    $"PrQuantified = ***REMOVED***quantifierResult.Label***REMOVED***\t" +
-                    $"Diff +***REMOVED***quantifierResult.QuantifiedLinesAdded***REMOVED*** -***REMOVED***quantifierResult.QuantifiedLinesDeleted***REMOVED*** (Formula = ***REMOVED***quantifierResult.Formula***REMOVED***)" +
+                    $"PrQuantified = ***REMOVED***quantifierResult.Label***REMOVED***,\t" +
+                    $"Diff +***REMOVED***quantifierResult.QuantifiedLinesAdded***REMOVED*** -***REMOVED***quantifierResult.QuantifiedLinesDeleted***REMOVED*** (Formula = ***REMOVED***quantifierResult.Formula***REMOVED***)," +
                     $"\tTeam percentiles: additions = ***REMOVED***quantifierResult.PercentileAddition***REMOVED***%" +
                     $", deletions = ***REMOVED***quantifierResult.PercentileDeletion***REMOVED***%.");
                 Console.ResetColor();

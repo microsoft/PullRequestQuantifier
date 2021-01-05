@@ -9,7 +9,6 @@
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Client;
     using LibGit2Sharp;
-    using PrQuantifier.Local.Client;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
 
