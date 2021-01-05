@@ -4,14 +4,89 @@
 A highly customizable tool to quantify a pull request within a repository context.
 
 ## Clients
-#### Local client
+#### Local
 
 [Downlaod latest local client](https://github.com/microsoft/PullRequestQuantifier/releases)
 ```
 PullRequestQuantifier.Local.Client.exe /?
 ```
+Bellow example will show a change quantified.
+![Example](./docs/client_cli.png)
 
-#### GitHub client
+#### GitHub
+Bellow example will show a comment on a pull request.
+![Example](./docs/client_github.png)
+
+#### Visual Studio Extension
+[Downlaod latest visual studio extension](https://github.com/microsoft/PullRequestQuantifier/releases)
+
+After installing the extention, quantifier will diplay the output on visual studio status bar.
+![Example](./docs/client_vsix.png)
+
+## Context customization
+
+-TODO explain each setting
+
+[Download latest vesion of conntext generator and run it.](https://github.com/microsoft/PullRequestQuantifier/releases)
+![](./docs/client_context_generator.png)
+```yml
+Included: 
+Excluded:
+- '*.csproj'
+GitOperationType:
+- Add
+- Delete
+Thresholds:
+- GitOperationType:
+  - Add
+  - Delete
+  Value: 9
+  Label: Extra Small
+  Color: Green
+  Formula: Sum
+- GitOperationType:
+  - Add
+  - Delete
+  Value: 29
+  Label: Small
+  Color: Green
+  Formula: Sum
+- GitOperationType:
+  - Add
+  - Delete
+  Value: 99
+  Label: Medium
+  Color: Yellow
+  Formula: Sum
+- GitOperationType:
+  - Add
+  - Delete
+  Value: 499
+  Label: Large
+  Color: Red
+  Formula: Sum
+- GitOperationType:
+  - Add
+  - Delete
+  Value: 999
+  Label: Extra Large
+  Color: Red
+  Formula: Sum
+LanguageOptions:
+  IgnoreSpaces: true
+  IgnoreComments: true
+  IgnoreCodeBlockSeparator: true
+DynamicBehaviour: false
+AdditionPercentile:
+  1: 12.302839279174805
+  2: 17.981073379516602
+  3: 22.082019805908203
+  ...(auto generated when we run the context generator)
+DeletionPercentile:
+  1: 17.69230842590332
+  2: 34.615386962890625
+  ...(auto generated when we run the context generator)
+```
 
 ## Developing
 
