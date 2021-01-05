@@ -6,7 +6,7 @@ A highly customizable tool to quantify a pull request within a repository contex
 ## Clients
 #### Local
 
-[Downlaod latest local client](https://github.com/microsoft/PullRequestQuantifier/releases)
+[Download latest local client](https://github.com/microsoft/PullRequestQuantifier/releases)
 ```
 PullRequestQuantifier.Local.Client.exe /?
 ```
@@ -18,7 +18,7 @@ Bellow example will show a comment on a pull request.
 ![Example](./docs/client_github.png)
 
 #### Visual Studio Extension
-[Downlaod latest visual studio extension](https://github.com/microsoft/PullRequestQuantifier/releases)
+[Download latest visual studio extension](https://github.com/microsoft/PullRequestQuantifier/releases)
 
 After installing the extention, quantifier will diplay the output on visual studio status bar.
 ![Example](./docs/client_vsix.png)
