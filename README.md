@@ -10,8 +10,12 @@ A highly customizable tool to quantify a pull request within a repository contex
 ```
 PullRequestQuantifier.Local.Client.exe /?
 ```
+Bellow example will show a change quantified.
+![Example](./docs/client_cli.png)
 
 #### GitHub client
+Bellow example will show a comment on a pull request from the bot.
+![Example](./docs/client_github.png)
 
 ## Developing
 
