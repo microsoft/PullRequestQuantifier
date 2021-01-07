@@ -46,3 +46,6 @@ jobs:
       with:
         name: coverage-report
         path: coverage-report/*
+    - name: Push package to NuGet
+      if: github.ref == 'refs/heads/main'
+      run: dotnet nuget push src\Clients\PullRequestQuantifier.Client\bin\Release\PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json
