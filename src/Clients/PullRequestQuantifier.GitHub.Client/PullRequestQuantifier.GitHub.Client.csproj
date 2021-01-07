@@ -1,33 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-        <OutputType>exe</OutputType>
-        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-        <DefaultItemExcludes>$(DefaultItemExcludes);node_modules\**</DefaultItemExcludes>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AzureFunctionsVersion>v3</AzureFunctionsVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\PullRequestQuantifier.Local.Client\PullRequestQuantifier.Local.Client.csproj"/>
+        <ProjectReference Include="..\PullRequestQuantifier.Local.Client\PullRequestQuantifier.Client.csproj" />
     </ItemGroup>
 
-    <Target Name="PublishNodeApp" AfterTargets="Build">
-        <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-        <!-- Ensure Node.js is installed -->
-        <Exec Command="node --version" ContinueOnError="true">
-            <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
-        </Exec>
-        <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE."/>
-        <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..."/>
-        <Exec Command="npm install"/>
-        <Exec Command="npm run build"/>
-       
-        <!-- Include the dlls in the js output -->
-        <ItemGroup>
-            <_CopyItems Include="bin\Release\net5.0\**"/>
-        </ItemGroup>
-        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="lib\%(RecursiveDir)"/>
-    </Target>
+    <ItemGroup>
+        <PackageReference Include="GitHubJwt" Version="0.0.4" />
+        <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.10" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.10" />
+        <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
+        <PackageReference Include="Octokit" Version="0.48.0" />
+        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="host.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="local.settings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Properties\serviceDependencies.local.json.user" />
+    </ItemGroup>
 
 </Project>

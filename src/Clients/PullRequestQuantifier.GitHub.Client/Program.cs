@@ -4,6 +4,6 @@ namespace PullRequestQuantifier.GitHub.Client
 
     public static class Program
     {
-        public static async Task Main(string[] args) => await Local.Client.Program.Main(args);
+        // public static async Task Main(string[] args) => await Local.Client.Program.Main(args);
     }
 }
