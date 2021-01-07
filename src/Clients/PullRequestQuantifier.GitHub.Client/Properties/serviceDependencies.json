@@ -1,0 +1,11 @@
+***REMOVED***
+  "dependencies": ***REMOVED***
+    "appInsights1": ***REMOVED***
+      "type": "appInsights"
+***REMOVED***
+    "storage1": ***REMOVED***
+      "type": "storage",
+      "connectionId": "AzureWebJobsStorage"
+***REMOVED***
+  ***REMOVED***
+***REMOVED***
