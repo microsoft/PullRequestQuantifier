@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" />
       <ProjectReference Include="..\PullRequestQuantifier.Client\PullRequestQuantifier.Client.csproj" />
     </ItemGroup>
 
