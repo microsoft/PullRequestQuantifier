@@ -47,6 +47,7 @@ jobs:
         name: coverage-report
         path: coverage-report/*
     - name: Pack
+      if: github.ref == 'refs/heads/main'
       run: dotnet pack PullRequestQuantifier.sln --configuration Release  /p:PublicRelease=true
     - name: Push package to NuGet
       if: github.ref == 'refs/heads/main'
