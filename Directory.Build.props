@@ -9,13 +9,6 @@
     <NoWarn>NU1701;CS1591</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Label="Assembly Info">
-    <Company>Microsoft Corporation</Company>
-    <Copyright>Copyright © $([System.DateTime]::Now.ToString(yyyy)) Microsoft Corporation. All rights reserved.</Copyright>
-    <Product Condition="'$(PublicRelease)'!='true'">Microsoft ® - Private (Built by $(USERNAME) on $(COMPUTERNAME)).</Product>
-    <Product Condition="'$(PublicRelease)'=='true'">Microsoft ® $(MSBuildProjectName)</Product>
-  </PropertyGroup>
-
   <PropertyGroup Label="Package Locking" Condition="'false'">
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <RestoreLockedMode>$(PublicRelease)</RestoreLockedMode>
