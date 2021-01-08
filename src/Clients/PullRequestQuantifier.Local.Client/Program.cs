@@ -33,7 +33,7 @@
                 // run once and exit
                 var quantifierInput = new QuantifierInput();
                 var changes = JsonSerializer.Deserialize<List<GitFilePatch>>(
-                    File.ReadAllText(commandLine.QuantifierInputFile));
+                    await File.ReadAllTextAsync(commandLine.QuantifierInputFile));
                 changes?.ForEach(c => quantifierInput.Changes.Add(c));
 
                 quantifyClient = new QuantifyClient(contextPath, commandLine.PrintJson);
@@ -147,7 +147,6 @@
             });
         }
 
-// Define the event handlers.
         private static void OnChanged(object source, FileSystemEventArgs e)
         {
             changedEventDateTime = DateTimeOffset.Now;

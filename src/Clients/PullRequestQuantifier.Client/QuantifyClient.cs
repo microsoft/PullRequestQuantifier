@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.Client
 {
     using System;
+    using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
@@ -106,11 +107,19 @@
             else
             {
                 Console.ForegroundColor = GetColor(quantifierResult.Color);
+
+                var details = string.Join(
+                    Environment.NewLine,
+                    quantifierResult.QuantifierInput.Changes.Select(c =>
+                        $"{c.FilePath} +{c.QuantifiedLinesAdded} -{c.QuantifiedLinesDeleted}"));
+
                 Console.WriteLine(
                     $"PrQuantified = {quantifierResult.Label},\t" +
                     $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})," +
                     $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
                     $", deletions = {quantifierResult.PercentileDeletion}%.");
+                Console.WriteLine(details);
+
                 Console.ResetColor();
             }
         }
