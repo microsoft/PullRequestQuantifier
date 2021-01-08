@@ -29,7 +29,7 @@
         {
             ArgumentCheck.ParameterIsNotNull(appTelemetry, nameof(appTelemetry));
             ArgumentCheck.ParameterIsNotNull(gitHubAppSettings, nameof(gitHubAppSettings));
-            ArgumentCheck.StringIsNotNullOrWhiteSpace(gitHubAppSettings.GitHubAppName, nameof(gitHubAppSettings.GitHubAppName));
+            ArgumentCheck.StringIsNotNullOrWhiteSpace(gitHubAppSettings.Name, nameof(gitHubAppSettings.Name));
 
             return new GitHubClientFactory(
                 () => CreateAuthenticatedClient(credentials, gitHubAppSettings, appTelemetry));
@@ -43,7 +43,7 @@
         {
             ArgumentCheck.ParameterIsNotNull(appTelemetry, nameof(appTelemetry));
             ArgumentCheck.ParameterIsNotNull(gitHubAppSettings, nameof(gitHubAppSettings));
-            ArgumentCheck.StringIsNotNullOrWhiteSpace(gitHubAppSettings.GitHubAppName, nameof(gitHubAppSettings.GitHubAppName));
+            ArgumentCheck.StringIsNotNullOrWhiteSpace(gitHubAppSettings.Name, nameof(gitHubAppSettings.Name));
 
             return new GitHubClientFactory(
                 () => CreateAuthenticatedClient(orgName, credentials, gitHubAppSettings, appTelemetry));
@@ -99,7 +99,7 @@
             {
                 return new GitHubClient(
                     new Connection(
-                        new ProductHeaderValue(gitHubAppSettings.GitHubAppName),
+                        new ProductHeaderValue(gitHubAppSettings.Name),
                         new Uri(gitHubAppSettings.EnterpriseApiRoot),
                         new InMemoryCredentialStore(credentials),
                         new HttpClientAdapter(() => new GitHubClientMessageHandler(appTelemetry)),
@@ -108,7 +108,7 @@
             catch (Exception ex)
             {
                 throw new CreateGitHubClientException(
-                    $"Failed to create client for GitHubApp: {gitHubAppSettings.GitHubAppName}", ex);
+                    $"Failed to create client for GitHubApp: {gitHubAppSettings.Name}", ex);
             }
         }
 
@@ -123,7 +123,7 @@
             catch (Exception ex)
             {
                 throw new CreateGitHubClientException(
-                    $"Failed to get create token for GitHubApp: {gitHubAppSettings.GitHubAppName}", ex);
+                    $"Failed to get create token for GitHubApp: {gitHubAppSettings.Name}", ex);
             }
         }
 
@@ -146,7 +146,7 @@
             catch (Exception ex)
             {
                 throw new CreateGitHubClientException(
-                    $"Failed to get access token for Org: {orgName}, GitHubApp: {gitHubAppSettings.GitHubAppName}", ex);
+                    $"Failed to get access token for Org: {orgName}, GitHubApp: {gitHubAppSettings.Name}", ex);
             }
         }
     }
