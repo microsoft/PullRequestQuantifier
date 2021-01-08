@@ -6,15 +6,12 @@ namespace PullRequestQuantifier.GitHub.Client.GitHubClient
 
         public string EnterpriseApiRoot ***REMOVED*** get; set; ***REMOVED***
 
-        // todo this  should be renamed to ClientID
-        public string GitHubAppId ***REMOVED*** get; set; ***REMOVED***
+        public string Id ***REMOVED*** get; set; ***REMOVED***
 
-        public int AppIntegrationId ***REMOVED*** get; set; ***REMOVED***
+        public string Name ***REMOVED*** get; set; ***REMOVED***
 
-        public string GitHubAppName ***REMOVED*** get; set; ***REMOVED***
+        public string PrivateKey ***REMOVED*** get; set; ***REMOVED***
 
-        public string GitHubAppSecret ***REMOVED*** get; set; ***REMOVED***
-
-        public string GitHubAppPrivateKeySecretName ***REMOVED*** get; set; ***REMOVED***
+        public string WebhookSecret ***REMOVED*** get; set; ***REMOVED***
 ***REMOVED***
 ***REMOVED***

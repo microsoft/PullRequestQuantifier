@@ -29,7 +29,7 @@
         ***REMOVED***
             ArgumentCheck.ParameterIsNotNull(appTelemetry, nameof(appTelemetry));
             ArgumentCheck.ParameterIsNotNull(gitHubAppSettings, nameof(gitHubAppSettings));
-            ArgumentCheck.StringIsNotNullOrWhiteSpace(gitHubAppSettings.GitHubAppName, nameof(gitHubAppSettings.GitHubAppName));
+            ArgumentCheck.StringIsNotNullOrWhiteSpace(gitHubAppSettings.Name, nameof(gitHubAppSettings.Name));
 
             return new GitHubClientFactory(
                 () => CreateAuthenticatedClient(credentials, gitHubAppSettings, appTelemetry));
@@ -43,7 +43,7 @@
         ***REMOVED***
             ArgumentCheck.ParameterIsNotNull(appTelemetry, nameof(appTelemetry));
             ArgumentCheck.ParameterIsNotNull(gitHubAppSettings, nameof(gitHubAppSettings));
-            ArgumentCheck.StringIsNotNullOrWhiteSpace(gitHubAppSettings.GitHubAppName, nameof(gitHubAppSettings.GitHubAppName));
+            ArgumentCheck.StringIsNotNullOrWhiteSpace(gitHubAppSettings.Name, nameof(gitHubAppSettings.Name));
 
             return new GitHubClientFactory(
                 () => CreateAuthenticatedClient(orgName, credentials, gitHubAppSettings, appTelemetry));
@@ -99,7 +99,7 @@
             ***REMOVED***
                 return new GitHubClient(
                     new Connection(
-                        new ProductHeaderValue(gitHubAppSettings.GitHubAppName),
+                        new ProductHeaderValue(gitHubAppSettings.Name),
                         new Uri(gitHubAppSettings.EnterpriseApiRoot),
                         new InMemoryCredentialStore(credentials),
                         new HttpClientAdapter(() => new GitHubClientMessageHandler(appTelemetry)),
@@ -108,7 +108,7 @@
             catch (Exception ex)
             ***REMOVED***
                 throw new CreateGitHubClientException(
-                    $"Failed to create client for GitHubApp: ***REMOVED***gitHubAppSettings.GitHubAppName***REMOVED***", ex);
+                    $"Failed to create client for GitHubApp: ***REMOVED***gitHubAppSettings.Name***REMOVED***", ex);
     ***REMOVED***
 ***REMOVED***
 
@@ -123,7 +123,7 @@
             catch (Exception ex)
             ***REMOVED***
                 throw new CreateGitHubClientException(
-                    $"Failed to get create token for GitHubApp: ***REMOVED***gitHubAppSettings.GitHubAppName***REMOVED***", ex);
+                    $"Failed to get create token for GitHubApp: ***REMOVED***gitHubAppSettings.Name***REMOVED***", ex);
     ***REMOVED***
 ***REMOVED***
 
@@ -146,7 +146,7 @@
             catch (Exception ex)
             ***REMOVED***
                 throw new CreateGitHubClientException(
-                    $"Failed to get access token for Org: ***REMOVED***orgName***REMOVED***, GitHubApp: ***REMOVED***gitHubAppSettings.GitHubAppName***REMOVED***", ex);
+                    $"Failed to get access token for Org: ***REMOVED***orgName***REMOVED***, GitHubApp: ***REMOVED***gitHubAppSettings.Name***REMOVED***", ex);
     ***REMOVED***
 ***REMOVED***
 ***REMOVED***
