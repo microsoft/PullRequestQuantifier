@@ -1,3 +1,1 @@
-*.pem
-!mock-cert.pem
-local.settings.json
+appsettings.Development.json
