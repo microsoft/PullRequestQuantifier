@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.GitEn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.GitEngine.Tests", "src\PullRequestQuantifier.GitEngine.Tests\PullRequestQuantifier.GitEngine.Tests.csproj", "{7756A204-2125-458C-92D0-17AEE27B9F4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PullRequestQuantifier.GitHub.Client", "src\Clients\PullRequestQuantifier.GitHub.Client\PullRequestQuantifier.GitHub.Client.csproj", "{A2C9CC4B-CD4A-47BC-8FC3-A25F39D608A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PullRequestQuantifier.GitHub.Client", "src\Clients\PullRequestQuantifier.GitHub.Client\PullRequestQuantifier.GitHub.Client.csproj", "{F9ED6691-A004-40FF-A14B-03D34CF85434}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,10 +84,10 @@ Global
 		{7756A204-2125-458C-92D0-17AEE27B9F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7756A204-2125-458C-92D0-17AEE27B9F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7756A204-2125-458C-92D0-17AEE27B9F4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2C9CC4B-CD4A-47BC-8FC3-A25F39D608A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2C9CC4B-CD4A-47BC-8FC3-A25F39D608A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2C9CC4B-CD4A-47BC-8FC3-A25F39D608A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2C9CC4B-CD4A-47BC-8FC3-A25F39D608A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9ED6691-A004-40FF-A14B-03D34CF85434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9ED6691-A004-40FF-A14B-03D34CF85434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9ED6691-A004-40FF-A14B-03D34CF85434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9ED6691-A004-40FF-A14B-03D34CF85434}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,7 +97,7 @@ Global
 		{E0E51BB5-216E-4A07-9366-E52D42E344AE} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 		{3B592A72-1370-4803-BFBB-C23CA528FF86} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 		{794D833C-558E-4216-B405-98EDD601C68B} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
-		{A2C9CC4B-CD4A-47BC-8FC3-A25F39D608A8} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
+		{F9ED6691-A004-40FF-A14B-03D34CF85434} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8F5E1E3-3A8D-4D1C-8A8B-CA608A972B61}
