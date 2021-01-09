@@ -4,6 +4,6 @@
     {
         Detailed,
         SummaryByFile,
-        SummaryByExt,
+        SummaryByExt
     }
 }
