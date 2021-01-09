@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.Client.Tests
 {
     using System;
+    using PullRequestQuantifier.Client.ContextGenerator;
     using Xunit;
 
     public sealed class ComputePercentileTests

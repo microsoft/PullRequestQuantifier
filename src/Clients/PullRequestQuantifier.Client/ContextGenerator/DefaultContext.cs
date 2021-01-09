@@ -2,7 +2,7 @@
 
 [assembly: InternalsVisibleTo("PullRequestQuantifier.Client.Tests")]
 
-namespace PullRequestQuantifier.Client
+namespace PullRequestQuantifier.Client.ContextGenerator
 {
     using System.Collections.Generic;
     using System.Linq;
