@@ -1,12 +1,15 @@
-﻿namespace PullRequestQuantifier.Client
+﻿namespace PullRequestQuantifier.Client.QuantifyClient
 {
     using System;
+    using System.Collections.Generic;
+    using System.Dynamic;
     using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Core;
     using global::PullRequestQuantifier.Abstractions.Exceptions;
+    using global::PullRequestQuantifier.Client.ContextGenerator;
     using global::PullRequestQuantifier.GitEngine;
     using YamlDotNet.Core;
 
@@ -16,11 +19,14 @@
         private readonly IPullRequestQuantifier prQuantifier;
         private readonly bool printJson;
         private readonly GitEngine gitEngine;
+        private readonly QuantifyClientOutput quantifyClientOutput;
 
         public QuantifyClient(
             string contextFilePath,
-            bool printJson)
+            bool printJson,
+            QuantifyClientOutput quantifyClientOutput)
         {
+            this.quantifyClientOutput = quantifyClientOutput;
             var context = LoadContext(contextFilePath);
             prQuantifier = new PullRequestQuantifier(context);
             this.printJson = printJson;
@@ -31,7 +37,7 @@
         public Context Context => prQuantifier.Context;
 
         /// <inheritdoc />
-        public async Task<QuantifierResult> Compute(string gitRepoPath)
+        public async Task<QuantifierClientResult> Compute(string gitRepoPath)
         {
             // get current location changes
             var quantifierInput = GetChanges(gitRepoPath);
@@ -39,22 +45,42 @@
             // quantify the changes
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
-            PrintQuantifierResult(quantifierResult);
+            var quantifierClientResult = new QuantifierClientResult
+            {
+                Color = quantifierResult.Color, Explanation = quantifierResult.Explanation,
+                Formula = quantifierResult.Formula, QuantifiedLinesAdded = quantifierResult.QuantifiedLinesAdded,
+                QuantifiedLinesDeleted = quantifierResult.QuantifiedLinesDeleted, Label = quantifierResult.Label,
+                PercentileAddition = quantifierResult.PercentileAddition,
+                PercentileDeletion = quantifierResult.PercentileDeletion,
+                Details = Details(quantifierResult)
+            };
+
+            PrintQuantifierResult(quantifierClientResult);
 
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
-            return quantifierResult;
+            return quantifierClientResult;
         }
 
         /// <inheritdoc />
-        public async Task<QuantifierResult> Compute(QuantifierInput quantifierInput)
+        public async Task<QuantifierClientResult> Compute(QuantifierInput quantifierInput)
         {
             // quantify the changes
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
-            PrintQuantifierResult(quantifierResult);
+            var quantifierClientResult = new QuantifierClientResult
+            {
+                Color = quantifierResult.Color, Explanation = quantifierResult.Explanation,
+                Formula = quantifierResult.Formula, QuantifiedLinesAdded = quantifierResult.QuantifiedLinesAdded,
+                QuantifiedLinesDeleted = quantifierResult.QuantifiedLinesDeleted, Label = quantifierResult.Label,
+                PercentileAddition = quantifierResult.PercentileAddition,
+                PercentileDeletion = quantifierResult.PercentileDeletion,
+                Details = Details(quantifierResult)
+            };
+
+            PrintQuantifierResult(quantifierClientResult);
 
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
-            return quantifierResult;
+            return quantifierClientResult;
         }
 
         private Context LoadContext(string contextFilePathOrContent)
@@ -96,28 +122,33 @@
             return quantifierInput;
         }
 
-        private void PrintQuantifierResult(QuantifierResult quantifierResult)
+        private void PrintQuantifierResult(QuantifierClientResult quantifierClientResult)
         {
+            Console.WriteLine();
             if (printJson)
             {
+                Console.ForegroundColor = GetColor(quantifierClientResult.Color);
+
                 Console.WriteLine(JsonSerializer.Serialize(
-                    quantifierResult,
+                    quantifierClientResult,
                     new JsonSerializerOptions { WriteIndented = true }));
+
+                Console.ResetColor();
             }
             else
             {
-                Console.ForegroundColor = GetColor(quantifierResult.Color);
+                Console.ForegroundColor = GetColor(quantifierClientResult.Color);
 
                 var details = string.Join(
                     Environment.NewLine,
-                    quantifierResult.QuantifierInput.Changes.Select(c =>
-                        $"{c.FilePath} +{c.QuantifiedLinesAdded} -{c.QuantifiedLinesDeleted}"));
+                    quantifierClientResult.Details.Select(v => $"{v.FilePath} +{v.QuantifiedLinesAdded} -{v.QuantifiedLinesDeleted}"));
 
                 Console.WriteLine(
-                    $"PrQuantified = {quantifierResult.Label},\t" +
-                    $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})," +
-                    $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
-                    $", deletions = {quantifierResult.PercentileDeletion}%.");
+                    $"PrQuantified = {quantifierClientResult.Label},\t" +
+                    $"Diff +{quantifierClientResult.QuantifiedLinesAdded} -{quantifierClientResult.QuantifiedLinesDeleted} (Formula = {quantifierClientResult.Formula})," +
+                    $"\tTeam percentiles: additions = {quantifierClientResult.PercentileAddition}%" +
+                    $", deletions = {quantifierClientResult.PercentileDeletion}%.");
+                Console.WriteLine("PrQuantified details");
                 Console.WriteLine(details);
 
                 Console.ResetColor();
@@ -145,6 +176,34 @@
                 nameof(ConsoleColor.Yellow) => ConsoleColor.Yellow,
                 nameof(ConsoleColor.White) => ConsoleColor.White,
                 _ => ConsoleColor.DarkGray,
+            };
+        }
+
+        private IEnumerable<dynamic> Details(QuantifierResult quantifierResult)
+        {
+            return quantifyClientOutput switch
+            {
+                QuantifyClientOutput.SummaryByExt => quantifierResult.QuantifierInput.Changes.GroupBy(c => c.FileExtension).Select(g =>
+                                         new
+                                         {
+                                             FilePath = g.Key,
+                                             FileExtension = g.Key,
+                                             QuantifiedLinesAdded = g.Sum(v => v.QuantifiedLinesAdded),
+                                             QuantifiedLinesDeleted = g.Sum(v => v.QuantifiedLinesDeleted),
+                                             AbsoluteLinesAdded = g.Sum(v => v.AbsoluteLinesAdded),
+                                             AbsoluteLinesDeleted = g.Sum(v => v.AbsoluteLinesDeleted)
+                                         }),
+                QuantifyClientOutput.SummaryByFile => quantifierResult.QuantifierInput.Changes.Select(c => new
+                {
+                    c.AbsoluteLinesAdded,
+                    c.AbsoluteLinesDeleted,
+                    c.FilePath,
+                    c.QuantifiedLinesAdded,
+                    c.QuantifiedLinesDeleted,
+                    c.FileExtension
+                }),
+                QuantifyClientOutput.Detailed => quantifierResult.QuantifierInput.Changes,
+                _ => throw new ArgumentOutOfRangeException(),
             };
         }
     }

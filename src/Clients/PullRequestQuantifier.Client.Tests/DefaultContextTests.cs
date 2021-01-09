@@ -1,5 +1,6 @@
 ﻿namespace PullRequestQuantifier.Client.Tests
 {
+    using PullRequestQuantifier.Client.ContextGenerator;
     using Xunit;
 
     public sealed class DefaultContextTests

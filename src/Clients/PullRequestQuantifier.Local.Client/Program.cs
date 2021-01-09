@@ -7,13 +7,15 @@
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
-    using global::PullRequestQuantifier.Client;
     using LibGit2Sharp;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
+    using PullRequestQuantifier.Client.QuantifyClient;
 
     /// <summary>
-    /// Parameters accepted: GitRepoPath={} ContextPath={} Service=True/False(default is false) PrintJson=True/False(default is false).
+    /// Parameters accepted: GitRepoPath={} ContextPath={}
+    /// Service=True/False(default is false) PrintJson=True/False(default is false)
+    /// output=summaryByExt/summaryByFile/detailed (default is detailed).
     /// </summary>
     public static class Program
     {
@@ -36,7 +38,10 @@
                     await File.ReadAllTextAsync(commandLine.QuantifierInputFile));
                 changes?.ForEach(c => quantifierInput.Changes.Add(c));
 
-                quantifyClient = new QuantifyClient(contextPath, commandLine.PrintJson);
+                quantifyClient = new QuantifyClient(
+                    contextPath,
+                    commandLine.PrintJson,
+                    commandLine.Output);
                 await quantifyClient.Compute(quantifierInput);
             }
             else
@@ -55,7 +60,10 @@
                     new DirectoryInfo(repoRootPath).Parent?.FullName,
                     ".prquantifier");
 
-                quantifyClient = new QuantifyClient(contextPath, commandLine.PrintJson);
+                quantifyClient = new QuantifyClient(
+                    contextPath,
+                    commandLine.PrintJson,
+                    commandLine.Output);
 
                 // run this as a service in case is configured otherwise only run once
                 if (commandLine.Service)
