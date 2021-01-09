@@ -1,50 +1,45 @@
-using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using PullRequestQuantifier.GitHub.Client;
-
-[assembly: FunctionsStartup(typeof(Startup))]
-
 namespace PullRequestQuantifier.GitHub.Client
 ***REMOVED***
-    using System.IO;
-    using GitHubJwt;
-    using Microsoft.ApplicationInsights;
-    using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
-    using PullRequestQuantifier.GitHub.Client.GitHubClient;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.OpenApi.Models;
 
-    public class Startup : FunctionsStartup
+    public class Startup
     ***REMOVED***
-        public override void Configure(IFunctionsHostBuilder builder)
+        public Startup(IConfiguration configuration)
         ***REMOVED***
-            builder.Services.AddOptions<GitHubAppSettings>()
-                .Configure<IConfiguration>((gitHubAppSettings, configuration) =>
-                ***REMOVED***
-                    configuration.GetSection(nameof(GitHubAppSettings)).Bind(gitHubAppSettings);
-        ***REMOVED***);
-            builder.Services.AddSingleton<IGitHubJwtFactory>(sp =>
-            ***REMOVED***
-                // register a GitHubJwtFactory used to create tokens to access github for a particular org on behalf  of the  app
-                var gitHubAppSettings = sp.GetRequiredService<IOptions<GitHubAppSettings>>().Value;
-                ArgumentCheck.ParameterIsNotNull(gitHubAppSettings, nameof(gitHubAppSettings));
+            Configuration = configuration;
+***REMOVED***
 
-                // Use GitHubJwt library to create the GitHubApp Jwt Token using our private certificate PEM file
-                return new GitHubJwtFactory(
-                    new StringPrivateKeySource(gitHubAppSettings.PrivateKey),
-                    new GitHubJwtFactoryOptions
-                    ***REMOVED***
-                        AppIntegrationId = int.Parse(gitHubAppSettings.Id), // The GitHub App Id
-                        ExpirationSeconds = 600 // 10 minutes is the maximum time allowed
-            ***REMOVED***);
-    ***REMOVED***);
-            builder.Services.AddSingleton<IAppTelemetry>(sp =>
+        public IConfiguration Configuration ***REMOVED*** get; ***REMOVED***
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        ***REMOVED***
+            services.AddControllers();
+            services.AddSwaggerGen(c => ***REMOVED*** c.SwaggerDoc("v1", new OpenApiInfo ***REMOVED*** Title = "PullRequestQuantifier.GitHub.Client", Version = "v1" ***REMOVED***); ***REMOVED***);
+***REMOVED***
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        ***REMOVED***
+            if (env.IsDevelopment())
             ***REMOVED***
-                // use the default TelemetryClient provided by Azure Function
-                var telemetryClient = sp.GetRequiredService<TelemetryClient>();
-                return new AppTelemetry(typeof(Startup).Namespace, telemetryClient);
-    ***REMOVED***);
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PullRequestQuantifier.GitHub.Client v1"));
+    ***REMOVED***
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => ***REMOVED*** endpoints.MapControllers(); ***REMOVED***);
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

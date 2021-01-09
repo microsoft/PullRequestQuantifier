@@ -1,53 +1,49 @@
-namespace PullRequestQuantifier.GitHub.Client
+﻿namespace PullRequestQuantifier.GitHub.Client.Controllers
 ***REMOVED***
     using System;
     using System.IO;
-    using System.Net.Http;
     using System.Security.Cryptography;
     using System.Text;
     using System.Threading.Tasks;
-    using GitHubJwt;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Azure.WebJobs;
-    using Microsoft.Azure.WebJobs.Extensions.Http;
-    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json.Linq;
-    using Octokit;
+    using PullRequestQuantifier.GitHub.Client.Events;
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
+    using PullRequestQuantifier.GitHub.Client.Models;
     using PullRequestQuantifier.GitHub.Client.Telemetry;
 
-    public class QuantifierFunction
+    [ApiController]
+    [Route("[controller]")]
+    [Produces("application/json")]
+    public class GitHubWebhookController : ControllerBase
     ***REMOVED***
-        private readonly IGitHubJwtFactory gitHubJwtFactory;
-
         private readonly GitHubAppSettings gitHubAppSettings;
 
         private readonly IAppTelemetry appTelemetry;
 
-        public QuantifierFunction(
-            IGitHubJwtFactory gitHubJwtFactory,
+        private readonly IEventBus eventBus;
+
+        public GitHubWebhookController(
             IOptions<GitHubAppSettings> gitHubAppSettings,
-            IAppTelemetry appTelemetry)
+            IAppTelemetry appTelemetry,
+            IEventBus eventBus)
         ***REMOVED***
-            this.gitHubJwtFactory = gitHubJwtFactory;
             this.appTelemetry = appTelemetry;
+            this.eventBus = eventBus;
             this.gitHubAppSettings = gitHubAppSettings.Value;
 ***REMOVED***
 
-        [FunctionName("quantify")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-            HttpRequest req,
-            ILogger log)
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> ProcessWebhook(
+            [FromHeader(Name = "X-GitHub-Event")] string eventType,
+            [FromHeader(Name = "X-Github-Delivery")] string deliveryId,
+            [FromHeader(Name = "X-Hub-Signature")] string signature)
         ***REMOVED***
-            req.Headers.TryGetValue("X-GitHub-Event", out var eventType);
-            req.Headers.TryGetValue("X-GitHub-Delivery", out var deliveryId);
-            req.Headers.TryGetValue("X-Hub-Signature", out var signature);
-
             string content;
-            using (var reader = new StreamReader(req.Body))
+            using (var reader = new StreamReader(Request.Body))
             ***REMOVED***
                 content = await reader.ReadToEndAsync();
     ***REMOVED***
@@ -57,9 +53,9 @@ namespace PullRequestQuantifier.GitHub.Client
             var action = (string)payload["action"];
             var dims = new[]
             ***REMOVED***
-                ("eventType", eventType.ToString()),
+                ("eventType", eventType),
                 ("action", action),
-                ("deliveryId", deliveryId.ToString())
+                ("deliveryId", deliveryId)
     ***REMOVED***;
 
             if (!Authenticate(signature, content))
@@ -71,13 +67,13 @@ namespace PullRequestQuantifier.GitHub.Client
                 throw new UnauthorizedAccessException("The signature couldn't be authenticated.");
     ***REMOVED***
 
-            var gitHubClientFactory = GitHubClientFactory.Create(
-                "microsoft",
-                new Credentials(gitHubJwtFactory.CreateEncodedJwtToken(), AuthenticationType.Bearer),
-                gitHubAppSettings,
-                appTelemetry);
-            await gitHubClientFactory.GetGitHubGitClientAsync();
-            return new OkObjectResult("Response from function with injected dependencies.");
+            if (Enum.TryParse(eventType, true, out AcceptedGitHubEventTypes _) &&
+                Enum.TryParse(action, true, out AcceptedGitHubActionTypes _))
+            ***REMOVED***
+                eventBus.Write(payload);
+    ***REMOVED***
+
+            return Ok();
 ***REMOVED***
 
         private bool Authenticate(string signature, string content)
@@ -97,7 +93,9 @@ namespace PullRequestQuantifier.GitHub.Client
             var secretBytes = Encoding.UTF8.GetBytes(gitHubAppSettings.WebhookSecret);
             var contentBytes = Encoding.UTF8.GetBytes(content);
 
+#pragma warning disable CA5350 // GitHub sends webhook encoded with sha1
             using var hmacSha1 = new HMACSHA1(secretBytes);
+#pragma warning restore CA5350 // GitHub sends webhook encoded with sha1
             var contentHash = hmacSha1.ComputeHash(contentBytes);
 
             return BitConverter.ToString(contentHash).Replace("-", string.Empty).ToLower();
