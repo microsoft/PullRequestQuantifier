@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.Client
+﻿namespace PullRequestQuantifier.Client.ContextGenerator
 ***REMOVED***
     using System;
 

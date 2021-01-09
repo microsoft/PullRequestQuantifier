@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.Client
+﻿namespace PullRequestQuantifier.Client.QuantifyClient
 ***REMOVED***
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
@@ -16,13 +16,13 @@
         /// </summary>
         /// <param name="gitRepoPath">Path to the git repository.</param>
         /// <returns>returns an evaluation result.</returns>
-        Task<QuantifierResult> Compute(string gitRepoPath);
+        Task<QuantifierClientResult> Compute(string gitRepoPath);
 
         /// <summary>
         /// Compute using a quantifier input from outside.
         /// </summary>
         /// <param name="quantifierInput">The quantifier input.</param>
         /// <returns>returns an evaluation result.</returns>
-        Task<QuantifierResult> Compute(QuantifierInput quantifierInput);
+        Task<QuantifierClientResult> Compute(QuantifierInput quantifierInput);
 ***REMOVED***
 ***REMOVED***

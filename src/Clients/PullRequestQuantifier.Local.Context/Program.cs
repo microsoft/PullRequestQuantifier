@@ -4,8 +4,8 @@
     using System.IO;
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
-    using global::PullRequestQuantifier.Client;
     using LibGit2Sharp;
+    using PullRequestQuantifier.Client.ContextGenerator;
 
     public static class Program
     ***REMOVED***
