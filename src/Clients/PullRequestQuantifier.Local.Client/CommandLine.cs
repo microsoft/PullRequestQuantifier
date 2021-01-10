@@ -1,9 +1,10 @@
-﻿namespace PrQuantifier.Local.Client
+﻿namespace PullRequestQuantifier.Local.Client
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
+    using PullRequestQuantifier.Client.QuantifyClient;
 
     public class CommandLine
     {
@@ -11,7 +12,11 @@
 
         public CommandLine(string[] args)
         {
-            if (args.Length == 1 && (args[0] == "-?" || args[0] == "/?" || args[0] == "-h" || args[0] == "--help"))
+            if (args.Length == 1
+                && (args[0] == "-?"
+                    || args[0] == "/?"
+                    || args[0] == "-h"
+                    || args[0] == "--help"))
             {
                 PrintUsage();
                 return;
@@ -33,8 +38,10 @@
 
         public bool PrintJson { get; set; }
 
+        public QuantifyClientOutput Output { get; set; }
+
         /// <summary>
-        /// If <see cref="QuantifierInputFile"/> is specified, this is given preference
+        /// Gets or sets if <see cref="QuantifierInputFile"/> is specified, this is given preference
         /// over <see cref="GitRepoPath"/>.
         /// </summary>
         public string QuantifierInputFile { get; set; }
@@ -55,12 +62,7 @@
 
                 if (optionName == "gitrepopath")
                 {
-                    if (option.Value == null)
-                    {
-                        throw new ArgumentException("Missing argument for -gitrepopath");
-                    }
-
-                    GitRepoPath = option.Value;
+                    GitRepoPath = option.Value ?? throw new ArgumentException("Missing argument for -gitrepopath");
                 }
                 else if (optionName == "service")
                 {
@@ -69,6 +71,12 @@
                 else if (optionName == "printjson")
                 {
                     PrintJson = true;
+                }
+                else if (optionName == "output")
+                {
+                    Output = !string.IsNullOrWhiteSpace(option.Value)
+                        ? Enum.Parse<QuantifyClientOutput>(option.Value)
+                        : QuantifyClientOutput.Detailed;
                 }
                 else if (optionName == "contextpath")
                 {

@@ -9,13 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Text.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" PrivateAssets="all"/>
-    <ProjectReference Include="..\..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" PrivateAssets="all"/>
-    <ProjectReference Include="..\..\PullRequestQuantifier\PullRequestQuantifier.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\PullRequestQuantifier\PullRequestQuantifier.csproj" PrivateAssets="all" />
   </ItemGroup>
 
     <!--

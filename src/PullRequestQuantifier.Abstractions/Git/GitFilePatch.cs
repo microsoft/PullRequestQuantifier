@@ -41,6 +41,11 @@
         public string FilePath { get; set; }
 
         /// <summary>
+        /// Gets or sets the file extension.
+        /// </summary>
+        public string FileExtension { get; set; }
+
+        /// <summary>
         /// Gets or sets the kind of change reported by diff.
         /// </summary>
         public GitChangeType ChangeType { get; set; }

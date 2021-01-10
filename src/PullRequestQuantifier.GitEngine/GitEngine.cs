@@ -3,6 +3,7 @@ namespace PullRequestQuantifier.GitEngine
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using LibGit2Sharp;
@@ -31,7 +32,9 @@ namespace PullRequestQuantifier.GitEngine
             if (status.Untracked.Any())
             {
                 var untrackedFilesPatch = repo.Diff.Compare<Patch>(
-                    status.Untracked.Select(u => u.FilePath), true, new ExplicitPathsOptions());
+                    status.Untracked.Select(u => u.FilePath),
+                    true,
+                    new ExplicitPathsOptions { ShouldFailOnUnmatchedPath = false });
                 ret.AddRange(GetGitFilePatch(untrackedFilesPatch));
             }
 
@@ -105,6 +108,7 @@ namespace PullRequestQuantifier.GitEngine
                     AbsoluteLinesAdded = patches.Current.LinesAdded,
                     AbsoluteLinesDeleted = patches.Current.LinesDeleted,
                     FilePath = patches.Current.Path,
+                    FileExtension = new FileInfo(patches.Current.Path).Extension,
                     ChangeType = patches.Current.Status.ConvertToChangeType()
                 });
             }
