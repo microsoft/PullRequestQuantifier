@@ -70,7 +70,7 @@
             if (Enum.TryParse(eventType, true, out AcceptedGitHubEventTypes _) &&
                 Enum.TryParse(action, true, out AcceptedGitHubActionTypes _))
             ***REMOVED***
-                eventBus.Write(payload);
+                await eventBus.WriteAsync(payload);
     ***REMOVED***
 
             return Ok();

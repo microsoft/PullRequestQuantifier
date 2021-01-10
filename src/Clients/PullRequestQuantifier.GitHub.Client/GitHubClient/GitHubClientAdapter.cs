@@ -27,7 +27,10 @@
         /// <inheritdoc />
         public async Task<Repository> GetRepositoryByIdAsync(long repositoryId)
         ***REMOVED***
-            ArgumentCheck.IntegerIsGreaterThenThreshold(repositoryId, nameof(repositoryId), NotInitializedRepositoryId);
+            ArgumentCheck.IntegerIsGreaterThenThreshold(
+                repositoryId,
+                nameof(repositoryId),
+                NotInitializedRepositoryId);
             return await gitHubClient.Repository.Get(repositoryId);
 ***REMOVED***
 
@@ -46,7 +49,10 @@
         ***REMOVED***
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
-            return await gitHubClient.Repository.Commit.GetAll(organizationName, repositoryName, new CommitRequest ***REMOVED*** Path = path ***REMOVED***);
+            return await gitHubClient.Repository.Commit.GetAll(
+                organizationName,
+                repositoryName,
+                new CommitRequest ***REMOVED*** Path = path ***REMOVED***);
 ***REMOVED***
 
         /// <inheritdoc />
@@ -60,7 +66,11 @@
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(path, nameof(path));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(reference, nameof(reference));
-            return await gitHubClient.Repository.Content.GetAllContentsByRef(organizationName, repositoryName, path, reference);
+            return await gitHubClient.Repository.Content.GetAllContentsByRef(
+                organizationName,
+                repositoryName,
+                path,
+                reference);
 ***REMOVED***
 
         /// <inheritdoc />
@@ -72,7 +82,10 @@
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(reference, nameof(reference));
-            return await gitHubClient.Git.Tree.GetRecursive(organizationName, repositoryName, reference);
+            return await gitHubClient.Git.Tree.GetRecursive(
+                organizationName,
+                repositoryName,
+                reference);
 ***REMOVED***
 
         /// <inheritdoc />
@@ -84,7 +97,10 @@
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(reference, nameof(reference));
-            return await gitHubClient.Git.Blob.Get(organizationName, repositoryName, reference);
+            return await gitHubClient.Git.Blob.Get(
+                organizationName,
+                repositoryName,
+                reference);
 ***REMOVED***
 
         /// <inheritdoc />
@@ -98,7 +114,11 @@
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(path, nameof(path));
 
-            return await gitHubClient.Repository.Content.CreateFile(organizationName, repositoryName, path, createFileRequest);
+            return await gitHubClient.Repository.Content.CreateFile(
+                organizationName,
+                repositoryName,
+                path,
+                createFileRequest);
 ***REMOVED***
 
         /// <inheritdoc />
@@ -112,7 +132,17 @@
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(path, nameof(path));
 
-            await gitHubClient.Repository.Content.DeleteFile(organizationName, repositoryName, path, deleteFileRequest);
+            await gitHubClient.Repository.Content.DeleteFile(
+                organizationName,
+                repositoryName,
+                path,
+                deleteFileRequest);
+***REMOVED***
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<PullRequestFile>> GetPullRequestFiles(long repositoryId, int pullRequestNumber)
+        ***REMOVED***
+            return await gitHubClient.PullRequest.Files(repositoryId, pullRequestNumber);
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

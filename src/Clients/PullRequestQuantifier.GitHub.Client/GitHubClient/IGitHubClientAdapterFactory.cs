@@ -5,10 +5,10 @@
     /// <summary>
     /// Defines the contract for creating a GitHub client.
     /// </summary>
-    public interface IGitHubClientFactory
+    public interface IGitHubClientAdapterFactory
     ***REMOVED***
-        /// <summary>Gets the GitHub client wrapper.</summary>
+        /// <summary>Gets the GitHub client adapter.</summary>
         /// <returns>The <see cref="Task"/>.</returns>
-        Task<IGitHubClientAdapter> GetGitHubGitClientAsync();
+        Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(long installationId);
 ***REMOVED***
 ***REMOVED***
