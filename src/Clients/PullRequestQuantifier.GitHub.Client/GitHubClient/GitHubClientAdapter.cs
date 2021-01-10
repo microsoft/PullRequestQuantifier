@@ -140,9 +140,77 @@
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyList<PullRequestFile>> GetPullRequestFiles(long repositoryId, int pullRequestNumber)
+        public async Task<byte[]> GetRawFileAsync(
+            string organizationName,
+            string repositoryName,
+            string path)
+        {
+            return await gitHubClient.Repository.Content.GetRawContent(
+                organizationName,
+                repositoryName,
+                path);
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<PullRequestFile>> GetPullRequestFilesAsync(
+            long repositoryId,
+            int pullRequestNumber)
         {
             return await gitHubClient.PullRequest.Files(repositoryId, pullRequestNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task<PullRequest> GetPullRequestAsync(long repositoryId, int pullRequestNumber)
+        {
+            return await gitHubClient.PullRequest.Get(repositoryId, pullRequestNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task<Label> CreateLabelAsync(
+            long repositoryId,
+            NewLabel label)
+        {
+            return await gitHubClient.Issue.Labels.Create(repositoryId, label);
+        }
+
+        /// <inheritdoc />
+        public async Task<Label> GetLabelAsync(
+            long repositoryId,
+            string labelName)
+        {
+            return await gitHubClient.Issue.Labels.Get(repositoryId, labelName);
+        }
+
+        /// <inheritdoc />
+        public async Task<Label> UpdateLabelAsync(
+            long repositoryId,
+            string labelName,
+            LabelUpdate labelUpdate)
+        {
+            return await gitHubClient.Issue.Labels.Update(
+                repositoryId,
+                labelName,
+                labelUpdate);
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<Label>> GetIssueLabelsAsync(
+            long repositoryId,
+            int issueNumber)
+        {
+            return await gitHubClient.Issue.Labels.GetAllForIssue(repositoryId, issueNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<Label>> ApplyLabelAsync(
+            long repositoryId,
+            int issueNumber,
+            string[] labels)
+        {
+            return await gitHubClient.Issue.Labels.AddToIssue(
+                repositoryId,
+                issueNumber,
+                labels);
         }
     }
 }
