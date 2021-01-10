@@ -31,6 +31,5 @@ jobs:
       with:
         app-name: 'pullrequestquantifier'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_8b85ecb7217343398f8c79c14a772f30 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_Password }}
         package: ${{env.DOTNET_ROOT}}/pullrequestquantifiergithubclient
-        
