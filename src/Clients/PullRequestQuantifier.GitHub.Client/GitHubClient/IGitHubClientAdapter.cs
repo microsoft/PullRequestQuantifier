@@ -108,5 +108,13 @@
             string repositoryName,
             string path,
             DeleteFileRequest deleteFileRequest);
+
+        /// <summary>
+        /// Get the list of files in pull request.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="pullRequestNumber">Pull Reqeust number.</param>
+        /// <returns>List of pull request files.</returns>
+        Task<IReadOnlyList<PullRequestFile>> GetPullRequestFiles(long repositoryId, int pullRequestNumber);
     }
 }

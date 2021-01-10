@@ -10,9 +10,13 @@ namespace PullRequestQuantifier.GitHub.Client
 
     public static class Registrar
     {
-        internal static IServiceCollection RegisterServices(this IServiceCollection serviceCollection, IConfiguration configuration)
+        internal static IServiceCollection RegisterServices(
+            this IServiceCollection serviceCollection,
+            IConfiguration configuration)
         {
             serviceCollection.Configure<GitHubAppSettings>(configuration.GetSection(nameof(GitHubAppSettings)));
+            serviceCollection.Configure<AzureServiceBusSettings>(
+                configuration.GetSection(nameof(AzureServiceBusSettings)));
             serviceCollection.AddSingleton<IGitHubJwtFactory>(sp =>
             {
                 // register a GitHubJwtFactory used to create tokens to access github for a particular org on behalf  of the  app
@@ -28,8 +32,11 @@ namespace PullRequestQuantifier.GitHub.Client
                         ExpirationSeconds = 600 // 10 minutes is the maximum time allowed
                     });
             });
+            serviceCollection.AddSingleton<IGitHubClientAdapterFactory, GitHubClientAdapterFactory>();
+            serviceCollection.AddSingleton<IEventBus, AzureServiceBus>();
+            serviceCollection.AddHostedService<GitHubEventHost>();
+
             serviceCollection.AddApmForWebHost(configuration, typeof(Registrar).Namespace);
-            serviceCollection.AddSingleton<IEventBus, InMemoryEventBus>();
             return serviceCollection;
         }
     }

@@ -1,11 +1,17 @@
 namespace PullRequestQuantifier.GitHub.Client.Events
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Newtonsoft.Json.Linq;
 
-    public interface IEventBus
+    public interface IEventBus : IDisposable
     {
-        void Write(JObject payload);
+        Task WriteAsync(JObject payload);
 
-        JObject ReadNext();
+        Task SubscribeAsync(
+            Func<string, Task> messageHandler,
+            Func<Exception, Task> errorHandler,
+            CancellationToken cancellationToken);
     }
 }
