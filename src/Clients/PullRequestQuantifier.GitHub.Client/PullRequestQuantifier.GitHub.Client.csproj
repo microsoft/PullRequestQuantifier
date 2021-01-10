@@ -20,4 +20,9 @@
       <_ContentIncludedByDefault Remove="lib\PullRequestQuantifier.GitHub.Client.runtimeconfig.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" />
+      <ProjectReference Include="..\PullRequestQuantifier.Client\PullRequestQuantifier.Client.csproj" />
+    </ItemGroup>
+
 </Project>
