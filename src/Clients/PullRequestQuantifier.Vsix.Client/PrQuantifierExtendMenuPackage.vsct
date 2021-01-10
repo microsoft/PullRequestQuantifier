@@ -74,15 +74,15 @@
 
   <Symbols>
     <!-- This is the package guid. -->
-    <GuidSymbol name="guidPrQuantifierExtendMenuPackage" value="***REMOVED***474f9026-f077-41b5-9425-594257470430***REMOVED***" />
+    <GuidSymbol name="guidPrQuantifierExtendMenuPackage" value="{474f9026-f077-41b5-9425-594257470430}" />
 
     <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidPrQuantifierExtendMenuPackageCmdSet" value="***REMOVED***44b12fde-3768-431e-8b58-5639b8f483e2***REMOVED***">
+    <GuidSymbol name="guidPrQuantifierExtendMenuPackageCmdSet" value="{44b12fde-3768-431e-8b58-5639b8f483e2}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="PrQuantifierExtendMenuId" value="0x0100" />
     </GuidSymbol>
 
-    <GuidSymbol name="guidImages" value="***REMOVED***bc17368f-cba9-4556-8e63-417e9f9ea75a***REMOVED***" >
+    <GuidSymbol name="guidImages" value="{bc17368f-cba9-4556-8e63-417e9f9ea75a}" >
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />

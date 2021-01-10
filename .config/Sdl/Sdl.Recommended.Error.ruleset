@@ -64,7 +64,7 @@
     <Rule Id="CA1062" Action="None" />           <!-- Validate arguments of public methods -->
     <Rule Id="CA1063" Action="None" />           <!-- Implement IDisposable Correctly -->
     <Rule Id="CA1064" Action="None" />           <!-- Exceptions should be public -->
-    <Rule Id="CA1066" Action="None" />           <!-- Type ***REMOVED***0***REMOVED*** should implement IEquatable&lt;T&gt; because it overrides Equals -->
+    <Rule Id="CA1066" Action="None" />           <!-- Type {0} should implement IEquatable&lt;T&gt; because it overrides Equals -->
     <Rule Id="CA1067" Action="None" />           <!-- Override Object.Equals(object) when implementing IEquatable&lt;T&gt; -->
     <Rule Id="CA1068" Action="None" />           <!-- CancellationToken parameters must come last -->
     <Rule Id="CA1501" Action="None" />           <!-- Avoid excessive inheritance -->

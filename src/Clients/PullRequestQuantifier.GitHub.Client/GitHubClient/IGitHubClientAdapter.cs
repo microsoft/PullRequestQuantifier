@@ -1,5 +1,5 @@
 ﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
-***REMOVED***
+{
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Octokit;
@@ -8,7 +8,7 @@
     /// Defines the wrapper for the GitHub client.
     /// </summary>
     public interface IGitHubClientAdapter
-    ***REMOVED***
+    {
         /// <summary>
         /// Gets a repository by name.
         /// </summary>
@@ -110,11 +110,79 @@
             DeleteFileRequest deleteFileRequest);
 
         /// <summary>
+        /// Get raw contents of a file in the given repository.
+        /// </summary>
+        /// <param name="organizationName">Organization name.</param>
+        /// <param name="repositoryName">Repository name.</param>
+        /// <param name="path">Pat of the file to get.</param>
+        /// <returns>Raw contents of the file.</returns>
+        Task<byte[]> GetRawFileAsync(
+            string organizationName,
+            string repositoryName,
+            string path);
+
+        /// <summary>
         /// Get the list of files in pull request.
         /// </summary>
         /// <param name="repositoryId">Repository ID.</param>
         /// <param name="pullRequestNumber">Pull Reqeust number.</param>
         /// <returns>List of pull request files.</returns>
-        Task<IReadOnlyList<PullRequestFile>> GetPullRequestFiles(long repositoryId, int pullRequestNumber);
-***REMOVED***
-***REMOVED***
+        Task<IReadOnlyList<PullRequestFile>> GetPullRequestFilesAsync(long repositoryId, int pullRequestNumber);
+
+        /// <summary>
+        /// Get a pull request.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="pullRequestNumber">Pull Request number.</param>
+        /// <returns>Pull request details.</returns>
+        Task<PullRequest> GetPullRequestAsync(long repositoryId, int pullRequestNumber);
+
+        /// <summary>
+        /// Get an existing label by name.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="labelName">Label name.</param>
+        /// <returns>Label.</returns>
+        Task<Label> GetLabelAsync(long repositoryId, string labelName);
+
+        /// <summary>
+        /// Update an existing label.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="labelName">Label name.</param>
+        /// <param name="labelUpdate">Label update.</param>
+        /// <returns>Updated label.</returns>
+        Task<Label> UpdateLabelAsync(
+            long repositoryId,
+            string labelName,
+            LabelUpdate labelUpdate);
+
+        /// <summary>
+        /// Create a new label in the repository
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="label">Label to create.</param>
+        /// <returns>Created label.</returns>
+        Task<Label> CreateLabelAsync(long repositoryId, NewLabel label);
+
+        /// <summary>
+        /// Get the labels applied to an issue.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="issueNumber">Issue number.</param>
+        /// <returns>List of labels on the issue.</returns>
+        Task<IReadOnlyList<Label>> GetIssueLabelsAsync(long repositoryId, int issueNumber);
+
+        /// <summary>
+        /// Apply labels to an issue.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="issueNumber">Issue number.</param>
+        /// <param name="labels">List of labels to apply.</param>
+        /// <returns>Label list.</returns>
+        Task<IReadOnlyList<Label>> ApplyLabelAsync(
+            long repositoryId,
+            int issueNumber,
+            string[] labels);
+    }
+}

@@ -1,11 +1,11 @@
 ﻿namespace PullRequestQuantifier.GitEngine
-***REMOVED***
+{
     using System.Collections.Generic;
     using LibGit2Sharp;
     using PullRequestQuantifier.Abstractions.Git;
 
     public interface IGitEngine
-    ***REMOVED***
+    {
         /// <summary>
         /// Get the git changes.
         /// </summary>
@@ -34,5 +34,5 @@
         /// <param name="path">The path to the repository.</param>
         /// <returns>returns repo root.</returns>
         string GetRepoRoot(string path);
-***REMOVED***
-***REMOVED***
+    }
+}

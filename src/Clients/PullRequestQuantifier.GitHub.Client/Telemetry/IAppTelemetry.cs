@@ -1,13 +1,13 @@
 ﻿namespace PullRequestQuantifier.GitHub.Client.Telemetry
-***REMOVED***
+{
     using System;
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
     using Microsoft.ApplicationInsights.Extensibility.Implementation;
 
     public interface IAppTelemetry
-    ***REMOVED***
-        string OperationId ***REMOVED*** get; ***REMOVED***
+    {
+        string OperationId { get; }
 
         void RecordMetric((string name, long value) metric, params (string key, string value)[] dimensions);
 
@@ -33,5 +33,5 @@
             TimeSpan duration,
             string resultCode,
             bool success);
-***REMOVED***
-***REMOVED***
+    }
+}

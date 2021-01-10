@@ -1,5 +1,5 @@
 ﻿namespace PullRequestQuantifier.Client.ContextGenerator
-***REMOVED***
+{
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,17 +10,17 @@
     using global::PullRequestQuantifier.GitEngine;
 
     public sealed class ContextGenerator : IContextGenerator
-    ***REMOVED***
+    {
         private readonly IGitEngine gitEngine;
 
         public ContextGenerator()
-        ***REMOVED***
+        {
             gitEngine = new GitEngine();
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<Context> Create(string repoPath)
-        ***REMOVED***
+        {
             // get historical changes
             var historicalChanges = gitEngine.GetGitHistoricalChangesToParent(repoPath);
             var context = DefaultContext.Value;
@@ -35,12 +35,12 @@
             context.DeletionPercentile = new SortedDictionary<int, float>(Percentile(historicalChanges, false));
 
             return context;
-***REMOVED***
+        }
 
         private static IDictionary<int, float> Percentile(
             IReadOnlyDictionary<GitCommit, IEnumerable<GitFilePatch>> historicalChanges,
             bool addition)
-        ***REMOVED***
+        {
             var ret = new Dictionary<int, float>();
 
             var data = historicalChanges
@@ -50,14 +50,14 @@
             Array.Sort(data);
 
             foreach (var value in data)
-            ***REMOVED***
+            {
                 var percentile = ComputePercentile.Percentile(
                     data,
                     value);
                 ret[value] = percentile;
-    ***REMOVED***
+            }
 
             return ret;
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}

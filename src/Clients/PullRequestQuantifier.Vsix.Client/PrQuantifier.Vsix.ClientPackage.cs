@@ -1,5 +1,5 @@
 ﻿namespace PrQuantifier.Vsix.Client
-***REMOVED***
+{
     using System;
     using System.Threading;
     using Microsoft.VisualStudio.Shell;
@@ -24,7 +24,7 @@
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     public sealed class PrQuantifier : AsyncPackage
-    ***REMOVED***
+    {
          /// <summary>
         /// PrQuantifier.Vsix.ClientPackage GUID string.
         /// </summary>
@@ -38,10 +38,10 @@
         /// <param name="progress">A provider for progress updates.</param>
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
-        ***REMOVED***
+        {
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}

@@ -15,8 +15,8 @@ jobs:
         uses: azure/docker-login@v1
         with:
           login-server: prquantifier.azurecr.io
-          username: $***REMOVED******REMOVED*** secrets.REGISTRY_USERNAME ***REMOVED******REMOVED***
-          password: $***REMOVED******REMOVED*** secrets.REGISTRY_PASSWORD ***REMOVED******REMOVED***
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: 'Build and push docker image'
         run: |
           docker build -t prquantifier.azurecr.io/prquantifier:latest -f src/Clients/PullRequestQuantifier.GitHub.Client/Dockerfile .

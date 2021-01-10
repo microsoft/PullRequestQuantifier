@@ -1,5 +1,5 @@
 ﻿namespace PrQuantifier.Vsix.Client
-***REMOVED***
+{
     using System;
     using System.Runtime.InteropServices;
     using System.Threading;
@@ -28,7 +28,7 @@
     [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
     [Guid(PackageGuidString)]
     public sealed class PrQuantifierExtendMenuPackage : AsyncPackage
-    ***REMOVED***
+    {
         /// <summary>
         /// PrQuantifierExtendMenuPackage GUID string.
         /// </summary>
@@ -38,12 +38,12 @@
         /// Initializes a new instance of the <see cref="PrQuantifierExtendMenuPackage"/> class.
         /// </summary>
         public PrQuantifierExtendMenuPackage()
-        ***REMOVED***
+        {
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
-***REMOVED***
+        }
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
@@ -53,11 +53,11 @@
         /// <param name="progress">A provider for progress updates.</param>
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
-        ***REMOVED***
+        {
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await PrQuantifierExtendMenu.InitializeAsync(this);
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}

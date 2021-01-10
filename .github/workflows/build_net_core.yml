@@ -51,4 +51,4 @@ jobs:
       run: dotnet pack PullRequestQuantifier.sln --configuration Release  /p:PublicRelease=true
     - name: Push package to NuGet
       if: github.ref == 'refs/heads/main'
-      run: dotnet nuget push src\Clients\PullRequestQuantifier.Client\bin\Release\PullRequestQuantifier.*.nupkg --api-key $***REMOVED******REMOVED*** secrets.nugetKey ***REMOVED******REMOVED*** --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src\Clients\PullRequestQuantifier.Client\bin\Release\PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json

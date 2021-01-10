@@ -1,5 +1,5 @@
 namespace PullRequestQuantifier.GitHub.Client
-***REMOVED***
+{
     using GitHubJwt;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -9,16 +9,16 @@ namespace PullRequestQuantifier.GitHub.Client
     using PullRequestQuantifier.GitHub.Client.Telemetry;
 
     public static class Registrar
-    ***REMOVED***
+    {
         internal static IServiceCollection RegisterServices(
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
-        ***REMOVED***
+        {
             serviceCollection.Configure<GitHubAppSettings>(configuration.GetSection(nameof(GitHubAppSettings)));
             serviceCollection.Configure<AzureServiceBusSettings>(
                 configuration.GetSection(nameof(AzureServiceBusSettings)));
             serviceCollection.AddSingleton<IGitHubJwtFactory>(sp =>
-            ***REMOVED***
+            {
                 // register a GitHubJwtFactory used to create tokens to access github for a particular org on behalf  of the  app
                 var gitHubAppSettings = sp.GetRequiredService<IOptions<GitHubAppSettings>>().Value;
                 ArgumentCheck.ParameterIsNotNull(gitHubAppSettings, nameof(gitHubAppSettings));
@@ -27,17 +27,17 @@ namespace PullRequestQuantifier.GitHub.Client
                 return new GitHubJwtFactory(
                     new StringPrivateKeySource(gitHubAppSettings.PrivateKey),
                     new GitHubJwtFactoryOptions
-                    ***REMOVED***
+                    {
                         AppIntegrationId = int.Parse(gitHubAppSettings.Id), // The GitHub App Id
                         ExpirationSeconds = 600 // 10 minutes is the maximum time allowed
-            ***REMOVED***);
-    ***REMOVED***);
+                    });
+            });
             serviceCollection.AddSingleton<IGitHubClientAdapterFactory, GitHubClientAdapterFactory>();
             serviceCollection.AddSingleton<IEventBus, AzureServiceBus>();
             serviceCollection.AddHostedService<GitHubEventHost>();
 
             serviceCollection.AddApmForWebHost(configuration, typeof(Registrar).Namespace);
             return serviceCollection;
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}

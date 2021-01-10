@@ -1,59 +1,59 @@
 ﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
-***REMOVED***
+{
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Octokit;
 
     /// <inheritdoc cref="IGitHubClientAdapter"/>
     public sealed class GitHubClientAdapter : IGitHubClientAdapter
-    ***REMOVED***
+    {
         // this value should be considered as non existing repo
         private const int NotInitializedRepositoryId = 0;
         private readonly Octokit.IGitHubClient gitHubClient;
 
         public GitHubClientAdapter(Octokit.IGitHubClient gitHubClient)
-        ***REMOVED***
+        {
             this.gitHubClient = gitHubClient;
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<Repository> GetRepositoryByNameAsync(string organizationName, string repositoryName)
-        ***REMOVED***
+        {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             return await gitHubClient.Repository.Get(organizationName, repositoryName);
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<Repository> GetRepositoryByIdAsync(long repositoryId)
-        ***REMOVED***
+        {
             ArgumentCheck.IntegerIsGreaterThenThreshold(
                 repositoryId,
                 nameof(repositoryId),
                 NotInitializedRepositoryId);
             return await gitHubClient.Repository.Get(repositoryId);
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<IReadOnlyList<Repository>> GetRepositoriesForOrganizationAsync(string organizationName)
-        ***REMOVED***
+        {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             return await gitHubClient.Repository.GetAllForOrg(organizationName);
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<IReadOnlyList<GitHubCommit>> GetCommitsAsync(
             string organizationName,
             string repositoryName,
             string path = "")
-        ***REMOVED***
+        {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             return await gitHubClient.Repository.Commit.GetAll(
                 organizationName,
                 repositoryName,
-                new CommitRequest ***REMOVED*** Path = path ***REMOVED***);
-***REMOVED***
+                new CommitRequest { Path = path });
+        }
 
         /// <inheritdoc />
         public async Task<IReadOnlyList<RepositoryContent>> GetRepositoryContentByRefAsync(
@@ -61,7 +61,7 @@
             string repositoryName,
             string path,
             string reference)
-        ***REMOVED***
+        {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(path, nameof(path));
@@ -71,14 +71,14 @@
                 repositoryName,
                 path,
                 reference);
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<TreeResponse> GetGitTreeRecursiveAsync(
             string organizationName,
             string repositoryName,
             string reference)
-        ***REMOVED***
+        {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(reference, nameof(reference));
@@ -86,14 +86,14 @@
                 organizationName,
                 repositoryName,
                 reference);
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<Blob> GetGitBlobAsync(
             string organizationName,
             string repositoryName,
             string reference)
-        ***REMOVED***
+        {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(reference, nameof(reference));
@@ -101,7 +101,7 @@
                 organizationName,
                 repositoryName,
                 reference);
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<RepositoryContentChangeSet> CreateFileAsync(
@@ -109,7 +109,7 @@
             string repositoryName,
             string path,
             CreateFileRequest createFileRequest)
-        ***REMOVED***
+        {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(path, nameof(path));
@@ -119,7 +119,7 @@
                 repositoryName,
                 path,
                 createFileRequest);
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task DeleteFileAsync(
@@ -127,7 +127,7 @@
             string repositoryName,
             string path,
             DeleteFileRequest deleteFileRequest)
-        ***REMOVED***
+        {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(path, nameof(path));
@@ -137,12 +137,80 @@
                 repositoryName,
                 path,
                 deleteFileRequest);
-***REMOVED***
+        }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyList<PullRequestFile>> GetPullRequestFiles(long repositoryId, int pullRequestNumber)
-        ***REMOVED***
+        public async Task<byte[]> GetRawFileAsync(
+            string organizationName,
+            string repositoryName,
+            string path)
+        {
+            return await gitHubClient.Repository.Content.GetRawContent(
+                organizationName,
+                repositoryName,
+                path);
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<PullRequestFile>> GetPullRequestFilesAsync(
+            long repositoryId,
+            int pullRequestNumber)
+        {
             return await gitHubClient.PullRequest.Files(repositoryId, pullRequestNumber);
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+
+        /// <inheritdoc />
+        public async Task<PullRequest> GetPullRequestAsync(long repositoryId, int pullRequestNumber)
+        {
+            return await gitHubClient.PullRequest.Get(repositoryId, pullRequestNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task<Label> CreateLabelAsync(
+            long repositoryId,
+            NewLabel label)
+        {
+            return await gitHubClient.Issue.Labels.Create(repositoryId, label);
+        }
+
+        /// <inheritdoc />
+        public async Task<Label> GetLabelAsync(
+            long repositoryId,
+            string labelName)
+        {
+            return await gitHubClient.Issue.Labels.Get(repositoryId, labelName);
+        }
+
+        /// <inheritdoc />
+        public async Task<Label> UpdateLabelAsync(
+            long repositoryId,
+            string labelName,
+            LabelUpdate labelUpdate)
+        {
+            return await gitHubClient.Issue.Labels.Update(
+                repositoryId,
+                labelName,
+                labelUpdate);
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<Label>> GetIssueLabelsAsync(
+            long repositoryId,
+            int issueNumber)
+        {
+            return await gitHubClient.Issue.Labels.GetAllForIssue(repositoryId, issueNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<Label>> ApplyLabelAsync(
+            long repositoryId,
+            int issueNumber,
+            string[] labels)
+        {
+            return await gitHubClient.Issue.Labels.AddToIssue(
+                repositoryId,
+                issueNumber,
+                labels);
+        }
+    }
+}

@@ -1,5 +1,5 @@
 ﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
-***REMOVED***
+{
     using System;
     using System.Threading;
     using System.Threading.Tasks;
@@ -12,7 +12,7 @@
 
     /// <inheritdoc cref="IGitHubClientAdapterFactory"/>
     public sealed class GitHubClientAdapterFactory : IGitHubClientAdapterFactory
-    ***REMOVED***
+    {
         private readonly GitHubAppSettings gitHubAppSettings;
         private readonly IGitHubJwtFactory gitHubJwtFactory;
         private readonly IAppTelemetry appTelemetry;
@@ -22,15 +22,15 @@
             IGitHubJwtFactory gitHubJwtFactory,
             IOptions<GitHubAppSettings> gitHubAppSettings,
             IAppTelemetry appTelemetry)
-        ***REMOVED***
+        {
             this.gitHubJwtFactory = gitHubJwtFactory;
             this.appTelemetry = appTelemetry;
             this.gitHubAppSettings = gitHubAppSettings.Value;
-***REMOVED***
+        }
 
         /// <inheritdoc />
         public async Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(long installationId)
-        ***REMOVED***
+        {
             gitHubClient = CreateClient(
                 new Credentials(gitHubJwtFactory.CreateEncodedJwtToken(), AuthenticationType.Bearer),
                 this.gitHubAppSettings,
@@ -40,15 +40,15 @@
 
             gitHubClient.Credentials = new Credentials(token, AuthenticationType.Bearer);
             return new GitHubClientAdapter(gitHubClient);
-***REMOVED***
+        }
 
         private static GitHubClient CreateClient(
             Credentials credentials,
             GitHubAppSettings gitHubAppSettings,
             IAppTelemetry appTelemetry)
-        ***REMOVED***
+        {
             try
-            ***REMOVED***
+            {
                 return new GitHubClient(
                     new Connection(
                         new ProductHeaderValue(gitHubAppSettings.Name),
@@ -56,34 +56,34 @@
                         new InMemoryCredentialStore(credentials),
                         new HttpClientAdapter(() => new GitHubClientMessageHandler(appTelemetry)),
                         new SimpleJsonSerializer()));
-    ***REMOVED***
+            }
             catch (Exception ex)
-            ***REMOVED***
+            {
                 throw new CreateGitHubClientException(
-                    $"Failed to create client for GitHubApp: ***REMOVED***gitHubAppSettings.Name***REMOVED***", ex);
-    ***REMOVED***
-***REMOVED***
+                    $"Failed to create client for GitHubApp: {gitHubAppSettings.Name}", ex);
+            }
+        }
 
         private async Task<(string, DateTimeOffset)> CreateInstallationTokenByInstallationId(
             long installationId,
             GitHubAppSettings gitHubAppSettings)
-        ***REMOVED***
+        {
             try
-            ***REMOVED***
+            {
                 var installationToken = await gitHubClient.GitHubApps.CreateInstallationToken(installationId);
                 return (installationToken.Token, installationToken.ExpiresAt);
-    ***REMOVED***
+            }
             catch (NotFoundException ex)
-            ***REMOVED***
+            {
                 throw new CreateGitHubClientException(
-                    $"GitHub installation (***REMOVED***installationId***REMOVED***) not found or insufficient access privileges.", ex);
-    ***REMOVED***
+                    $"GitHub installation ({installationId}) not found or insufficient access privileges.", ex);
+            }
             catch (Exception ex)
-            ***REMOVED***
+            {
                 throw new CreateGitHubClientException(
-                    $"Failed to get access token for installation: ***REMOVED***installationId***REMOVED***, GitHubApp: ***REMOVED***gitHubAppSettings.Name***REMOVED***",
+                    $"Failed to get access token for installation: {installationId}, GitHubApp: {gitHubAppSettings.Name}",
                     ex);
-    ***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
+            }
+        }
+    }
+}

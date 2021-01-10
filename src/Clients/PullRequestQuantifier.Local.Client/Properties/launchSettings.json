@@ -1,7 +1,7 @@
-***REMOVED***
-  "profiles": ***REMOVED***
-    "PrQuantifier.Local.Client": ***REMOVED***
+{
+  "profiles": {
+    "PrQuantifier.Local.Client": {
       "commandName": "Project"
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    }
+  }
+}

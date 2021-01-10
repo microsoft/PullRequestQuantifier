@@ -1,15 +1,15 @@
 ﻿namespace PullRequestQuantifier.Abstractions.Git
-***REMOVED***
+{
     using System;
 
     public sealed class GitCommit
-    ***REMOVED***
-        public string AuthorName ***REMOVED*** get; set; ***REMOVED***
+    {
+        public string AuthorName { get; set; }
 
-        public string Title ***REMOVED*** get; set; ***REMOVED***
+        public string Title { get; set; }
 
-        public string Sha ***REMOVED*** get; set; ***REMOVED***
+        public string Sha { get; set; }
 
-        public DateTimeOffset DateTimeOffset ***REMOVED*** get; set; ***REMOVED***
-***REMOVED***
-***REMOVED***
+        public DateTimeOffset DateTimeOffset { get; set; }
+    }
+}

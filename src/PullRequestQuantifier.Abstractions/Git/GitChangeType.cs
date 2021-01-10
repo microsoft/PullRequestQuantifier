@@ -1,7 +1,7 @@
 ﻿namespace PullRequestQuantifier.Abstractions.Git
-***REMOVED***
+{
     public enum GitChangeType
-    ***REMOVED***
+    {
         /// <summary>
         /// No changes detected.
         /// </summary>
@@ -57,5 +57,5 @@
         /// Entry is currently in conflict.
         /// </summary>
         Conflicted = 10
-***REMOVED***
-***REMOVED***
+    }
+}

@@ -1,5 +1,5 @@
 ﻿namespace PullRequestQuantifier.Local.Context
-***REMOVED***
+{
     using System;
     using System.IO;
     using System.Threading.Tasks;
@@ -8,9 +8,9 @@
     using PullRequestQuantifier.Client.ContextGenerator;
 
     public static class Program
-    ***REMOVED***
+    {
         public static async Task Main(string[] args)
-        ***REMOVED***
+        {
             args = CheckArgs(args);
 
             IContextGenerator contextGenerator = new ContextGenerator();
@@ -21,24 +21,24 @@
             var filePath = Path.Combine(repoRootPath, ".prquantifier");
             context.SerializeToYaml(filePath);
             Console.WriteLine(
-                $"Generate context for Repo located on '***REMOVED***repoRootPath***REMOVED***'" +
-                $", context file located at ***REMOVED***Path.Combine(Environment.CurrentDirectory, filePath)***REMOVED***");
-***REMOVED***
+                $"Generate context for Repo located on '{repoRootPath}'" +
+                $", context file located at {Path.Combine(Environment.CurrentDirectory, filePath)}");
+        }
 
         private static string[] CheckArgs(string[] args)
-        ***REMOVED***
+        {
             // if repo path is missing then consider the local repo
             if (args == null || args.Length == 0)
-            ***REMOVED***
-                return new[] ***REMOVED*** Environment.CurrentDirectory ***REMOVED***;
-    ***REMOVED***
+            {
+                return new[] { Environment.CurrentDirectory };
+            }
 
             if (!Directory.Exists(args[0]))
-            ***REMOVED***
+            {
                 throw new DirectoryNotFoundException(args[0]);
-    ***REMOVED***
+            }
 
             return args;
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}

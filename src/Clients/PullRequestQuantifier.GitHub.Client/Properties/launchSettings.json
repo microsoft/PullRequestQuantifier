@@ -1,31 +1,31 @@
-﻿***REMOVED***
+﻿{
   "$schema": "http://json.schemastore.org/launchsettings.json",
-  "iisSettings": ***REMOVED***
+  "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
-    "iisExpress": ***REMOVED***
+    "iisExpress": {
       "applicationUrl": "http://localhost:25789",
       "sslPort": 44341
-***REMOVED***
-  ***REMOVED***,
-  "profiles": ***REMOVED***
-    "IIS Express": ***REMOVED***
+    }
+  },
+  "profiles": {
+    "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "environmentVariables": ***REMOVED***
+      "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-  ***REMOVED***
-***REMOVED***
-    "PullRequestQuantifier.GitHub.Client": ***REMOVED***
+      }
+    },
+    "PullRequestQuantifier.GitHub.Client": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5001;http://localhost:6000",
-      "environmentVariables": ***REMOVED***
+      "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-  ***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+      }
+    }
+  }
+}

@@ -1,17 +1,17 @@
 namespace PullRequestQuantifier.GitHub.Client.GitHubClient
-***REMOVED***
+{
     public sealed class GitHubAppSettings
-    ***REMOVED***
-        public string EnterpriseUrl ***REMOVED*** get; set; ***REMOVED***
+    {
+        public string EnterpriseUrl { get; set; }
 
-        public string EnterpriseApiRoot ***REMOVED*** get; set; ***REMOVED***
+        public string EnterpriseApiRoot { get; set; }
 
-        public string Id ***REMOVED*** get; set; ***REMOVED***
+        public string Id { get; set; }
 
-        public string Name ***REMOVED*** get; set; ***REMOVED***
+        public string Name { get; set; }
 
-        public string PrivateKey ***REMOVED*** get; set; ***REMOVED***
+        public string PrivateKey { get; set; }
 
-        public string WebhookSecret ***REMOVED*** get; set; ***REMOVED***
-***REMOVED***
-***REMOVED***
+        public string WebhookSecret { get; set; }
+    }
+}

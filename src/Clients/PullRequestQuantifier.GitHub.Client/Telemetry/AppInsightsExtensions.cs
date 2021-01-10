@@ -1,5 +1,5 @@
 namespace PullRequestQuantifier.GitHub.Client.Telemetry
-***REMOVED***
+{
     using System;
     using Microsoft.ApplicationInsights;
     using Microsoft.ApplicationInsights.Extensibility;
@@ -10,7 +10,7 @@ namespace PullRequestQuantifier.GitHub.Client.Telemetry
     using Microsoft.Extensions.Logging.ApplicationInsights;
 
     public static class AppInsightsExtensions
-    ***REMOVED***
+    {
         /// <summary>
         /// Adds components for Application Performance Monitoring for a WebHost.
         /// This includes Application Insights support for:
@@ -25,46 +25,46 @@ namespace PullRequestQuantifier.GitHub.Client.Telemetry
             this IServiceCollection services,
             IConfiguration configuration,
             string name)
-        ***REMOVED***
+        {
             var instrumentationKey = GetInstrumentationKey(configuration);
             var options = new Microsoft.ApplicationInsights.AspNetCore.Extensions.ApplicationInsightsServiceOptions
-            ***REMOVED***
+            {
                 InstrumentationKey = instrumentationKey,
                 AddAutoCollectedMetricExtractor = true,
                 EnableAdaptiveSampling = false,
-                DependencyCollectionOptions = ***REMOVED*** EnableLegacyCorrelationHeadersInjection = true ***REMOVED***,
+                DependencyCollectionOptions = { EnableLegacyCorrelationHeadersInjection = true },
                 RequestCollectionOptions =
-                ***REMOVED***
+                {
                     InjectResponseHeaders = true,
                     TrackExceptions = true
-        ***REMOVED***
-    ***REMOVED***;
+                }
+            };
 
             services.AddApplicationInsightsTelemetry(options);
             services.AddApmCommon(configuration, name, instrumentationKey);
 
             return services;
-***REMOVED***
+        }
 
         private static IServiceCollection AddApmCommon(
             this IServiceCollection services,
             IConfiguration configuration,
             string name,
             string instrumentationKey)
-        ***REMOVED***
+        {
             services.AddLogging(configuration, instrumentationKey);
             services.AddMetrics(name);
 
             return services;
-***REMOVED***
+        }
 
         private static IServiceCollection AddLogging(
             this IServiceCollection services,
             IConfiguration configuration,
             string instrumentationKey)
-        ***REMOVED***
+        {
             services.AddLogging(builder =>
-            ***REMOVED***
+            {
                 builder.ClearProviders();
 
                 var loggingConfig = configuration.GetSection("Logging");
@@ -83,29 +83,29 @@ namespace PullRequestQuantifier.GitHub.Client.Telemetry
                     .AddFilter<ApplicationInsightsLoggerProvider>(
                         "Microsoft.AspNetCore.Hosting.Internal.WebHost",
                         logLevelConfig.GetValue("Microsoft.AspNetCore.Hosting.Internal.WebHost", LogLevel.Warning));
-    ***REMOVED***);
+            });
 
             return services;
-***REMOVED***
+        }
 
         private static string GetInstrumentationKey(IConfiguration config)
-        ***REMOVED***
+        {
             var instrumentationKey = config.GetSection("ApplicationInsights:InstrumentationKey").Value;
             return instrumentationKey;
-***REMOVED***
+        }
 
         private static IServiceCollection AddMetrics(
             this IServiceCollection services,
             string applicationName)
-        ***REMOVED***
+        {
             services.TryAddSingleton<IAppTelemetry>((IServiceProvider sp) =>
-            ***REMOVED***
+            {
                 return new AppTelemetry(
                     applicationName,
                     sp.GetRequiredService<TelemetryClient>());
-    ***REMOVED***);
+            });
 
             return services;
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}

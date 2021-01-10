@@ -1,5 +1,5 @@
 ﻿namespace PullRequestQuantifier.Local.Client
-***REMOVED***
+{
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -7,118 +7,118 @@
     using PullRequestQuantifier.Client.QuantifyClient;
 
     public class CommandLine
-    ***REMOVED***
+    {
         private readonly Stack<string> arguments = new Stack<string>();
 
         public CommandLine(string[] args)
-        ***REMOVED***
+        {
             if (args.Length == 1
                 && (args[0] == "-?"
                     || args[0] == "/?"
                     || args[0] == "-h"
                     || args[0] == "--help"))
-            ***REMOVED***
+            {
                 PrintUsage();
                 return;
-    ***REMOVED***
+            }
 
             for (var i = args.Length - 1; i >= 0; i--)
-            ***REMOVED***
+            {
                 arguments.Push(args[i]);
-    ***REMOVED***
+            }
 
             ParseArgs();
-***REMOVED***
+        }
 
-        public string GitRepoPath ***REMOVED*** get; private set; ***REMOVED*** = Environment.CurrentDirectory;
+        public string GitRepoPath { get; private set; } = Environment.CurrentDirectory;
 
-        public string ContextPath ***REMOVED*** get; set; ***REMOVED***
+        public string ContextPath { get; set; }
 
-        public bool Service ***REMOVED*** get; set; ***REMOVED***
+        public bool Service { get; set; }
 
-        public bool PrintJson ***REMOVED*** get; set; ***REMOVED***
+        public bool PrintJson { get; set; }
 
-        public QuantifyClientOutput Output ***REMOVED*** get; set; ***REMOVED***
+        public QuantifyClientOutput Output { get; set; }
 
         /// <summary>
         /// Gets or sets if <see cref="QuantifierInputFile"/> is specified, this is given preference
         /// over <see cref="GitRepoPath"/>.
         /// </summary>
-        public string QuantifierInputFile ***REMOVED*** get; set; ***REMOVED***
+        public string QuantifierInputFile { get; set; }
 
         private void ParseArgs()
-        ***REMOVED***
+        {
             while (arguments.Count > 0)
-            ***REMOVED***
+            {
                 var option = PopOption(arguments);
                 var optionName = option.Key.ToLowerInvariant();
 
                 if (!optionName.StartsWith("-", StringComparison.Ordinal))
-                ***REMOVED***
-                    throw new ArgumentException($"unknown command line option: ***REMOVED***option.Key***REMOVED***");
-        ***REMOVED***
+                {
+                    throw new ArgumentException($"unknown command line option: {option.Key}");
+                }
 
                 optionName = optionName.Substring(1);
 
                 if (optionName == "gitrepopath")
-                ***REMOVED***
+                {
                     GitRepoPath = option.Value ?? throw new ArgumentException("Missing argument for -gitrepopath");
-        ***REMOVED***
+                }
                 else if (optionName == "service")
-                ***REMOVED***
+                {
                     Service = true;
-        ***REMOVED***
+                }
                 else if (optionName == "printjson")
-                ***REMOVED***
+                {
                     PrintJson = true;
-        ***REMOVED***
+                }
                 else if (optionName == "output")
-                ***REMOVED***
+                {
                     Output = !string.IsNullOrWhiteSpace(option.Value)
                         ? Enum.Parse<QuantifyClientOutput>(option.Value)
                         : QuantifyClientOutput.Detailed;
-        ***REMOVED***
+                }
                 else if (optionName == "contextpath")
-                ***REMOVED***
+                {
                     if (option.Value != null && !File.Exists(option.Value))
-                    ***REMOVED***
-                        throw new ArgumentException($"Cannot find the specified context file: ***REMOVED***option.Value***REMOVED***");
-            ***REMOVED***
+                    {
+                        throw new ArgumentException($"Cannot find the specified context file: {option.Value}");
+                    }
 
                     ContextPath = option.Value;
-        ***REMOVED***
+                }
                 else if (optionName == "quantifierinput")
-                ***REMOVED***
+                {
                     if (option.Value != null && !File.Exists(option.Value))
-                    ***REMOVED***
-                        throw new ArgumentException($"Cannot find the specified quantifier input file: ***REMOVED***option.Value***REMOVED***");
-            ***REMOVED***
+                    {
+                        throw new ArgumentException($"Cannot find the specified quantifier input file: {option.Value}");
+                    }
 
                     QuantifierInputFile = option.Value;
-        ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+                }
+            }
+        }
 
         private KeyValuePair<string, string> PopOption(Stack<string> arguments)
-        ***REMOVED***
+        {
             var option = arguments.Pop();
             string value = null;
 
             if (arguments.Count > 0 && !arguments.Peek().StartsWith("-", StringComparison.Ordinal))
-            ***REMOVED***
+            {
                 value = arguments.Pop();
-    ***REMOVED***
+            }
 
             return new KeyValuePair<string, string>(option, value);
-***REMOVED***
+        }
 
         private void PrintUsage()
-        ***REMOVED***
+        {
             var executableName = Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().GetName().FullName);
 
             Console.WriteLine("Copyright (C) .NET Foundation.");
             Console.WriteLine();
-            Console.WriteLine($"usage: ./***REMOVED***executableName***REMOVED***.exe [options]");
+            Console.WriteLine($"usage: ./{executableName}.exe [options]");
             Console.WriteLine();
             Console.WriteLine("Options");
             Console.WriteLine();
@@ -136,6 +136,6 @@
             Console.WriteLine("                          :     \".prquantifier\" is searched for in the repo root");
             Console.WriteLine("                          :   else uses a default context");
             Console.WriteLine();
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}

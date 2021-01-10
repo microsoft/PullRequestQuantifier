@@ -1,11 +1,11 @@
 ﻿namespace PullRequestQuantifier.GitHub.Client.Events
-***REMOVED***
+{
     public class AzureServiceBusSettings
-    ***REMOVED***
-        public string ConnectionString ***REMOVED*** get; set; ***REMOVED***
+    {
+        public string ConnectionString { get; set; }
 
-        public string TopicName ***REMOVED*** get; set; ***REMOVED***
+        public string TopicName { get; set; }
 
-        public string SubscriptionName ***REMOVED*** get; set; ***REMOVED***
-***REMOVED***
-***REMOVED***
+        public string SubscriptionName { get; set; }
+    }
+}
