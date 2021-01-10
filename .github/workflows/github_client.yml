@@ -1,4 +1,4 @@
-name: GitHub client
+name: Build and Deploy GitHub client
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     #branches: [ main ]
 
 jobs:
-  build:
+  build-and-deploy:
 
     runs-on: windows-latest
 
@@ -24,4 +24,13 @@ jobs:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     - name: Build
       run: dotnet build src/Clients/PullRequestQuantifier.GitHub.Client/PullRequestQuantifier.GitHub.Client.csproj --configuration Release --no-restore
-    
+    - name: dotnet publish
+      run: dotnet publish src/Clients/PullRequestQuantifier.GitHub.Client/PullRequestQuantifier.GitHub.Client.csproj -c Release -o ${{env.DOTNET_ROOT}}/pullrequestquantifiergithubclient
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'pullrequestquantifier'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_8b85ecb7217343398f8c79c14a772f30 }}
+        package: ${{env.DOTNET_ROOT}}/pullrequestquantifiergithubclient
+        
