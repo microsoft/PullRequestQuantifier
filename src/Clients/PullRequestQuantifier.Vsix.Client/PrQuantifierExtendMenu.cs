@@ -4,14 +4,15 @@
     using System.ComponentModel.Design;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using EnvDTE;
     using Microsoft;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
-    using Microsoft.VisualStudio.Threading;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using PullRequestQuantifier.Vsix.Client;
     using Task = System.Threading.Tasks.Task;
 
     /// <summary>
@@ -92,13 +93,22 @@
             documentEvents = dte.Events.DocumentEvents;
             documentEvents.DocumentSaved += DocumentEvents_DocumentSaved;
 
+            var projects = SolutionProjects.Projects();
+
             while (true)
             ***REMOVED***
                 if ((runPrQuantifierDateTime == changedEventDateTime
                     && runPrQuantifierDateTime != default)
-                    || dte.Solution.Projects.Count == 0)
+                    || projects.Count() == 0)
                 ***REMOVED***
                     await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+                    // refresh projects list in case is still empty
+                    if (projects.Count() == 0)
+                    ***REMOVED***
+                        projects = SolutionProjects.Projects();
+            ***REMOVED***
+
                     continue;
         ***REMOVED***
 
@@ -112,7 +122,7 @@
                             CreateNoWindow = true,
                             UseShellExecute = false,
                             FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PullRequestQuantifier.Local.Client.exe"),
-                            Arguments = $"-GitRepoPath=***REMOVED***dte.Solution.Projects.Item(1).FullName***REMOVED*** -PrintJson=true"
+                            Arguments = $"-GitRepoPath \"***REMOVED***projects.ElementAt(0).FullName***REMOVED***\" -PrintJson true"
                 ***REMOVED***
             ***REMOVED***;
 
@@ -145,6 +155,14 @@
             while (string.IsNullOrEmpty(result))
             ***REMOVED***
                 result = await process.StandardOutput.ReadToEndAsync();
+
+                if (result.IndexOf(
+                    "GitRepoPath couldn't be found",
+                    StringComparison.InvariantCultureIgnoreCase) > -1)
+                ***REMOVED***
+                    throw new ArgumentException("GitRepoPath couldn't be found");
+        ***REMOVED***
+
                 try
                 ***REMOVED***
                      var jObject = JObject.Parse(result);
@@ -165,8 +183,8 @@
         ***REMOVED***
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            string output = $"PrQuantified = ***REMOVED***quantifierResult["Label"]***REMOVED***\t" +
-                    $"Diff +***REMOVED***quantifierResult["QuantifiedLinesAdded"]***REMOVED*** -***REMOVED***quantifierResult["QuantifiedLinesDeleted"]***REMOVED*** (Formula = ***REMOVED***quantifierResult["Formula"]***REMOVED***)" +
+            string output = $"PrQuantified = ***REMOVED***quantifierResult["Label"]***REMOVED***,\t" +
+                    $"Diff +***REMOVED***quantifierResult["QuantifiedLinesAdded"]***REMOVED*** -***REMOVED***quantifierResult["QuantifiedLinesDeleted"]***REMOVED*** (Formula = ***REMOVED***quantifierResult["Formula"]***REMOVED***)," +
                     $"\tTeam percentiles: additions = ***REMOVED***quantifierResult["PercentileAddition"]***REMOVED***%" +
                     $", deletions = ***REMOVED***quantifierResult["PercentileDeletion"]***REMOVED***%.";
 

@@ -1,9 +1,10 @@
-﻿namespace PrQuantifier.Local.Client
+﻿namespace PullRequestQuantifier.Local.Client
 ***REMOVED***
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
+    using PullRequestQuantifier.Client.QuantifyClient;
 
     public class CommandLine
     ***REMOVED***
@@ -11,7 +12,11 @@
 
         public CommandLine(string[] args)
         ***REMOVED***
-            if (args.Length == 1 && (args[0] == "-?" || args[0] == "/?" || args[0] == "-h" || args[0] == "--help"))
+            if (args.Length == 1
+                && (args[0] == "-?"
+                    || args[0] == "/?"
+                    || args[0] == "-h"
+                    || args[0] == "--help"))
             ***REMOVED***
                 PrintUsage();
                 return;
@@ -33,8 +38,10 @@
 
         public bool PrintJson ***REMOVED*** get; set; ***REMOVED***
 
+        public QuantifyClientOutput Output ***REMOVED*** get; set; ***REMOVED***
+
         /// <summary>
-        /// If <see cref="QuantifierInputFile"/> is specified, this is given preference
+        /// Gets or sets if <see cref="QuantifierInputFile"/> is specified, this is given preference
         /// over <see cref="GitRepoPath"/>.
         /// </summary>
         public string QuantifierInputFile ***REMOVED*** get; set; ***REMOVED***
@@ -55,12 +62,7 @@
 
                 if (optionName == "gitrepopath")
                 ***REMOVED***
-                    if (option.Value == null)
-                    ***REMOVED***
-                        throw new ArgumentException("Missing argument for -gitrepopath");
-            ***REMOVED***
-
-                    GitRepoPath = option.Value;
+                    GitRepoPath = option.Value ?? throw new ArgumentException("Missing argument for -gitrepopath");
         ***REMOVED***
                 else if (optionName == "service")
                 ***REMOVED***
@@ -69,6 +71,12 @@
                 else if (optionName == "printjson")
                 ***REMOVED***
                     PrintJson = true;
+        ***REMOVED***
+                else if (optionName == "output")
+                ***REMOVED***
+                    Output = !string.IsNullOrWhiteSpace(option.Value)
+                        ? Enum.Parse<QuantifyClientOutput>(option.Value)
+                        : QuantifyClientOutput.Detailed;
         ***REMOVED***
                 else if (optionName == "contextpath")
                 ***REMOVED***

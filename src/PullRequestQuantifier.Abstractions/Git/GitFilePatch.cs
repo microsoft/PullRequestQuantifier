@@ -41,6 +41,11 @@
         public string FilePath ***REMOVED*** get; set; ***REMOVED***
 
         /// <summary>
+        /// Gets or sets the file extension.
+        /// </summary>
+        public string FileExtension ***REMOVED*** get; set; ***REMOVED***
+
+        /// <summary>
         /// Gets or sets the kind of change reported by diff.
         /// </summary>
         public GitChangeType ChangeType ***REMOVED*** get; set; ***REMOVED***

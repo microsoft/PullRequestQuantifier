@@ -134,6 +134,7 @@
             // if file change was discarded from the counted do nothing.
             if (gitFilePatch.DiscardFromCounting)
             ***REMOVED***
+                Console.WriteLine();
                 return;
     ***REMOVED***
 

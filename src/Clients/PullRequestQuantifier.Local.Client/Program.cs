@@ -7,14 +7,15 @@
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
-    using global::PullRequestQuantifier.Client;
     using LibGit2Sharp;
-    using PrQuantifier.Local.Client;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
+    using PullRequestQuantifier.Client.QuantifyClient;
 
     /// <summary>
-    /// Parameters accepted: GitRepoPath=***REMOVED******REMOVED*** ContextPath=***REMOVED******REMOVED*** Service=True/False(default is false) PrintJson=True/False(default is false).
+    /// Parameters accepted: GitRepoPath=***REMOVED******REMOVED*** ContextPath=***REMOVED******REMOVED***
+    /// Service=True/False(default is false) PrintJson=True/False(default is false)
+    /// output=summaryByExt/summaryByFile/detailed (default is detailed).
     /// </summary>
     public static class Program
     ***REMOVED***
@@ -34,10 +35,13 @@
                 // run once and exit
                 var quantifierInput = new QuantifierInput();
                 var changes = JsonSerializer.Deserialize<List<GitFilePatch>>(
-                    File.ReadAllText(commandLine.QuantifierInputFile));
+                    await File.ReadAllTextAsync(commandLine.QuantifierInputFile));
                 changes?.ForEach(c => quantifierInput.Changes.Add(c));
 
-                quantifyClient = new QuantifyClient(contextPath, commandLine.PrintJson);
+                quantifyClient = new QuantifyClient(
+                    contextPath,
+                    commandLine.PrintJson,
+                    commandLine.Output);
                 await quantifyClient.Compute(quantifierInput);
     ***REMOVED***
             else
@@ -56,7 +60,10 @@
                     new DirectoryInfo(repoRootPath).Parent?.FullName,
                     ".prquantifier");
 
-                quantifyClient = new QuantifyClient(contextPath, commandLine.PrintJson);
+                quantifyClient = new QuantifyClient(
+                    contextPath,
+                    commandLine.PrintJson,
+                    commandLine.Output);
 
                 // run this as a service in case is configured otherwise only run once
                 if (commandLine.Service)
@@ -148,7 +155,6 @@
     ***REMOVED***);
 ***REMOVED***
 
-// Define the event handlers.
         private static void OnChanged(object source, FileSystemEventArgs e)
         ***REMOVED***
             changedEventDateTime = DateTimeOffset.Now;
