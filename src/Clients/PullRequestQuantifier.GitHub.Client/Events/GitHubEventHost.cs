@@ -65,6 +65,11 @@
             var quantifierInput = new QuantifierInput();
             foreach (var pullRequestFile in pullRequestFiles)
             {
+                if (pullRequestFile.Patch == null)
+                {
+                    continue;
+                }
+
                 var changeType = GitChangeType.Modified;
                 switch (pullRequestFile.Status)
                 {
