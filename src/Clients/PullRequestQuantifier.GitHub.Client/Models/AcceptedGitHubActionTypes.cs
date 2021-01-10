@@ -6,6 +6,8 @@ namespace PullRequestQuantifier.GitHub.Client.Models
     [JsonConverter(typeof(StringEnumConverter))]
     public enum AcceptedGitHubActionTypes
     {
-        Opened = 1
+        Opened = 1,
+        Synchronize,
+        Reopened
     }
 }

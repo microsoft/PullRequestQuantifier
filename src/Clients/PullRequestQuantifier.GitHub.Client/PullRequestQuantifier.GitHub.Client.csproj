@@ -14,4 +14,10 @@
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="lib\PullRequestQuantifier.GitHub.Client.deps.json" />
+      <_ContentIncludedByDefault Remove="lib\PullRequestQuantifier.GitHub.Client.runtimeconfig.dev.json" />
+      <_ContentIncludedByDefault Remove="lib\PullRequestQuantifier.GitHub.Client.runtimeconfig.json" />
+    </ItemGroup>
+
 </Project>
