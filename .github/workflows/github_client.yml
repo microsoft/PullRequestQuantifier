@@ -1,0 +1,35 @@
+name: Build and Deploy GitHub client
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Install dependencies
+      run: dotnet restore src/Clients/PullRequestQuantifier.GitHub.Client/PullRequestQuantifier.GitHub.Client.csproj
+      env:
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    - name: Build
+      run: dotnet build src/Clients/PullRequestQuantifier.GitHub.Client/PullRequestQuantifier.GitHub.Client.csproj --configuration Release --no-restore
+    - name: dotnet publish
+      run: dotnet publish src/Clients/PullRequestQuantifier.GitHub.Client/PullRequestQuantifier.GitHub.Client.csproj -c Release -o ${{env.DOTNET_ROOT}}/pullrequestquantifiergithubclient
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'pullrequestquantifier'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_Password }}
+        package: ${{env.DOTNET_ROOT}}/pullrequestquantifiergithubclient
