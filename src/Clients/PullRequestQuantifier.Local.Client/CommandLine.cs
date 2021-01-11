@@ -39,6 +39,8 @@
 
         public bool Service { get; set; }
 
+        public bool PrintJson { get; set; }
+
         public QuantifyClientOutput Output { get; set; }
 
         /// <summary>
@@ -68,6 +70,10 @@
                 else if (optionName == "service")
                 {
                     Service = true;
+                }
+                else if (optionName == "printjson")
+                {
+                    PrintJson = true;
                 }
                 else if (optionName == "output")
                 {

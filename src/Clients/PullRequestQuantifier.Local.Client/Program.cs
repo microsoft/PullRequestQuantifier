@@ -15,7 +15,7 @@
 
     /// <summary>
     /// Parameters accepted: GitRepoPath={} ContextPath={}
-    /// Service=True/False(default is false)
+    /// Service=True/False(default is false)  PrintJson=True/False(default is false)
     /// output=summaryByExt/summaryByFile/detailed (default is detailed).
     /// </summary>
     public static class Program
@@ -41,9 +41,10 @@
 
                 quantifyClient = new QuantifyClient(
                     contextPath,
-                    commandLine.Output,
-                    false);
-                PrintResult(await quantifyClient.Compute(quantifierInput));
+                    commandLine.Output);
+                PrintResult(
+                    await quantifyClient.Compute(quantifierInput),
+                    commandLine.PrintJson);
             }
             else
             {
@@ -63,8 +64,7 @@
 
                 quantifyClient = new QuantifyClient(
                     contextPath,
-                    commandLine.Output,
-                    false);
+                    commandLine.Output);
 
                 // run this as a service in case is configured otherwise only run once
                 if (commandLine.Service)
@@ -77,7 +77,9 @@
                 }
 
                 // in case service is not set or false then run once and exit
-                PrintResult(await quantifyClient.Compute(repoRootPath));
+                PrintResult(
+                    await quantifyClient.Compute(repoRootPath),
+                    commandLine.PrintJson);
             }
         }
 
@@ -91,7 +93,9 @@
                     continue;
                 }
 
-                PrintResult(quantifyClient.Compute(gitRepoPath).Result);
+                PrintResult(
+                    quantifyClient.Compute(gitRepoPath).Result,
+                    false);
                 changedEventDateTime = DateTimeOffset.MaxValue;
             }
         }
@@ -184,9 +188,21 @@
             Console.ResetColor();
         }
 
-        private static void PrintResult(QuantifierClientResult quantifierClientResult)
+        private static void PrintResult(
+            QuantifierClientResult quantifierClientResult,
+            bool printJson)
         {
             Console.ForegroundColor = QuantifyClientHelper.GetColor(quantifierClientResult.Color);
+
+            if (printJson)
+            {
+                Console.WriteLine(JsonSerializer.Serialize(
+                    quantifierClientResult,
+                    new JsonSerializerOptions { WriteIndented = true }));
+
+                Console.ResetColor();
+                return;
+            }
 
             var details = string.Join(
                 Environment.NewLine,

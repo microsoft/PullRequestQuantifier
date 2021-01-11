@@ -3,13 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.Json;
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Core;
     using global::PullRequestQuantifier.Abstractions.Exceptions;
     using global::PullRequestQuantifier.Client.ContextGenerator;
-    using global::PullRequestQuantifier.Client.Helpers;
     using global::PullRequestQuantifier.GitEngine;
     using YamlDotNet.Core;
 
@@ -19,21 +17,16 @@
         private readonly IPullRequestQuantifier prQuantifier;
         private readonly GitEngine gitEngine;
         private readonly QuantifyClientOutput quantifyClientOutput;
-        private readonly bool print;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuantifyClient"/> class.
         /// </summary>
         /// <param name="contextFilePath">The path of the context file.</param>
         /// <param name="quantifyClientOutput">The output type.</param>
-        /// <param name="print">If the result should be printed out to console(for now) or not.
-        /// This is necessary for Vsix extension which consumes directly the local client.</param>
         public QuantifyClient(
             string contextFilePath,
-            QuantifyClientOutput quantifyClientOutput,
-            bool print = true)
+            QuantifyClientOutput quantifyClientOutput)
         {
-            this.print = print;
             this.quantifyClientOutput = quantifyClientOutput;
             var context = LoadContext(contextFilePath);
             prQuantifier = new PullRequestQuantifier(context);
@@ -62,11 +55,6 @@
                 Details = Details(quantifierResult)
             };
 
-            if (print)
-            {
-                PrintQuantifierResult(quantifierClientResult);
-            }
-
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
             return quantifierClientResult;
         }
@@ -86,11 +74,6 @@
                 PercentileDeletion = quantifierResult.PercentileDeletion,
                 Details = Details(quantifierResult)
             };
-
-            if (print)
-            {
-                PrintQuantifierResult(quantifierClientResult);
-            }
 
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
             return quantifierClientResult;
@@ -133,18 +116,6 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(repoPath));
 
             return quantifierInput;
-        }
-
-        private void PrintQuantifierResult(QuantifierClientResult quantifierClientResult)
-        {
-            Console.WriteLine();
-            Console.ForegroundColor = QuantifyClientHelper.GetColor(quantifierClientResult.Color);
-
-            Console.WriteLine(JsonSerializer.Serialize(
-                quantifierClientResult,
-                new JsonSerializerOptions { WriteIndented = true }));
-
-            Console.ResetColor();
         }
 
         private IEnumerable<dynamic> Details(QuantifierResult quantifierResult)
