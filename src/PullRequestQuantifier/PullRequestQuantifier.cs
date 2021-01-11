@@ -7,6 +7,7 @@ namespace PullRequestQuantifier
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Core;
     using global::PullRequestQuantifier.Abstractions.Git;
+    using global::PullRequestQuantifier.Common;
 
     public sealed class PullRequestQuantifier : IPullRequestQuantifier
     {
@@ -15,15 +16,15 @@ namespace PullRequestQuantifier
             Context = context;
         }
 
-        public Context Context { get; }
+        /// <summary>
+        /// Gets or sets the Context. We allow the context to be set for reloading anytime when there is a new context.
+        /// </summary>
+        public Context Context { get; set; }
 
         /// <inheritdoc />
         public async Task<QuantifierResult> Quantify(QuantifierInput quantifierInput)
         {
-            if (quantifierInput == null)
-            {
-                throw new ArgumentNullException(nameof(quantifierInput));
-            }
+            ArgumentCheck.ParameterIsNotNull(quantifierInput, nameof(quantifierInput));
 
             // execute quantifier for this context and this particular input
             return await Compute(quantifierInput);

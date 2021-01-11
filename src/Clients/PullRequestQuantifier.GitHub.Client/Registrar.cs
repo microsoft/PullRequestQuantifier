@@ -4,6 +4,7 @@ namespace PullRequestQuantifier.GitHub.Client
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
+    using PullRequestQuantifier.Common;
     using PullRequestQuantifier.GitHub.Client.Events;
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
     using PullRequestQuantifier.GitHub.Client.Telemetry;

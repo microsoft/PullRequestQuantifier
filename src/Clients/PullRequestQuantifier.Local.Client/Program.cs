@@ -10,11 +10,12 @@
     using LibGit2Sharp;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
+    using PullRequestQuantifier.Client.Helpers;
     using PullRequestQuantifier.Client.QuantifyClient;
 
     /// <summary>
     /// Parameters accepted: GitRepoPath={} ContextPath={}
-    /// Service=True/False(default is false) PrintJson=True/False(default is false)
+    /// Service=True/False(default is false)
     /// output=summaryByExt/summaryByFile/detailed (default is detailed).
     /// </summary>
     public static class Program
@@ -38,11 +39,10 @@
                     await File.ReadAllTextAsync(commandLine.QuantifierInputFile));
                 changes?.ForEach(c => quantifierInput.Changes.Add(c));
 
-                quantifyClient = new QuantifyClient(
-                    contextPath,
-                    commandLine.PrintJson,
+                quantifyClient = new QuantifyClient(contextPath);
+                PrintResult(
+                    await quantifyClient.Compute(quantifierInput),
                     commandLine.Output);
-                await quantifyClient.Compute(quantifierInput);
             }
             else
             {
@@ -60,27 +60,28 @@
                     new DirectoryInfo(repoRootPath).Parent?.FullName,
                     ".prquantifier");
 
-                quantifyClient = new QuantifyClient(
-                    contextPath,
-                    commandLine.PrintJson,
-                    commandLine.Output);
+                quantifyClient = new QuantifyClient(contextPath);
 
                 // run this as a service in case is configured otherwise only run once
                 if (commandLine.Service)
                 {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    Task.Factory.StartNew(() => QuantifyLoop(repoRootPath));
+                    Task.Factory.StartNew(() => QuantifyLoop(repoRootPath, commandLine.Output));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
                     await Run(repoRootPath, contextPath);
                 }
 
                 // in case service is not set or false then run once and exit
-                await quantifyClient.Compute(repoRootPath);
+                PrintResult(
+                    await quantifyClient.Compute(repoRootPath),
+                    commandLine.Output);
             }
         }
 
-        private static void QuantifyLoop(string gitRepoPath)
+        private static void QuantifyLoop(
+            string gitRepoPath,
+            ClientOutputType clientOutputType)
         {
             while (true)
             {
@@ -90,7 +91,9 @@
                     continue;
                 }
 
-                quantifyClient.Compute(gitRepoPath).Wait();
+                PrintResult(
+                    quantifyClient.Compute(gitRepoPath).Result,
+                    clientOutputType);
                 changedEventDateTime = DateTimeOffset.MaxValue;
             }
         }
@@ -180,6 +183,85 @@
             Console.WriteLine();
             Console.WriteLine($"{label} Percentile:");
             Console.WriteLine(string.Join(" ", percentile.Select(t => $"{t.Key} = {t.Value}\n")));
+            Console.ResetColor();
+        }
+
+        private static void PrintResult(
+            QuantifierResult quantifierResult,
+            ClientOutputType clientOutputType)
+        {
+            Console.ForegroundColor = QuantifyClientHelper.GetColor(quantifierResult.Color);
+
+            switch (clientOutputType)
+            {
+                case ClientOutputType.None:
+                {
+                    Console.WriteLine(
+                        $"PrQuantified = {quantifierResult.Label},\t" +
+                        $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})," +
+                        $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
+                        $", deletions = {quantifierResult.PercentileDeletion}%.{Environment.NewLine}");
+                    break;
+                }
+
+                case ClientOutputType.Detailed:
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(
+                        quantifierResult,
+                        new JsonSerializerOptions { WriteIndented = true }));
+                    break;
+                }
+
+                case ClientOutputType.SummaryByFile:
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(
+                        new
+                        {
+                            quantifierResult.Label,
+                            quantifierResult.QuantifiedLinesAdded,
+                            quantifierResult.QuantifiedLinesDeleted,
+                            Formula = quantifierResult.Formula.ToString(),
+                            quantifierResult.PercentileAddition,
+                            quantifierResult.PercentileDeletion,
+                            Details = quantifierResult.QuantifierInput.Changes.Select(s =>
+                                new
+                                {
+                                    s.FilePath,
+                                    s.QuantifiedLinesAdded,
+                                    s.QuantifiedLinesDeleted
+                                })
+                        },
+                        new JsonSerializerOptions { WriteIndented = true }));
+                    break;
+                }
+
+                case ClientOutputType.SummaryByExt:
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(
+                        new
+                        {
+                            quantifierResult.Label,
+                            quantifierResult.QuantifiedLinesAdded,
+                            quantifierResult.QuantifiedLinesDeleted,
+                            Formula = quantifierResult.Formula.ToString(),
+                            quantifierResult.PercentileAddition,
+                            quantifierResult.PercentileDeletion,
+                            Details = quantifierResult.QuantifierInput.Changes.GroupBy(c => c.FileExtension).Select(g =>
+                                new
+                                {
+                                    FileExtension = g.Key,
+                                    QuantifiedLinesAdded = g.Sum(v => v.QuantifiedLinesAdded),
+                                    QuantifiedLinesDeleted = g.Sum(v => v.QuantifiedLinesDeleted),
+                                })
+                        },
+                        new JsonSerializerOptions { WriteIndented = true }));
+                    break;
+                }
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(clientOutputType), clientOutputType, null);
+            }
+
             Console.ResetColor();
         }
     }

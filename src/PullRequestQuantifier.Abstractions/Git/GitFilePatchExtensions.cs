@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Ignore;
+    using PullRequestQuantifier.Common;
 
     // todo for some of the extensions we need language specific implementation for now just do it for c sharp
     // todo optimize this part to have only one iteration pass over the changes and lines, trim once ...
@@ -22,10 +23,7 @@
             IEnumerable<string> includedPatterns,
             IEnumerable<string> excludedPatterns)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             var ignore = new Ignore();
 
@@ -64,10 +62,7 @@
 
         public static void RemoveWhiteSpacesChanges(this GitFilePatch gitFilePatch)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             // first remove lines containing only white spaces
             gitFilePatch.DiffContentLines = gitFilePatch.DiffContentLines
@@ -78,10 +73,7 @@
 
         public static void RemoveCommentsChanges(this GitFilePatch gitFilePatch)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             // todo later expand  to comments sections, and add language specific parsers
             gitFilePatch.DiffContentLines = gitFilePatch.DiffContentLines
@@ -92,10 +84,7 @@
 
         public static void RemoveCodeBlockSeparatorChanges(this GitFilePatch gitFilePatch)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             // todo later add language specific parsers
             gitFilePatch.DiffContentLines = gitFilePatch.DiffContentLines
@@ -106,6 +95,8 @@
 
         public static void RemoveRenamedChanges(this GitFilePatch gitFilePatch)
         {
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
+
             if (gitFilePatch.ChangeType != GitChangeType.Renamed)
             {
                 return;
@@ -116,6 +107,8 @@
 
         public static void RemoveCopiedChanges(this GitFilePatch gitFilePatch)
         {
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
+
             if (gitFilePatch.ChangeType != GitChangeType.Copied)
             {
                 return;
@@ -126,10 +119,7 @@
 
         public static void ComputeChanges(this GitFilePatch gitFilePatch)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             // if file change was discarded from the counted do nothing.
             if (gitFilePatch.DiscardFromCounting)

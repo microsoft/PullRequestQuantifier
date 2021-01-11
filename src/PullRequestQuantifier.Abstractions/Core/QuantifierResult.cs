@@ -17,7 +17,7 @@ namespace PullRequestQuantifier.Abstractions.Core
         /// <summary>
         /// Gets or sets the formula based onn which  we will combine the additions and deletions.
         /// </summary>
-        [System.Text.Json.Serialization.JsonConverterAttribute(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public ThresholdFormula Formula { get; set; }
 
         /// <summary>

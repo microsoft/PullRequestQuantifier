@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.GitHub.Client
+﻿namespace PullRequestQuantifier.Common
 {
     using System;
 

@@ -122,7 +122,7 @@
                             CreateNoWindow = true,
                             UseShellExecute = false,
                             FileName = Path.Combine(Path.GetDirectoryName(uri.LocalPath), @"PrQuantifier\PullRequestQuantifier.Local.Client.exe"),
-                            Arguments = $"-GitRepoPath \"{projects.ElementAt(0).FullName}\" -PrintJson true"
+                            Arguments = $"-GitRepoPath \"{projects.ElementAt(0).FullName}\" -output Detailed"
                         }
                     };
 
@@ -188,6 +188,7 @@
                     $"\tTeam percentiles: additions = {quantifierResult["PercentileAddition"]}%" +
                     $", deletions = {quantifierResult["PercentileDeletion"]}%.";
 
+            statusBar.Clear();
             statusBar.SetText(output);
         }
     }
