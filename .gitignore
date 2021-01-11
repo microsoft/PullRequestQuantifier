@@ -358,3 +358,4 @@ MigrationBackup/
 #allow local client publish profile
 !/src/Clients/PullRequestQuantifier.Local.Client/Properties/PublishProfiles/*
 *.user
+/src/Clients/PullRequestQuantifier.GitHub.Client/lib

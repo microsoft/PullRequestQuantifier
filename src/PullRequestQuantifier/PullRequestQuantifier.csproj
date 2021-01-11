@@ -11,6 +11,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" />
+      <ProjectReference Include="..\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj" />
     </ItemGroup>
 
 </Project>

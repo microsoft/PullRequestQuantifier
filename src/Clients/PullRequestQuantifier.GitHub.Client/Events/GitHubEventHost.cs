@@ -115,7 +115,6 @@
 
             var quantifyClient = new QuantifyClient(
                 context,
-                false,
                 QuantifyClientOutput.SummaryByExt);
             var quantifierClientResult = await quantifyClient.Compute(quantifierInput);
 

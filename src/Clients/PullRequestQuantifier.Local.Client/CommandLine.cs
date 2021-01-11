@@ -5,6 +5,7 @@
     using System.IO;
     using System.Reflection;
     using PullRequestQuantifier.Client.QuantifyClient;
+    using PullRequestQuantifier.Common;
 
     public class CommandLine
     {
@@ -12,6 +13,8 @@
 
         public CommandLine(string[] args)
         {
+            ArgumentCheck.ParameterIsNotNull(args, nameof(args));
+
             if (args.Length == 1
                 && (args[0] == "-?"
                     || args[0] == "/?"
@@ -35,8 +38,6 @@
         public string ContextPath { get; set; }
 
         public bool Service { get; set; }
-
-        public bool PrintJson { get; set; }
 
         public QuantifyClientOutput Output { get; set; }
 
@@ -67,10 +68,6 @@
                 else if (optionName == "service")
                 {
                     Service = true;
-                }
-                else if (optionName == "printjson")
-                {
-                    PrintJson = true;
                 }
                 else if (optionName == "output")
                 {

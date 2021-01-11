@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Dynamic;
     using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -10,6 +9,7 @@
     using global::PullRequestQuantifier.Abstractions.Core;
     using global::PullRequestQuantifier.Abstractions.Exceptions;
     using global::PullRequestQuantifier.Client.ContextGenerator;
+    using global::PullRequestQuantifier.Client.Helpers;
     using global::PullRequestQuantifier.GitEngine;
     using YamlDotNet.Core;
 
@@ -17,19 +17,26 @@
     public sealed class QuantifyClient : IQuantifyClient
     {
         private readonly IPullRequestQuantifier prQuantifier;
-        private readonly bool printJson;
         private readonly GitEngine gitEngine;
         private readonly QuantifyClientOutput quantifyClientOutput;
+        private readonly bool print;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuantifyClient"/> class.
+        /// </summary>
+        /// <param name="contextFilePath">The path of the context file.</param>
+        /// <param name="quantifyClientOutput">The output type.</param>
+        /// <param name="print">If the result should be printed out to console(for now) or not.
+        /// This is necessary for Vsix extension which consumes directly the local client.</param>
         public QuantifyClient(
             string contextFilePath,
-            bool printJson,
-            QuantifyClientOutput quantifyClientOutput)
+            QuantifyClientOutput quantifyClientOutput,
+            bool print = true)
         {
+            this.print = print;
             this.quantifyClientOutput = quantifyClientOutput;
             var context = LoadContext(contextFilePath);
             prQuantifier = new PullRequestQuantifier(context);
-            this.printJson = printJson;
             gitEngine = new GitEngine();
         }
 
@@ -55,7 +62,10 @@
                 Details = Details(quantifierResult)
             };
 
-            PrintQuantifierResult(quantifierClientResult);
+            if (print)
+            {
+                PrintQuantifierResult(quantifierClientResult);
+            }
 
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
             return quantifierClientResult;
@@ -77,7 +87,10 @@
                 Details = Details(quantifierResult)
             };
 
-            PrintQuantifierResult(quantifierClientResult);
+            if (print)
+            {
+                PrintQuantifierResult(quantifierClientResult);
+            }
 
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
             return quantifierClientResult;
@@ -125,58 +138,13 @@
         private void PrintQuantifierResult(QuantifierClientResult quantifierClientResult)
         {
             Console.WriteLine();
-            if (printJson)
-            {
-                Console.ForegroundColor = GetColor(quantifierClientResult.Color);
+            Console.ForegroundColor = QuantifyClientHelper.GetColor(quantifierClientResult.Color);
 
-                Console.WriteLine(JsonSerializer.Serialize(
-                    quantifierClientResult,
-                    new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine(JsonSerializer.Serialize(
+                quantifierClientResult,
+                new JsonSerializerOptions { WriteIndented = true }));
 
-                Console.ResetColor();
-            }
-            else
-            {
-                Console.ForegroundColor = GetColor(quantifierClientResult.Color);
-
-                var details = string.Join(
-                    Environment.NewLine,
-                    quantifierClientResult.Details.Select(v => $"{v.FilePath} +{v.QuantifiedLinesAdded} -{v.QuantifiedLinesDeleted}"));
-
-                Console.WriteLine(
-                    $"PrQuantified = {quantifierClientResult.Label},\t" +
-                    $"Diff +{quantifierClientResult.QuantifiedLinesAdded} -{quantifierClientResult.QuantifiedLinesDeleted} (Formula = {quantifierClientResult.Formula})," +
-                    $"\tTeam percentiles: additions = {quantifierClientResult.PercentileAddition}%" +
-                    $", deletions = {quantifierClientResult.PercentileDeletion}%.");
-                Console.WriteLine("PrQuantified details");
-                Console.WriteLine(details);
-
-                Console.ResetColor();
-            }
-        }
-
-        private ConsoleColor GetColor(string color)
-        {
-            return color switch
-            {
-                nameof(ConsoleColor.Black) => ConsoleColor.Black,
-                nameof(ConsoleColor.DarkBlue) => ConsoleColor.DarkBlue,
-                nameof(ConsoleColor.DarkGreen) => ConsoleColor.DarkGreen,
-                nameof(ConsoleColor.DarkCyan) => ConsoleColor.DarkCyan,
-                nameof(ConsoleColor.DarkRed) => ConsoleColor.DarkRed,
-                nameof(ConsoleColor.DarkMagenta) => ConsoleColor.DarkMagenta,
-                nameof(ConsoleColor.DarkYellow) => ConsoleColor.DarkYellow,
-                nameof(ConsoleColor.Gray) => ConsoleColor.Gray,
-                nameof(ConsoleColor.DarkGray) => ConsoleColor.DarkGray,
-                nameof(ConsoleColor.Blue) => ConsoleColor.Blue,
-                nameof(ConsoleColor.Green) => ConsoleColor.Green,
-                nameof(ConsoleColor.Cyan) => ConsoleColor.Cyan,
-                nameof(ConsoleColor.Red) => ConsoleColor.Red,
-                nameof(ConsoleColor.Magenta) => ConsoleColor.Magenta,
-                nameof(ConsoleColor.Yellow) => ConsoleColor.Yellow,
-                nameof(ConsoleColor.White) => ConsoleColor.White,
-                _ => ConsoleColor.DarkGray,
-            };
+            Console.ResetColor();
         }
 
         private IEnumerable<dynamic> Details(QuantifierResult quantifierResult)

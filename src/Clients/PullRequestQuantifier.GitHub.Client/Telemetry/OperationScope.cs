@@ -5,11 +5,12 @@
     using Microsoft.ApplicationInsights;
     using Microsoft.ApplicationInsights.Extensibility;
     using Microsoft.ApplicationInsights.Extensibility.Implementation;
+    using PullRequestQuantifier.Common;
 
     /// <summary>
     /// A wrapper to app insights method TelemetryClient.StartOperation that will create
     /// either RequestTelemetry or DependencyTelemetry based on if current call is root
-    /// This class is returned in using statement in order to emit metric when it's being disposed
+    /// This class is returned in using statement in order to emit metric when it's being disposed.
     /// </summary>
     public sealed class OperationScope<T> : IDisposable
         where T : OperationTelemetry, new()
@@ -40,7 +41,7 @@
         ///
         /// if parentId is not passed in, it checks static instance AsyncLocal to find current activity,
         /// which is stored as local copy for each call (ExecutionContext) within a process.
-        /// When parentId is not found, it assumes current call is the root
+        /// When parentId is not found, it assumes current call is the root.
         /// </summary>
         public static OperationScope<TTelemetry> StartOperation<TTelemetry>(
             string parentOperationId,

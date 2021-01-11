@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Octokit;
+    using PullRequestQuantifier.Common;
 
     /// <inheritdoc cref="IGitHubClientAdapter"/>
     public sealed class GitHubClientAdapter : IGitHubClientAdapter

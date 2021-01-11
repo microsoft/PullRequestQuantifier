@@ -10,11 +10,12 @@
     using LibGit2Sharp;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
+    using PullRequestQuantifier.Client.Helpers;
     using PullRequestQuantifier.Client.QuantifyClient;
 
     /// <summary>
     /// Parameters accepted: GitRepoPath={} ContextPath={}
-    /// Service=True/False(default is false) PrintJson=True/False(default is false)
+    /// Service=True/False(default is false)
     /// output=summaryByExt/summaryByFile/detailed (default is detailed).
     /// </summary>
     public static class Program
@@ -40,9 +41,9 @@
 
                 quantifyClient = new QuantifyClient(
                     contextPath,
-                    commandLine.PrintJson,
-                    commandLine.Output);
-                await quantifyClient.Compute(quantifierInput);
+                    commandLine.Output,
+                    false);
+                PrintResult(await quantifyClient.Compute(quantifierInput));
             }
             else
             {
@@ -62,8 +63,8 @@
 
                 quantifyClient = new QuantifyClient(
                     contextPath,
-                    commandLine.PrintJson,
-                    commandLine.Output);
+                    commandLine.Output,
+                    false);
 
                 // run this as a service in case is configured otherwise only run once
                 if (commandLine.Service)
@@ -76,7 +77,7 @@
                 }
 
                 // in case service is not set or false then run once and exit
-                await quantifyClient.Compute(repoRootPath);
+                PrintResult(await quantifyClient.Compute(repoRootPath));
             }
         }
 
@@ -90,7 +91,7 @@
                     continue;
                 }
 
-                quantifyClient.Compute(gitRepoPath).Wait();
+                PrintResult(quantifyClient.Compute(gitRepoPath).Result);
                 changedEventDateTime = DateTimeOffset.MaxValue;
             }
         }
@@ -180,6 +181,25 @@
             Console.WriteLine();
             Console.WriteLine($"{label} Percentile:");
             Console.WriteLine(string.Join(" ", percentile.Select(t => $"{t.Key} = {t.Value}\n")));
+            Console.ResetColor();
+        }
+
+        private static void PrintResult(QuantifierClientResult quantifierClientResult)
+        {
+            Console.ForegroundColor = QuantifyClientHelper.GetColor(quantifierClientResult.Color);
+
+            var details = string.Join(
+                Environment.NewLine,
+                quantifierClientResult.Details.Select(v => $"{v.FilePath} +{v.QuantifiedLinesAdded} -{v.QuantifiedLinesDeleted}"));
+
+            Console.WriteLine(
+                $"PrQuantified = {quantifierClientResult.Label},\t" +
+                $"Diff +{quantifierClientResult.QuantifiedLinesAdded} -{quantifierClientResult.QuantifiedLinesDeleted} (Formula = {quantifierClientResult.Formula})," +
+                $"\tTeam percentiles: additions = {quantifierClientResult.PercentileAddition}%" +
+                $", deletions = {quantifierClientResult.PercentileDeletion}%.{Environment.NewLine}");
+            Console.WriteLine("Details");
+            Console.WriteLine(details);
+
             Console.ResetColor();
         }
     }
