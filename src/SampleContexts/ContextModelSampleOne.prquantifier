@@ -1,6 +1,7 @@
 Included: 
 Excluded:
 - '*.csproj'
+- '*.prquantifier'
 GitOperationType:
 - Add
 - Delete
