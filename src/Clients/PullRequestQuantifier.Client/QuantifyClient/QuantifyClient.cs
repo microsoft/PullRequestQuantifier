@@ -1,8 +1,6 @@
 ﻿namespace PullRequestQuantifier.Client.QuantifyClient
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Core;
@@ -16,18 +14,14 @@
     {
         private readonly IPullRequestQuantifier prQuantifier;
         private readonly GitEngine gitEngine;
-        private readonly QuantifyClientOutput quantifyClientOutput;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuantifyClient"/> class.
         /// </summary>
         /// <param name="contextFilePath">The path of the context file.</param>
-        /// <param name="quantifyClientOutput">The output type.</param>
         public QuantifyClient(
-            string contextFilePath,
-            QuantifyClientOutput quantifyClientOutput)
+            string contextFilePath)
         {
-            this.quantifyClientOutput = quantifyClientOutput;
             var context = LoadContext(contextFilePath);
             prQuantifier = new PullRequestQuantifier(context);
             gitEngine = new GitEngine();
@@ -37,46 +31,22 @@
         public Context Context => prQuantifier.Context;
 
         /// <inheritdoc />
-        public async Task<QuantifierClientResult> Compute(string gitRepoPath)
+        public async Task<QuantifierResult> Compute(string gitRepoPath)
         {
+            // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
+
             // get current location changes
             var quantifierInput = GetChanges(gitRepoPath);
 
             // quantify the changes
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
-
-            var quantifierClientResult = new QuantifierClientResult
-            {
-                Color = quantifierResult.Color, Explanation = quantifierResult.Explanation,
-                Formula = quantifierResult.Formula, QuantifiedLinesAdded = quantifierResult.QuantifiedLinesAdded,
-                QuantifiedLinesDeleted = quantifierResult.QuantifiedLinesDeleted, Label = quantifierResult.Label,
-                PercentileAddition = quantifierResult.PercentileAddition,
-                PercentileDeletion = quantifierResult.PercentileDeletion,
-                Details = Details(quantifierResult)
-            };
-
-            // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
-            return quantifierClientResult;
+            return await prQuantifier.Quantify(quantifierInput);
         }
 
         /// <inheritdoc />
-        public async Task<QuantifierClientResult> Compute(QuantifierInput quantifierInput)
+        public async Task<QuantifierResult> Compute(QuantifierInput quantifierInput)
         {
             // quantify the changes
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
-
-            var quantifierClientResult = new QuantifierClientResult
-            {
-                Color = quantifierResult.Color, Explanation = quantifierResult.Explanation,
-                Formula = quantifierResult.Formula, QuantifiedLinesAdded = quantifierResult.QuantifiedLinesAdded,
-                QuantifiedLinesDeleted = quantifierResult.QuantifiedLinesDeleted, Label = quantifierResult.Label,
-                PercentileAddition = quantifierResult.PercentileAddition,
-                PercentileDeletion = quantifierResult.PercentileDeletion,
-                Details = Details(quantifierResult)
-            };
-
-            // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
-            return quantifierClientResult;
+            return await prQuantifier.Quantify(quantifierInput);
         }
 
         private Context LoadContext(string contextFilePathOrContent)
@@ -116,34 +86,6 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(repoPath));
 
             return quantifierInput;
-        }
-
-        private IEnumerable<dynamic> Details(QuantifierResult quantifierResult)
-        {
-            return quantifyClientOutput switch
-            {
-                QuantifyClientOutput.SummaryByExt => quantifierResult.QuantifierInput.Changes.GroupBy(c => c.FileExtension).Select(g =>
-                                         new
-                                         {
-                                             FilePath = g.Key,
-                                             FileExtension = g.Key,
-                                             QuantifiedLinesAdded = g.Sum(v => v.QuantifiedLinesAdded),
-                                             QuantifiedLinesDeleted = g.Sum(v => v.QuantifiedLinesDeleted),
-                                             AbsoluteLinesAdded = g.Sum(v => v.AbsoluteLinesAdded),
-                                             AbsoluteLinesDeleted = g.Sum(v => v.AbsoluteLinesDeleted)
-                                         }),
-                QuantifyClientOutput.SummaryByFile => quantifierResult.QuantifierInput.Changes.Select(c => new
-                {
-                    c.AbsoluteLinesAdded,
-                    c.AbsoluteLinesDeleted,
-                    c.FilePath,
-                    c.QuantifiedLinesAdded,
-                    c.QuantifiedLinesDeleted,
-                    c.FileExtension
-                }),
-                QuantifyClientOutput.Detailed => quantifierResult.QuantifierInput.Changes,
-                _ => throw new ArgumentOutOfRangeException(),
-            };
         }
     }
 }

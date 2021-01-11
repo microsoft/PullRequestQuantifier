@@ -5,5 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Not applicable")]
 [assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "FP")]

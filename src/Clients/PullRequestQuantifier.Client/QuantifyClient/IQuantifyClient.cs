@@ -16,13 +16,13 @@
         /// </summary>
         /// <param name="gitRepoPath">Path to the git repository.</param>
         /// <returns>returns an evaluation result.</returns>
-        Task<QuantifierClientResult> Compute(string gitRepoPath);
+        Task<QuantifierResult> Compute(string gitRepoPath);
 
         /// <summary>
         /// Compute using a quantifier input from outside.
         /// </summary>
         /// <param name="quantifierInput">The quantifier input.</param>
         /// <returns>returns an evaluation result.</returns>
-        Task<QuantifierClientResult> Compute(QuantifierInput quantifierInput);
+        Task<QuantifierResult> Compute(QuantifierInput quantifierInput);
     }
 }

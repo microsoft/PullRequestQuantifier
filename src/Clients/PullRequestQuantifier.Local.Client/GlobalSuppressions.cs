@@ -7,3 +7,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Not applicable")]
 [assembly: SuppressMessage("Style", "IDE0057:Use range operator", Justification = "Not applicable")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "FP", Scope = "member", Target = "~M:PullRequestQuantifier.Local.Client.CommandLine.#ctor(System.String[])")]

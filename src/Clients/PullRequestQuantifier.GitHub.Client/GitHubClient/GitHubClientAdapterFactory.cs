@@ -1,7 +1,6 @@
 ﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
     using GitHubJwt;
     using Microsoft.Extensions.Options;

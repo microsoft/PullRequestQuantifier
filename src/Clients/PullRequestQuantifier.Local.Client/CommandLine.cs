@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
-    using PullRequestQuantifier.Client.QuantifyClient;
     using PullRequestQuantifier.Common;
 
     public class CommandLine
@@ -39,9 +38,7 @@
 
         public bool Service { get; set; }
 
-        public bool PrintJson { get; set; }
-
-        public QuantifyClientOutput Output { get; set; }
+        public ClientOutputType Output { get; set; }
 
         /// <summary>
         /// Gets or sets if <see cref="QuantifierInputFile"/> is specified, this is given preference
@@ -71,15 +68,11 @@
                 {
                     Service = true;
                 }
-                else if (optionName == "printjson")
-                {
-                    PrintJson = true;
-                }
                 else if (optionName == "output")
                 {
                     Output = !string.IsNullOrWhiteSpace(option.Value)
-                        ? Enum.Parse<QuantifyClientOutput>(option.Value)
-                        : QuantifyClientOutput.Detailed;
+                        ? Enum.Parse<ClientOutputType>(option.Value)
+                        : ClientOutputType.Detailed;
                 }
                 else if (optionName == "contextpath")
                 {
