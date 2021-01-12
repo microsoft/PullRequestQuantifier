@@ -184,5 +184,17 @@
             long repositoryId,
             int issueNumber,
             string[] labels);
+
+        /// <summary>
+        /// Create a new comment on an issue.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="issueNumber">Issue number.</param>
+        /// <param name="comment">The new comment to create.</param>
+        /// <returns>Created comment.</returns>
+        Task<IssueComment> CreateIssueCommentAsync(
+            long repositoryId,
+            int issueNumber,
+            string comment);
     }
 }
