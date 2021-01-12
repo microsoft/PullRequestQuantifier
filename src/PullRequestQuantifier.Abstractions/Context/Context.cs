@@ -27,14 +27,14 @@
         public IEnumerable<string> Excluded { get; set; }
 
         /// <summary>
-        /// Gets  or sets gitOperationType.
+        /// Gets or sets <see cref="GitOperationType"/>.
         /// If empty all operations will be considered,
         /// otherwise if something specified.
         /// </summary>
         public IEnumerable<GitOperationType> GitOperationType { get; set; }
 
         /// <summary>
-        /// Gets  or sets thresholds.
+        /// Gets or sets thresholds.
         /// Thresholds for this model.
         /// </summary>
         public IEnumerable<Threshold> Thresholds { get; set; }
@@ -45,7 +45,7 @@
         public LanguageOptions LanguageOptions { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the DynamicBehaviour.
+        /// Gets or sets the DynamicBehaviour value.
         /// This setting will allow the behaviour to be adjusted based on the previous
         /// local git merge history.
         /// </summary>

@@ -71,7 +71,7 @@
                 else if (optionName == "output")
                 {
                     Output = !string.IsNullOrWhiteSpace(option.Value)
-                        ? Enum.Parse<ClientOutputType>(option.Value)
+                        ? Enum.Parse<ClientOutputType>(option.Value, true)
                         : ClientOutputType.Detailed;
                 }
                 else if (optionName == "contextpath")
@@ -125,7 +125,10 @@
             Console.WriteLine("                          : \"-gitrepopath\" is ignored if this is specified");
             Console.WriteLine("  -service               : run as a file watcher service");
             Console.WriteLine("                          : only valid when quantifying a local git repo");
-            Console.WriteLine("  -printjson             : print detailed result as a JSON");
+            Console.WriteLine("  -output                : control detailed output options");
+            Console.WriteLine("                          : detailed      : print detailed changes per file (default)");
+            Console.WriteLine("                          : summaryByExt  : print quantifier summary by file extension");
+            Console.WriteLine("                          : summaryByFile : print quantifier summary by file path");
             Console.WriteLine("  -contextpath           : pull request quantifier context file");
             Console.WriteLine("                          : if not specified");
             Console.WriteLine("                          :   when \"-gitrepopath\" is specified)");
