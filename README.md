@@ -13,34 +13,12 @@ Highlights
 
 The following open source clients are supported:
 
-<figure style="display: block; text-align: center;">
-  <a href="./src/Clients/PullRequestQuantifier.Local.Client" style="display: inline-block; margin: 6px; text-align: center">
-    <img src="./docs/cli-icon.png" width="50"  />
-    <figcaption>CLI</figcaption>
-  </a>
-  <a href="./src/Clients/PullRequestQuantifier.Vsix.Client" style="display: inline-block; margin: 6px; text-align: center">
-    <img src="./docs/visual-studio-icon.png" width="50"  />
-    <figcaption>Visual Studio</figcaption>
-  </a>
-  <a href="./src/Clients/PullRequestQuantifier.GitHub.Client" style="display: inline-block; margin: 6px; text-align: center">
-    <img src="./docs/github-icon.png" width="50"  />
-    <figcaption>GitHub</figcaption>
-  </a>
-</figure>
+| - | Name | Example |
+|------|------|---------|
+| <a href="./src/Clients/PullRequestQuantifier.Local.Client"><img src="./docs/cli-icon.png" width="50"/></a>  | [CLI](./src/Clients/PullRequestQuantifier.Local.Client) | ![](./docs/client-cli.png) |
+| <a href="./src/Clients/PullRequestQuantifier.Vsix.Client"><img src="./docs/visual-studio-icon.png" width="50"/></a>  | [Visual Studio](./src/Clients/PullRequestQuantifier.Vsix.Client) | ![](./docs/client-vsix.png) |
+| <a href="./src/Clients/PullRequestQuantifier.GitHub.Client"><img src="./docs/github-icon.png" width="50"/></a>  | [GitHub](./src/Clients/PullRequestQuantifier.GitHub.Client) | ![](./docs/client-github.png) |
 
-Some examples of clients in action:
-
-CLI:
-
-![](./docs/client-cli.png)
-
-GitHub:
-
-![](./docs/client-github.png)
-
-Visual Studio:
-
-![](./docs/client-vsix.png)
 
 ## Context customization
 
