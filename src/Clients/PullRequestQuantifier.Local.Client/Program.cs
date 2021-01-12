@@ -24,11 +24,13 @@
 
         private static IQuantifyClient quantifyClient;
 
+        private static string contextFilePath;
+
         public static async Task Main(string[] args)
         {
             var commandLine = new CommandLine(args);
 
-            var contextPath = commandLine.ContextPath;
+            contextFilePath = commandLine.ContextPath;
 
             if (commandLine.QuantifierInputFile != null)
             {
@@ -39,7 +41,7 @@
                     await File.ReadAllTextAsync(commandLine.QuantifierInputFile));
                 changes?.ForEach(c => quantifierInput.Changes.Add(c));
 
-                quantifyClient = new QuantifyClient(contextPath);
+                quantifyClient = new QuantifyClient(contextFilePath);
                 PrintResult(
                     await quantifyClient.Compute(quantifierInput),
                     commandLine.Output);
@@ -56,11 +58,9 @@
                     return;
                 }
 
-                contextPath ??= Path.Combine(
+                contextFilePath ??= Path.Combine(
                     new DirectoryInfo(repoRootPath).Parent?.FullName,
                     ".prquantifier");
-
-                quantifyClient = new QuantifyClient(contextPath);
 
                 // run this as a service in case is configured otherwise only run once
                 if (commandLine.Service)
@@ -69,10 +69,11 @@
                     Task.Factory.StartNew(() => QuantifyLoop(repoRootPath, commandLine.Output));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-                    await Run(repoRootPath, contextPath);
+                    await Run(repoRootPath);
                 }
 
                 // in case service is not set or false then run once and exit
+                quantifyClient = new QuantifyClient(contextFilePath);
                 PrintResult(
                     await quantifyClient.Compute(repoRootPath),
                     commandLine.Output);
@@ -91,6 +92,7 @@
                     continue;
                 }
 
+                quantifyClient = new QuantifyClient(contextFilePath);
                 PrintResult(
                     quantifyClient.Compute(gitRepoPath).Result,
                     clientOutputType);
@@ -98,9 +100,7 @@
             }
         }
 
-        private static async Task Run(
-            string gitRepoPath,
-            string contextFilePath)
+        private static async Task Run(string gitRepoPath)
         {
             await Task.Factory.StartNew(() =>
             {
