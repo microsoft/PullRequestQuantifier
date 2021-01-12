@@ -2,7 +2,6 @@ namespace PullRequestQuantifier.GitHub.Client.Telemetry
 {
     using System;
     using Microsoft.ApplicationInsights;
-    using Microsoft.ApplicationInsights.Extensibility;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;

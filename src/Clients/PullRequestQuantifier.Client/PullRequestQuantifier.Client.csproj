@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\..\PullRequestQuantifier\PullRequestQuantifier.csproj" PrivateAssets="all" />
   </ItemGroup>
@@ -27,7 +28,6 @@
     <PropertyGroup>
         <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
     <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
         <ItemGroup>

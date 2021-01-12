@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
     using Microsoft.Extensions.Hosting;
     using Octokit;
-    using PullRequestQuantifier.Abstractions.Context;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
     using PullRequestQuantifier.Client.QuantifyClient;
@@ -105,18 +104,15 @@
                     "/.prquantifier");
                 context = Encoding.UTF8.GetString(rawContext);
             }
-            catch (Octokit.NotFoundException)
+            catch (NotFoundException)
             {
             }
-            catch (Exception)
+            catch
             {
                 // ignored
             }
 
-            var quantifyClient = new QuantifyClient(
-                context,
-                false,
-                QuantifyClientOutput.SummaryByExt);
+            var quantifyClient = new QuantifyClient(context);
             var quantifierClientResult = await quantifyClient.Compute(quantifierInput);
 
             // create a new label in the repository if doesn't exist

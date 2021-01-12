@@ -1,9 +1,9 @@
 ﻿namespace PullRequestQuantifier.Abstractions.Context
 {
-    using System;
     using System.IO;
     using System.Linq;
     using PullRequestQuantifier.Abstractions.Exceptions;
+    using PullRequestQuantifier.Common;
     using YamlDotNet.Serialization;
 
     public static class ContextExtensions
@@ -16,10 +16,7 @@
         /// <returns>returns true in case is valid, otherwise false and errors will not be empty.</returns>
         public static Context Validate(this Context context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            ArgumentCheck.ParameterIsNotNull(context, nameof(context));
 
             if (context.Thresholds == null
                 || !context.Thresholds.Any())
