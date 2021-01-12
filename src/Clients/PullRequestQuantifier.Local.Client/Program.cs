@@ -228,7 +228,8 @@
                                 {
                                     s.FilePath,
                                     s.QuantifiedLinesAdded,
-                                    s.QuantifiedLinesDeleted
+                                    s.QuantifiedLinesDeleted,
+                                    s.DiscardFromCounting
                                 })
                         },
                         new JsonSerializerOptions { WriteIndented = true }));
@@ -251,7 +252,7 @@
                                 {
                                     FileExtension = g.Key,
                                     QuantifiedLinesAdded = g.Sum(v => v.QuantifiedLinesAdded),
-                                    QuantifiedLinesDeleted = g.Sum(v => v.QuantifiedLinesDeleted),
+                                    QuantifiedLinesDeleted = g.Sum(v => v.QuantifiedLinesDeleted)
                                 })
                         },
                         new JsonSerializerOptions { WriteIndented = true }));

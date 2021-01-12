@@ -48,6 +48,13 @@
             fileSystem.File.WriteAllText(fileSystem.Path.Combine(RepoPath, relativePath), string.Concat(Enumerable.Repeat(lineContent, numLines)));
         }
 
+        public void RenameFile(string relativeFilePath, string renameToRelativeFilePath)
+        {
+            fileSystem.File.Move(
+                fileSystem.Path.Combine(RepoPath, relativeFilePath),
+                fileSystem.Path.Combine(RepoPath, renameToRelativeFilePath));
+        }
+
         // This implementation of delete directory is based on the stack overflow
         // answer https://stackoverflow.com/questions/1701457/directory-delete-doesnt-work-access-denied-error-but-under-windows-explorer-it.
         // Otherwise this runs into access issues during direct deletion sometimes.

@@ -46,6 +46,8 @@ LanguageOptions:
   IgnoreComments: true
   IgnoreCodeBlockSeparator: true
 DynamicBehaviour: false
+IgnoreRenamed: true
+IgnoreCopied: true
 AdditionPercentile:
   1: 10.695186614990234
   2: 19.964349746704102

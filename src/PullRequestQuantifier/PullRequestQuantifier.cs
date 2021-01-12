@@ -83,8 +83,15 @@ namespace PullRequestQuantifier
                 }
             }
 
-            quantifierInputChange.RemoveRenamedChanges();
-            quantifierInputChange.RemoveCopiedChanges();
+            if (Context.IgnoreRenamed)
+            {
+                quantifierInputChange.RemoveRenamedChanges();
+            }
+
+            if (Context.IgnoreCopied)
+            {
+                quantifierInputChange.RemoveCopiedChanges();
+            }
 
             // do the final count of changes
             quantifierInputChange.ComputeChanges();
