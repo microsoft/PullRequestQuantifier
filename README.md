@@ -1,5 +1,6 @@
 # Pull Request Quantifier
 ![.NET Core Build](https://github.com/microsoft/PullRequestQuantifier/workflows/.NET%20Core%20Build/badge.svg)
+![Nuget](https://img.shields.io/nuget/v/PullRequestQuantifier.Client)
 
 A highly customizable tool to quantify a pull request within a repository context.
 
