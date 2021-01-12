@@ -4,32 +4,54 @@
 
 A highly customizable tool to quantify a pull request within a repository context.
 
+Highlights
+
+- Counts pull request changes with high accuracy
+- Provides several customizations through a yaml file for fine grained control over change counts
+- Uses git history to provide a repository level context to the pull request
+
 ## Clients
-#### Local
 
-[Download latest local client](https://github.com/microsoft/PullRequestQuantifier/releases)
-```
-PullRequestQuantifier.Local.Client.exe /?
-```
-Bellow example will show a change quantified.
-![Example](./docs/client_cli.png)
+The following open source clients are supported:
 
-#### GitHub
-Bellow example will show a comment on a pull request.
-![Example](./docs/client_github.png)
+| - | Name | Example |
+|------|------|---------|
+| <a href="./src/Clients/PullRequestQuantifier.Local.Client"><img src="./docs/cli-icon.png" width="50"/></a>  | [CLI](./src/Clients/PullRequestQuantifier.Local.Client) | ![](./docs/client-cli.png) |
+| <a href="./src/Clients/PullRequestQuantifier.Vsix.Client"><img src="./docs/visual-studio-icon.png" width="50"/></a>  | [Visual Studio](./src/Clients/PullRequestQuantifier.Vsix.Client) | ![](./docs/client-vsix.png) |
+| <a href="./src/Clients/PullRequestQuantifier.GitHub.Client"><img src="./docs/github-icon.png" width="50"/></a>  | [GitHub](./src/Clients/PullRequestQuantifier.GitHub.Client) | ![](./docs/client-github.png) |
 
-#### Visual Studio Extension
-[Download latest visual studio extension](https://github.com/microsoft/PullRequestQuantifier/releases)
-
-After installing the extention, quantifier will diplay the output on visual studio status bar.
-![Example](./docs/client_vsix.png)
 
 ## Context customization
 
 -TODO explain each setting
 
-[Download latest vesion of conntext generator and run it.](https://github.com/microsoft/PullRequestQuantifier/releases)
-![](./docs/client_context_generator.png)
+[Download latest vesion of conntext generator](https://github.com/microsoft/PullRequestQuantifier/releases) and run it from the command line inside a git repository.
+
+![](./docs/client_context_generator.png) 
+
+Simple context file:
+
+```yml
+Thresholds:
+- Value: 10
+  Label: Extra Small
+  Color: Green
+- Value: 40
+  Label: Small
+  Color: Green
+- Value: 100
+  Label: Medium
+  Color: Yellow
+- Value: 400
+  Label: Large
+  Color: Red
+- Value: 1000
+  Label: Extra Large
+  Color: Red
+```
+
+More detailed context file:
+
 ```yml
 Included: 
 Excluded:
