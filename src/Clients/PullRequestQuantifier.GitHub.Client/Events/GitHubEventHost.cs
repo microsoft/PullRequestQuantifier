@@ -136,6 +136,19 @@
                 payload.Repository.Id,
                 payload.PullRequest.Number,
                 new[] { quantifierClientResult.Label });
+
+            // create a comment on the issue
+            var comment = $"### PullRequestQuantified\n" +
+                          $"```\n" +
+                          $"Label               : {quantifierClientResult.Label}\n" +
+                          $"Diff                : +{quantifierClientResult.QuantifiedLinesAdded} -{quantifierClientResult.QuantifiedLinesDeleted}\n" +
+                          $"Addition percentile : {quantifierClientResult.PercentileAddition}%\n" +
+                          $"Deletion percentile : {quantifierClientResult.PercentileDeletion}%\n" +
+                          $"```";
+            await gitHubClientAdapter.CreateIssueCommentAsync(
+                payload.Repository.Id,
+                payload.PullRequest.Number,
+                comment);
         }
 
         private Task ErrorHandler(Exception exception)
