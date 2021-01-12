@@ -213,5 +213,17 @@
                 issueNumber,
                 labels);
         }
+
+        /// <inheritdoc />
+        public async Task<IssueComment> CreateIssueCommentAsync(
+            long repositoryId,
+            int issueNumber,
+            string comment)
+        {
+            return await gitHubClient.Issue.Comment.Create(
+                repositoryId,
+                issueNumber,
+                comment);
+        }
     }
 }
