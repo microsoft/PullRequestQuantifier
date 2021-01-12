@@ -34,7 +34,6 @@
         public async Task<QuantifierResult> Compute(string gitRepoPath)
         {
             // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
-
             // get current location changes
             var quantifierInput = GetChanges(gitRepoPath);
 

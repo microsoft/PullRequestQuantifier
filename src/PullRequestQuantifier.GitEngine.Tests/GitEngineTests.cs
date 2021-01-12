@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using PullRequestQuantifier.Abstractions.Git;
     using PullRequestQuantifier.Common.Tests;
     using Xunit;
 
@@ -25,6 +26,24 @@
             // Act, Assert
             var exception = Record.Exception(() => gitEngine.GetGitChanges(Environment.CurrentDirectory));
             Assert.Null(exception);
+        }
+
+        [Fact]
+        public void GetGitChanges_ChangedModifiedRenamedFiles()
+        {
+            // Arrange
+            IGitEngine gitEngine = new GitEngine();
+            gitRepoHelpers.AddUntrackedFileToRepo("fakeRename.cs", 2);
+            gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.RenameFile("fakeRename.cs", "fakeRename1.cs");
+
+            // Act
+            var gitChanges = gitEngine.GetGitChanges(gitRepoHelpers.RepoPath).ToArray();
+
+            // Assert
+            Assert.Single(gitChanges);
+            Assert.Equal(2, gitChanges[0].AbsoluteLinesDeleted);
+            Assert.Equal(GitChangeType.Renamed, gitChanges[0].ChangeType);
         }
 
         [Fact]

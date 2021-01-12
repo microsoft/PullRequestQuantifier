@@ -52,6 +52,16 @@
         public bool DynamicBehaviour { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether we should ignore the renamed files.
+        /// </summary>
+        public bool IgnoreRenamed { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether we should ignore the copied files.
+        /// </summary>
+        public bool IgnoreCopied { get; set; }
+
+        /// <summary>
         /// Gets  or sets AdditionPercentile. Used in quantifier final computation.
         /// </summary>
         public SortedDictionary<int, float> AdditionPercentile { get; set; }
