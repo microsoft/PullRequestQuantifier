@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.GitEngine
 {
     using System.Collections.Generic;
+    using System.IO.Abstractions;
     using LibGit2Sharp;
     using PullRequestQuantifier.Abstractions.Git;
 
@@ -27,6 +28,13 @@
         /// <returns>returns a collection with changes.
         /// string is the sha1 of the commit and values represents the changes.</returns>
         IReadOnlyDictionary<GitCommit, IEnumerable<GitFilePatch>> GetGitHistoricalChangesToParent(string path);
+
+        /// <summary>
+        /// Create a repository.
+        /// </summary>
+        /// <param name="repositoryPath">The repository path.</param>
+        /// <returns>returns filesystem handler used for creating the repository.</returns>
+        FileSystem CreateRepository(string repositoryPath);
 
         /// <summary>
         /// Gets a repo root from a path.

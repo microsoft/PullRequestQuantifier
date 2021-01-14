@@ -24,12 +24,12 @@
       <ProjectReference Include="..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <None Include="Data/**/*">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Include="DiffParser/Data/**/*">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="Data/**/*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DiffParser/Data/**/*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

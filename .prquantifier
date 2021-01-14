@@ -3,6 +3,7 @@ Excluded:
 - '*.csproj'
 - '*.prquantifier'
 - 'package-lock.json'
+- '*.md'
 GitOperationType:
 - Add
 - Delete

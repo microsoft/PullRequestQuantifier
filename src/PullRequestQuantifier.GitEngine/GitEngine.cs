@@ -4,6 +4,7 @@ namespace PullRequestQuantifier.GitEngine
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Abstractions;
     using System.Linq;
     using System.Threading.Tasks;
     using LibGit2Sharp;
@@ -104,6 +105,20 @@ namespace PullRequestQuantifier.GitEngine
             });
 
             return ret;
+        }
+
+        /// <inheritdoc />
+        public FileSystem CreateRepository(string repositoryPath)
+        {
+            var fileSystem = new FileSystem();
+            if (fileSystem.Directory.Exists(repositoryPath))
+            {
+                fileSystem.Directory.Delete(repositoryPath, true);
+            }
+
+            Repository.Init(repositoryPath);
+
+            return fileSystem;
         }
 
         /// <inheritdoc />

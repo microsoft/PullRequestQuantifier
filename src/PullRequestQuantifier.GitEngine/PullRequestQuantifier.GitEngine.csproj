@@ -6,6 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="System.IO.Abstractions" Version="13.2.6" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" />
     </ItemGroup>
 
