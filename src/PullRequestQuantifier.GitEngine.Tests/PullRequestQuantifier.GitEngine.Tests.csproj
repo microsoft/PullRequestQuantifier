@@ -25,13 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Data\TestGitIgnore.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="Data\TestGitIgnore.txt">
+        <None Include="Data/**/*">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="DiffParser/Data/**/*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
