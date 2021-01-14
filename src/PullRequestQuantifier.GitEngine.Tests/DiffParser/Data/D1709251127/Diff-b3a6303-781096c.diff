@@ -1,0 +1,27 @@
+--- a/DiffPatch.DiffParser/Diff.cs
++++ b/DiffPatch.DiffParser/Diff.cs
+@@ -1,6 +1,7 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Linq;
++using DiffPatch.Core;
+ using DiffPatch.Data;
+ 
+ namespace DiffPatch.DiffParser
+@@ -9,11 +10,13 @@ namespace DiffPatch.DiffParser
+     {
+         public static IEnumerable<FileDiff> Parse(string input, string lineEnding = "\n")
+         {
+-            if (string.IsNullOrWhiteSpace(input)) return Enumerable.Empty<FileDiff>();
++            if (string.IsNullOrWhiteSpace(input))
++                return Enumerable.Empty<FileDiff>();
+ 
+-            var lines = input.Split(new[] { lineEnding }, StringSplitOptions.None);
++            IEnumerable<string> lines = StringHelper.SplitLines(input, lineEnding);
+ 
+-            if (lines.Length == 0) return Enumerable.Empty<FileDiff>();
++            if (!lines.Any())
++                return Enumerable.Empty<FileDiff>();
+ 
+             var parser = new DiffPatch.DiffParser.DiffParser();
+ 
