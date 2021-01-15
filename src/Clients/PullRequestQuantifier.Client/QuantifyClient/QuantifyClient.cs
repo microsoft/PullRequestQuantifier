@@ -48,6 +48,20 @@
             return await prQuantifier.Quantify(quantifierInput);
         }
 
+        /// <summary>
+        /// this is a comment.
+        /// </summary>
+        /// <param name="quantifierInput"></param>
+        /// <returns></returns>
+        public async Task<QuantifierResult> ComputeOverload(QuantifierInput quantifierInput)
+        {
+            // quantify the changes
+            // this is comment
+            asdfasddf
+                asdfasd
+            return await prQuantifier.Quantify(quantifierInput);
+        }
+
         private Context LoadContext(string contextFilePathOrContent)
         {
             var context = DefaultContext.Value;
@@ -62,12 +76,14 @@
                 var ctx = ContextFactory.Load(contextFilePathOrContent);
                 context = ctx;
             }
-            catch (YamlException)
-            {
-            }
             catch (ThresholdException ex)
             {
                 // misconfiguration then print the exception
+                Console.WriteLine(ex);
+            }
+            catch (YamlException ex)
+            {
+                Console.WriteLine("Yaml could not be parsed");
                 Console.WriteLine(ex);
             }
             catch (ArgumentNullException ex)

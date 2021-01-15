@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.GitHu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PullRequestQuantifier.Common", "src\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj", "{455EC52D-F195-43A6-A2A9-F0864612CE74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "src\Clients\ClassLibrary1\ClassLibrary1.csproj", "{094759C5-A524-4D13-82BF-02538AD7BD7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,10 @@ Global
 		{455EC52D-F195-43A6-A2A9-F0864612CE74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{455EC52D-F195-43A6-A2A9-F0864612CE74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{455EC52D-F195-43A6-A2A9-F0864612CE74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{094759C5-A524-4D13-82BF-02538AD7BD7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{094759C5-A524-4D13-82BF-02538AD7BD7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{094759C5-A524-4D13-82BF-02538AD7BD7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{094759C5-A524-4D13-82BF-02538AD7BD7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{3B592A72-1370-4803-BFBB-C23CA528FF86} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 		{794D833C-558E-4216-B405-98EDD601C68B} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 		{F9ED6691-A004-40FF-A14B-03D34CF85434} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
+		{094759C5-A524-4D13-82BF-02538AD7BD7B} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8F5E1E3-3A8D-4D1C-8A8B-CA608A972B61}
