@@ -78,6 +78,13 @@ namespace PullRequestQuantifier.GitEngine
         {
             var ret = new ConcurrentDictionary<GitCommit, IEnumerable<GitFilePatch>>();
             var repoRoot = Repository.Discover(path);
+
+            // don't crash when there is no repo to this path, return empty changes
+            if (repoRoot == null)
+            {
+                return ret;
+            }
+
             using var repo = new Repository(repoRoot);
 
             var commits = repo.Commits.QueryBy(new CommitFilter
