@@ -16,12 +16,18 @@
             IContextGenerator contextGenerator = new ContextGenerator();
             var context = await contextGenerator.Create(args[0]);
 
+            var repository = Repository.Discover(args[0]);
+            var saveContextFilePath = args[0];
+            if (repository != null)
+            {
+                saveContextFilePath = new DirectoryInfo(repository).Parent.FullName;
+            }
+
             // serialize the new context
-            var repoRootPath = new DirectoryInfo(Repository.Discover(args[0])).Parent.FullName;
-            var filePath = Path.Combine(repoRootPath, ".prquantifier");
+            var filePath = Path.Combine(saveContextFilePath, ".prquantifier");
             context.SerializeToYaml(filePath);
             Console.WriteLine(
-                $"Generate context for Repo located on '{repoRootPath}'" +
+                $"Generate context for Repo located on '{saveContextFilePath}'" +
                 $", context file located at {Path.Combine(Environment.CurrentDirectory, filePath)}");
         }
 

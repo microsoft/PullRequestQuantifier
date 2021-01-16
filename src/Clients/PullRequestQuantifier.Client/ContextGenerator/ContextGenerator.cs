@@ -25,6 +25,12 @@
             var historicalChanges = gitEngine.GetGitHistoricalChangesToParent(repoPath);
             var context = DefaultContext.Value;
 
+            // if there are no history changes into the repo then return the default context.
+            if (historicalChanges.Count == 0)
+            {
+                return context;
+            }
+
             // do the quantification based on th default context to get accurate numbers
             IPullRequestQuantifier prQuantifier = new PullRequestQuantifier(context);
             var quantifierInput = new QuantifierInput();

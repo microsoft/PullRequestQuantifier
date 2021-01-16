@@ -4,6 +4,7 @@
 
 namespace PullRequestQuantifier.Client.ContextGenerator
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using global::PullRequestQuantifier.Abstractions.Context;
@@ -54,8 +55,6 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                 }
             };
 
-            var defaultPercentileValue = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value));
-
             Value = new Context
             {
                 LanguageOptions = new LanguageOptions
@@ -65,11 +64,13 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                     IgnoreSpaces = true
                 },
                 DynamicBehaviour = false,
+                IgnoreRenamed = true,
+                IgnoreCopied = true,
                 Thresholds = defaultThresholds,
-                Excluded = new List<string> { "*.csproj" },
+                Excluded = new List<string> { "*.csproj", "*.prquantifier", "package-lock.json", "*.md" },
                 GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete },
-                AdditionPercentile = defaultPercentileValue,
-                DeletionPercentile = defaultPercentileValue
+                AdditionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value)),
+                DeletionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value))
             };
         }
 

@@ -42,10 +42,7 @@ namespace PullRequestQuantifier
                 };
 
                 // involve context and compute
-                foreach (GitFilePatch quantifierInputChange in quantifierInput.Changes)
-                {
-                    ApplyContext(quantifierInputChange);
-                }
+                Parallel.ForEach(quantifierInput.Changes, ApplyContext);
 
                 CountTotalChanges(quantifierInput, quantifierResult);
 
