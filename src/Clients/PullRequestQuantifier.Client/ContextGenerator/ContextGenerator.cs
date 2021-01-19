@@ -49,10 +49,13 @@
         {
             var ret = new Dictionary<int, float>();
 
-            var data = historicalChanges
-                .SelectMany(h => h.Value)
-                .Where(v => (addition ? v.QuantifiedLinesAdded : v.QuantifiedLinesDeleted) > 0)
-                .Select(v => addition ? v.QuantifiedLinesAdded : v.QuantifiedLinesDeleted).ToArray();
+            var data = new int[historicalChanges.Count];
+            int idx = 0;
+            foreach (var historicalChange in historicalChanges)
+            {
+                data[idx++] = historicalChange.Value.Sum(v => addition ? v.QuantifiedLinesAdded : v.QuantifiedLinesDeleted);
+            }
+
             Array.Sort(data);
 
             foreach (var value in data)
