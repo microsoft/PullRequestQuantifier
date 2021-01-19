@@ -67,7 +67,7 @@ jobs:
         path: release/*
     - uses: actions/checkout@v2
     - name: Set env
-        run: echo "release_version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      run: echo "release_version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     - name: Prepare the changelog from the tag message
       id: prepare_changelog
       run: |
