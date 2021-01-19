@@ -58,13 +58,8 @@ jobs:
     - name: Publish local client
       if: github.ref == 'refs/heads/main'
       run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
-    - uses: actions/upload-artifact@v2
+    - name: Upload release artifacts
+      uses: actions/upload-artifact@v2
       with:
-        name: PullRequestQuantifier.Local.Context
-        if: github.ref == 'refs/heads/main'
-        path: release/PullRequestQuantifier.Local.Context/
-    - uses: actions/upload-artifact@v2
-      with:
-        name: PullRequestQuantifier.Local.Client
-        if: github.ref == 'refs/heads/main'
-        path: release/PullRequestQuantifier.Local.Client/
+        name: release-artifacts
+        path: release/*
