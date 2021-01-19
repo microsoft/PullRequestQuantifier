@@ -52,3 +52,14 @@ jobs:
     - name: Push package to NuGet
       if: github.ref == 'refs/heads/main'
       run: dotnet nuget push src\Clients\PullRequestQuantifier.Client\bin\Release\PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json
+    - name: Publish local context generator
+      if: github.ref == 'refs/heads/main'
+      run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Context ./src/Clients/PullRequestQuantifier.Local.Context/PullRequestQuantifier.Local.Context.csproj --self-contained=false /p:PublishSingleFile=true
+    - name: Publish local client
+      if: github.ref == 'refs/heads/main'
+      run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
+    - name: Upload release artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifacts
+        path: release/*
