@@ -68,32 +68,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set env
       run: echo "release_version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-    - name: Prepare the changelog from the tag message
-      id: prepare_changelog
-      run: |
-        # Parse tag message
-        CHANGELOG=$(git for-each-ref $GITHUB_REF | tail -n+3)
-        echo $CHANGELOG
-        # Set markdown titles
-        CHANGELOG=${CHANGELOG/Added/## Added}
-        CHANGELOG=${CHANGELOG/Fixed/## Fixed}
-        CHANGELOG=${CHANGELOG/Changed/## Changed}
-        CHANGELOG=${CHANGELOG/Removed/## Removed}
-        CHANGELOG=${CHANGELOG/Deprecated/## Deprecated}
-        CHANGELOG=${CHANGELOG/Security/## Security}
-        echo $CHANGELOG
-        # Remove PGP signature
-        CHANGELOG="${CHANGELOG%-----BEGIN*}"
-        echo $CHANGELOG
-        # Change linebreaks and other special characters
-        CHANGELOG="${CHANGELOG//'%'/'%25'}"
-        CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
-        CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
-        echo "Setting changelog body to:"
-        echo $CHANGELOG
-        echo 'changelog<<EOF' >> $GITHUB_ENV
-        echo $CHANGELOG >> $GITHUB_ENV
-        echo 'EOF' >> $GITHUB_ENV
     - name: Create a Release
       id: create_release
       uses: actions/create-release@v1
@@ -102,6 +76,5 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: v${{ env.release_version }}
-        body: ${{ env.changelog }}
         draft: false
         prerelease: false
