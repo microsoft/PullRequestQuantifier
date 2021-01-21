@@ -66,7 +66,14 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                 IgnoreRenamed = true,
                 IgnoreCopied = true,
                 Thresholds = defaultThresholds,
-                Excluded = new List<string> { "*.csproj", "*.prquantifier", "package-lock.json", "*.md" },
+                Excluded = new List<string>
+                {
+                    "*.csproj",
+                    "*.prquantifier",
+                    "package-lock.json",
+                    "*.md",
+                    "*.sln"
+                },
                 GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete },
                 AdditionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value)),
                 DeletionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value)),

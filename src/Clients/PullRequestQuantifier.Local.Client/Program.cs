@@ -200,7 +200,8 @@
                         $"PrQuantified = {quantifierResult.Label},\t" +
                         $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})," +
                         $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
-                        $", deletions = {quantifierResult.PercentileDeletion}%.{Environment.NewLine}");
+                        $", deletions = {quantifierResult.PercentileDeletion}%," +
+                        $" formula = {quantifierResult.FormulaPercentile}%.{Environment.NewLine}");
                     break;
                 }
 

@@ -85,7 +85,7 @@ jobs:
         prerelease: false
     - name: Upload PullRequestQuantifier.Local.Client Release Asset
       if: github.ref == 'refs/heads/main'
-      id: upload-release-asset 
+      id: upload-release-asset-local-client
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -95,7 +95,7 @@ jobs:
         asset_content_type: application/zip
     - name: Upload PullRequestQuantifier.Local.Context Release Asset
       if: github.ref == 'refs/heads/main'
-      id: upload-release-asset 
+      id: upload-release-asset-local-context
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
