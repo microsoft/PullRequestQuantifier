@@ -48,6 +48,11 @@ namespace PullRequestQuantifier.Abstractions.Core
         public float PercentileAddition { get; set; }
 
         /// <summary>
+        /// Gets or sets the formula percentile within the context for this quantified results.
+        /// </summary>
+        public float FormulaPercentile { get; set; }
+
+        /// <summary>
         /// Gets or sets the quantifier input.
         /// </summary>
         public QuantifierInput QuantifierInput { get; set; }

@@ -1,6 +1,7 @@
 namespace PullRequestQuantifier
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
     using System.Threading.Tasks;
@@ -130,52 +131,71 @@ namespace PullRequestQuantifier
             // in case no addition/deletion found then we won't be able to set the change percentile.
             if (Context.AdditionPercentile == null
                 || Context.DeletionPercentile == null
+                || Context.FormulaPercentile == null
                 || Context.AdditionPercentile.Count == 0
-                || Context.DeletionPercentile.Count == 0)
+                || Context.DeletionPercentile.Count == 0
+                || !Context.FormulaPercentile.Any())
             {
                 return;
             }
 
-            quantifierResult.PercentileAddition = MathF.Round(GetPercentile(quantifierResult, true), 2);
-            quantifierResult.PercentileDeletion = MathF.Round(GetPercentile(quantifierResult, false), 2);
+            quantifierResult.PercentileAddition = MathF.Round(GetAdditionDeletionPercentile(quantifierResult, true), 2);
+            quantifierResult.PercentileDeletion = MathF.Round(GetAdditionDeletionPercentile(quantifierResult, false), 2);
+            quantifierResult.FormulaPercentile = MathF.Round(GetFormulaPercentile(quantifierResult), 2);
         }
 
-        private float GetPercentile(
+        private float GetAdditionDeletionPercentile(
             QuantifierResult quantifierResult,
             bool addition)
         {
-            var operationValues = addition
-                ? Context.AdditionPercentile.Keys.ToArray()
-                : Context.DeletionPercentile.Keys.ToArray();
+            return addition
+                ? GetPercentile(quantifierResult.QuantifiedLinesAdded, Context.AdditionPercentile)
+                : GetPercentile(quantifierResult.QuantifiedLinesDeleted, Context.DeletionPercentile);
+        }
+
+        private float GetFormulaPercentile(QuantifierResult quantifierResult)
+        {
+            var finalValue = quantifierResult.Formula switch
+            {
+                ThresholdFormula.Sum => quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted,
+                ThresholdFormula.Avg => (quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted) / 2,
+                ThresholdFormula.Min => Math.Min(quantifierResult.QuantifiedLinesAdded, quantifierResult.QuantifiedLinesDeleted),
+                ThresholdFormula.Max => Math.Max(quantifierResult.QuantifiedLinesAdded, quantifierResult.QuantifiedLinesDeleted),
+                _ => throw new ArgumentOutOfRangeException(),
+            };
+
+            var contextFormulaPercentile = Context.FormulaPercentile.First(f => f.Item1 == quantifierResult.Formula).Item2;
+            return GetPercentile(finalValue, contextFormulaPercentile);
+        }
+
+        private float GetPercentile(
+            int finalValue,
+            SortedDictionary<int, float> contextPercentile)
+        {
+            var operationValues = contextPercentile.Keys.ToArray();
 
             var idxUpperBound = Array.FindIndex(
                 operationValues,
                 arrayElement =>
-                    (addition ? quantifierResult.QuantifiedLinesAdded : quantifierResult.QuantifiedLinesDeleted) <=
+                    finalValue <=
                     arrayElement);
 
             var idxLowerBound = Array.FindLastIndex(
                 operationValues,
                 arrayElement =>
-                    arrayElement <= (addition
-                        ? quantifierResult.QuantifiedLinesAdded
-                        : quantifierResult.QuantifiedLinesDeleted));
+                    arrayElement <= finalValue);
 
             var lowerBoundPercentile =
-                (addition ? quantifierResult.QuantifiedLinesAdded : quantifierResult.QuantifiedLinesDeleted) <
+                finalValue <
                 operationValues[0]
                     ? 0
-                    : (addition
-                        ? Context.AdditionPercentile[operationValues[idxLowerBound]]
-                        : Context.DeletionPercentile[operationValues[idxLowerBound]]);
+                    : contextPercentile[operationValues[idxLowerBound]];
 
             var upperBoundPercentile =
-                (addition ? quantifierResult.QuantifiedLinesAdded : quantifierResult.QuantifiedLinesDeleted) >
+                finalValue >
                 operationValues[^1]
                     ? 100
-                    : (addition
-                        ? Context.AdditionPercentile[operationValues[idxUpperBound]]
-                        : Context.DeletionPercentile[operationValues[idxUpperBound]]);
+                    : contextPercentile[operationValues[idxUpperBound]];
 
             // todo here change this and compute accurately
             return Math.Min(lowerBoundPercentile, upperBoundPercentile);

@@ -37,20 +37,6 @@
             Assert.Equal(2, file.Chunks.Count());
         }
 
-        [Fact(Skip = "Binary diffs are not working.")]
-        public void ShouldParseDataSet108Diff()
-        {
-            string diff = DataSetHelper.ReadFileContent("D1709251127", "BinaryDiff.diff");
-
-            var files = DiffParserHelper.Parse(diff).ToArray();
-            Assert.Single(files);
-            var file = files[0];
-
-            Assert.Equal("/dev/null", file.From);
-            Assert.Equal("Blog.db", file.To);
-            Assert.Equal(FileChangeType.Modified, file.Type);
-        }
-
         [Fact]
         public void ShouldParseSimpleGitLikeDiff()
         {

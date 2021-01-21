@@ -70,5 +70,10 @@
         /// Gets  or sets DeletionPercentile. Used in quantifier final computation.
         /// </summary>
         public SortedDictionary<int, float> DeletionPercentile { get; set; }
+
+        /// <summary>
+        /// Gets  or sets FormulaPercentile. Used in quantifier final computation.
+        /// </summary>
+        public IEnumerable<(ThresholdFormula, SortedDictionary<int, float>)> FormulaPercentile { get; set; }
     }
 }

@@ -83,3 +83,23 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+    - name: Upload PullRequestQuantifier.Local.Client Release Asset
+      if: github.ref == 'refs/heads/main'
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        asset_path: ./PullRequestQuantifier.Local.Client.zip
+        asset_name: PullRequestQuantifier.Local.Client.zip
+        asset_content_type: application/zip
+    - name: Upload PullRequestQuantifier.Local.Context Release Asset
+      if: github.ref == 'refs/heads/main'
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        asset_path: ./PullRequestQuantifier.Local.Context.zip
+        asset_name: PullRequestQuantifier.Local.Context.zip
+        asset_content_type: application/zip
