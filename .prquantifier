@@ -1,6 +1,7 @@
 Included: 
 Excluded:
 - '*.csproj'
+- '*.sln'
 - '*.prquantifier'
 - package-lock.json
 - '*.md'
