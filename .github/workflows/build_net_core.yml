@@ -66,6 +66,7 @@ jobs:
         name: release-artifacts
         path: release/*
     - name: Create a Release
+      if: github.ref == 'refs/heads/main'
       id: create_release
       uses: actions/create-release@v1
       env:
