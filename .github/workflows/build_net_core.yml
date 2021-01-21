@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
+    tags:
+      - 'v*.*.*'
   pull_request:
     branches: [ main ]
 
@@ -58,8 +60,26 @@ jobs:
     - name: Publish local client
       if: github.ref == 'refs/heads/main'
       run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
-    - name: Upload release artifacts
+    - name: Upload release PullRequestQuantifier.Local.Client artifacts
+      if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v2
       with:
-        name: release-artifacts
-        path: release/*
+        name: PullRequestQuantifier.Local.Client
+        path: release/PullRequestQuantifier.Local.Client/*
+    - name: Upload release PullRequestQuantifier.Local.Context artifacts
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: PullRequestQuantifier.Local.Context
+        path: release/PullRequestQuantifier.Local.Context/*
+    - name: Create a Release
+      if: github.ref == 'refs/heads/main'
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
