@@ -18,9 +18,10 @@ Highlights
 
 ## 
 
-<details open>
+<details>
   <summary display="inline"> <strong>Clients</strong> </summary>
-  
+<p/>
+  <p/>
  The following open source clients are supported:
 
 | - | Name | Example |
@@ -37,7 +38,8 @@ Highlights
 
 <details>
   <summary display="inline"> <strong>How to develop new clients</strong> </summary>
-  
+  <p/>
+  <p/>
 Three steps​
 
 1. Load the context, if available​
@@ -61,9 +63,14 @@ Console.WriteLine(quantifierResult.QuantifiedLinesDeleted);
 
 </details>
 
-## Context customization
+## 
 
--TODO explain each setting
+
+<details>
+  <summary display="inline"> <strong>Context customization</strong> </summary>
+  <p/>
+  <p/>
+  -TODO explain each setting
 
 [Download latest vesion of conntext generator](https://github.com/microsoft/PullRequestQuantifier/releases) and run it from the command line inside a git repository.
 
@@ -150,26 +157,42 @@ DeletionPercentile:
   2: 34.615386962890625
   ...(auto generated when we run the context generator)
 ```
+</details>
 
-## Developing
+## 
 
-PullRequestQuantifier uses `netstandard2.1` for the main library(PullRequestQuantifier.Client) and `net5.0` for the unit tests (Xunit).
+<details>
+  <summary display="inline"> <strong>Developing</strong> </summary>
+  <p/>
+  <p/>
+  PullRequestQuantifier uses `netstandard2.1` for the main library(PullRequestQuantifier.Client) and `net5.0` for the unit tests (Xunit).
+</details>
 
-#### Build
+##
 
-From the root directory
+<details>
+  <summary display="inline"> <strong>Build</strong> </summary>
+  <p/>
+  <p/>
+  From the root directory
 
 ```
 dotnet build .\PullRequestQuantifier.sln
 ```
+</details>
 
-#### Test
+##
 
-From the root directory
+<details>
+  <summary display="inline"> <strong>Test</strong> </summary>
+  <p/>
+  <p/>
+  From the root directory
 
 ```
 dotnet test .\PullRequestQuantifier.sln
 ```
+</details>
 
 ## Contributing
 
