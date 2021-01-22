@@ -10,6 +10,8 @@ Highlights
 - Provides several customizations through a yaml file for fine grained control over change counts
 - Uses git history to provide a repository level context to the pull request
 
+## [Pull request optimization good practices](./docs/PrOptimizationGoodPractices.md)
+
 ## Clients
 
 The following open source clients are supported:
@@ -20,6 +22,7 @@ The following open source clients are supported:
 | <a href="./src/Clients/PullRequestQuantifier.Vsix.Client"><img src="./docs/visual-studio-icon.png" width="50"/></a>  | [Visual Studio](./src/Clients/PullRequestQuantifier.Vsix.Client) | ![](./docs/client-vsix.png) |
 | <a href="./src/Clients/PullRequestQuantifier.GitHub.Client"><img src="./docs/github-icon.png" width="50"/></a>  | [GitHub](./src/Clients/PullRequestQuantifier.GitHub.Client) | ![](./docs/client-github.png) |
 
+## [How to develop new clients](./docs/HowToDevelopNewClients.md)
 
 ## Context customization
 
