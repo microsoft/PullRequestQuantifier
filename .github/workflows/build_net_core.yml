@@ -97,26 +97,7 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload PullRequestQuantifier.Local.Client Release Asset
-      if: github.ref == 'refs/heads/main'
-      id: upload-release-asset-local-client
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: AButler/upload-release-assets@v2.0
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: PullRequestQuantifier.Local.Client.zip
-        asset_name: PullRequestQuantifier.Local.Client.zip
-        asset_content_type: application/zip
-
-    - name: Upload PullRequestQuantifier.Local.Context Release Asset
-      if: github.ref == 'refs/heads/main'
-      id: upload-release-asset-local-context
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: PullRequestQuantifier.Local.Context.zip
-        asset_name: PullRequestQuantifier.Local.Context.zip
-        asset_content_type: application/zip
+        files: 'artifacts/*'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
