@@ -8,7 +8,8 @@ on:
       - 'v*'
   pull_request:
     branches: [ main ]
-
+    tags:
+      - 'v*'
 jobs:
   build:
 
@@ -65,10 +66,8 @@ jobs:
       run: dotnet nuget push src\Clients\PullRequestQuantifier.Client\bin\Release\PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json
 
     - name: Publish local context generator
-      #if: github.ref == 'refs/heads/main'
       run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Context ./src/Clients/PullRequestQuantifier.Local.Context/PullRequestQuantifier.Local.Context.csproj --self-contained=false /p:PublishSingleFile=true
     - name: Publish local client
-      #if: github.ref == 'refs/heads/main'
       run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
     
     - name: Upload release PullRequestQuantifier.Local.Client artifacts
@@ -77,6 +76,7 @@ jobs:
       with:
         name: PullRequestQuantifier.Local.Client
         path: release/PullRequestQuantifier.Local.Client/*
+
     - name: Upload release PullRequestQuantifier.Local.Context artifacts
       if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v2
@@ -84,12 +84,8 @@ jobs:
         name: PullRequestQuantifier.Local.Context
         path: release/PullRequestQuantifier.Local.Context/*
 
-    - name: Display structure of downloaded files  1
-      run: ls -R
-      working-directory: ./
-
     - name: Create a Release
-      #if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/main'
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -100,14 +96,4 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload Release Assets
-      if: github.ref == 'refs/heads/main'
-      id: upload-release-assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./PullRequestQuantifier/PullRequestQuantifier/release
-        asset_name: release.zip
-        asset_content_type: application/zip
+    #todo upload artifacts to release
