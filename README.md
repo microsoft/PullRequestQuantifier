@@ -1,4 +1,4 @@
-# Pull Request Quantifier
+﻿# Pull Request Quantifier
 ![.NET Core Build](https://github.com/microsoft/PullRequestQuantifier/workflows/.NET%20Core%20Build/badge.svg)
 ![Nuget](https://img.shields.io/nuget/v/PullRequestQuantifier.Client)
 
@@ -22,7 +22,33 @@ The following open source clients are supported:
 | <a href="./src/Clients/PullRequestQuantifier.Vsix.Client"><img src="./docs/visual-studio-icon.png" width="50"/></a>  | [Visual Studio](./src/Clients/PullRequestQuantifier.Vsix.Client) | ![](./docs/client-vsix.png) |
 | <a href="./src/Clients/PullRequestQuantifier.GitHub.Client"><img src="./docs/github-icon.png" width="50"/></a>  | [GitHub](./src/Clients/PullRequestQuantifier.GitHub.Client) | ![](./docs/client-github.png) |
 
-## [How to develop new clients](./docs/HowToDevelopNewClients.md)
+##
+
+<details>
+  <summary>How to develop new clients</summary>
+  
+Three steps​
+
+1. Load the context, if available​
+1. Call Quantifier​
+1. Output the results
+
+```c#
+// 1. point to the context file (with behavior specification)​
+var contextFile = "path/to/context/file/.prquantifier";​
+​
+// 2. quantify local git repository​
+
+var quantifyClient = new QuantifyClient(contextFile);​
+var quantifierResult = await quantifyClient.Compute("path/to/local/git/repo");​
+​
+// 3. output the results​
+Console.WriteLine(quantifierResult.Label);​
+Console.WriteLine(quantifierResult.QuantifiedLinesAdded);​
+Console.WriteLine(quantifierResult.QuantifiedLinesDeleted);
+```
+
+</details>
 
 ## Context customization
 
