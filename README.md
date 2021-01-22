@@ -37,8 +37,8 @@ Highlights
 ##### How to interpret git diff:
 ```
 1. One line was added: +1 -0
-1. One line was deleted: +0 -1
-1. One line was modified: +1 -1 
+2. One line was deleted: +0 -1
+3. One line was modified: +1 -1 
 (git diff doesn't know about modified, will 
 interpret that line like one addition plus one deletion)
 ```
