@@ -38,7 +38,7 @@
             await prQuantifier.Quantify(quantifierInput);
 
             context.AdditionPercentile = AdditionDeletionPercentile(historicalChanges, true);
-            context.DeletionPercentile = AdditionDeletionPercentile(historicalChanges, false))\;
+            context.DeletionPercentile = AdditionDeletionPercentile(historicalChanges, false);
             context.FormulaPercentile = FormulaPercentile(historicalChanges);
 
             return context;
@@ -74,13 +74,19 @@
             return ret;
         }
 
-        private static IEnumerable<(ThresholdFormula, SortedDictionary<int, float>)> FormulaPercentile(
+        private IEnumerable<(ThresholdFormula, SortedDictionary<int, float>)> FormulaPercentile(
             IReadOnlyDictionary<GitCommit, IEnumerable<GitFilePatch>> historicalChanges)
         {
-           
+            var ret = new List<(ThresholdFormula, SortedDictionary<int, float>)>();
+            foreach (ThresholdFormula thresholdFormula in (ThresholdFormula[])Enum.GetValues(typeof(ThresholdFormula)))
+            {
+                ret.Add((thresholdFormula, Percentile(GroupCommits(historicalChanges, thresholdFormula))));
+            }
+
+            return ret;
         }
 
-        private static int[] GroupCommits(
+        private int[] GroupCommits(
             IReadOnlyDictionary<GitCommit, IEnumerable<GitFilePatch>> historicalChanges,
             ThresholdFormula thresholdFormula)
         {
