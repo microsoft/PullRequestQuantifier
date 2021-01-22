@@ -11,14 +11,14 @@ Highlights
 - Uses git history to provide a repository level context to the pull request
 
 ##
-<details>
+<details open>
   <summary display="inline"> <strong>Pull request optimization good practices</strong> </summary>
   
 </details>
 
 ## 
 
-<details>
+<details open>
   <summary display="inline"> <strong>Clients</strong> </summary>
 <p/>
   <p/>
