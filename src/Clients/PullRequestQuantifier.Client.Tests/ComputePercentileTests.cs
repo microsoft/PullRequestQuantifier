@@ -1,9 +1,11 @@
 ﻿namespace PullRequestQuantifier.Client.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using PullRequestQuantifier.Client.ContextGenerator;
     using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public sealed class ComputePercentileTests
     {
         [Theory]

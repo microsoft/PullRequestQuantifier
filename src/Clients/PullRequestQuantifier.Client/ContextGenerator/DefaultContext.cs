@@ -4,7 +4,6 @@
 
 namespace PullRequestQuantifier.Client.ContextGenerator
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using global::PullRequestQuantifier.Abstractions.Context;
@@ -67,10 +66,18 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                 IgnoreRenamed = true,
                 IgnoreCopied = true,
                 Thresholds = defaultThresholds,
-                Excluded = new List<string> { "*.csproj", "*.prquantifier", "package-lock.json", "*.md" },
+                Excluded = new List<string>
+                {
+                    "*.csproj",
+                    "*.prquantifier",
+                    "package-lock.json",
+                    "*.md",
+                    "*.sln"
+                },
                 GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete },
                 AdditionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value)),
-                DeletionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value))
+                DeletionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value)),
+                FormulaPercentile = FormulaPercentile(defaultThresholds.OrderBy(t => t.Value))
             };
         }
 
@@ -93,6 +100,20 @@ namespace PullRequestQuantifier.Client.ContextGenerator
 
                 // reset lower bound to the last threshold
                 lowerBound = threshold.Value;
+            }
+
+            return ret;
+        }
+
+        private static IEnumerable<(ThresholdFormula, SortedDictionary<int, float>)> FormulaPercentile(IEnumerable<Threshold> thresholds)
+        {
+            var ret = new List<(ThresholdFormula, SortedDictionary<int, float>)>();
+            var enumerable = thresholds as Threshold[] ?? thresholds.ToArray();
+            var formulas = enumerable.Select(t => t.Formula).Distinct();
+
+            foreach (var thresholdFormula in formulas)
+            {
+                ret.Add((thresholdFormula, DefaultPercentile(enumerable)));
             }
 
             return ret;

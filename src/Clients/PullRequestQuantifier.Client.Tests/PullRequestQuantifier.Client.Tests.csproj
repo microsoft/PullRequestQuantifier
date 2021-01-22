@@ -21,7 +21,18 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" />
+      <ProjectReference Include="..\..\PullRequestQuantifier.Common.Tests\PullRequestQuantifier.Common.Tests.csproj" />
+      <ProjectReference Include="..\..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" />
       <ProjectReference Include="..\PullRequestQuantifier.Client\PullRequestQuantifier.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Data\MissingFormulaPercentileContext.prquantifier">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\TestGitIgnore.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

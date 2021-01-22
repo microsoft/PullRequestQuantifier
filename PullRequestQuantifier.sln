@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.Local
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleContexts", "SampleContexts", "{7BC8D1D7-BA30-42ED-9C3D-8352BB8A5EC4}"
 	ProjectSection(SolutionItems) = preProject
-		src\SampleContexts\ContextModelSampleOne.prquantifier = src\SampleContexts\ContextModelSampleOne.prquantifier
+		src\SampleContexts\.prquantifier = src\SampleContexts\.prquantifier
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.Abstractions.Tests", "src\PullRequestQuantifier.Abstractions.Tests\PullRequestQuantifier.Abstractions.Tests.csproj", "{E4C7263F-772C-4AB8-9476-F7457BF37E0B}"
@@ -34,7 +34,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.GitEn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.GitHub.Client", "src\Clients\PullRequestQuantifier.GitHub.Client\PullRequestQuantifier.GitHub.Client.csproj", "{F9ED6691-A004-40FF-A14B-03D34CF85434}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PullRequestQuantifier.Common", "src\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj", "{455EC52D-F195-43A6-A2A9-F0864612CE74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.Common", "src\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj", "{455EC52D-F195-43A6-A2A9-F0864612CE74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{1E9C71B6-F457-4700-B648-6E8AEFD61073}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
