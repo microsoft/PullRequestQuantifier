@@ -25,7 +25,7 @@ The following open source clients are supported:
 ##
 
 <details>
-  <summary markdown="block"> ## How to develop new clients</summary>
+  <summary markdown="block"> <h2>How to develop new clients</h2> </summary>
   
 Three steps​
 
