@@ -11,7 +11,7 @@ Highlights
 - Uses git history to provide a repository level context to the pull request
 
 ##
-<details>
+<details open>
   <summary display="inline"> <strong>Pull request optimization good practices</strong> </summary>
   
 </details>
@@ -20,7 +20,8 @@ Highlights
 
 <details open>
   <summary display="inline"> <strong>Clients</strong> </summary>
-  
+<p/>
+  <p/>
  The following open source clients are supported:
 
 | - | Name | Example |
@@ -37,7 +38,8 @@ Highlights
 
 <details>
   <summary display="inline"> <strong>How to develop new clients</strong> </summary>
-  
+  <p/>
+  <p/>
 Three steps​
 
 1. Load the context, if available​
@@ -61,9 +63,14 @@ Console.WriteLine(quantifierResult.QuantifiedLinesDeleted);
 
 </details>
 
-## Context customization
+## 
 
--TODO explain each setting
+
+<details>
+  <summary display="inline"> <strong>Context customization</strong> </summary>
+  <p/>
+  <p/>
+  -TODO explain each setting
 
 [Download latest vesion of conntext generator](https://github.com/microsoft/PullRequestQuantifier/releases) and run it from the command line inside a git repository.
 
@@ -150,30 +157,50 @@ DeletionPercentile:
   2: 34.615386962890625
   ...(auto generated when we run the context generator)
 ```
+</details>
 
-## Developing
+## 
 
-PullRequestQuantifier uses `netstandard2.1` for the main library(PullRequestQuantifier.Client) and `net5.0` for the unit tests (Xunit).
+<details>
+  <summary display="inline"> <strong>Developing</strong> </summary>
+  <p/>
+  <p/>
+  PullRequestQuantifier uses `netstandard2.1` for the main library(PullRequestQuantifier.Client) and `net5.0` for the unit tests (Xunit).
+</details>
 
-#### Build
+##
 
-From the root directory
+<details>
+  <summary display="inline"> <strong>Build</strong> </summary>
+  <p/>
+  <p/>
+  From the root directory
 
 ```
 dotnet build .\PullRequestQuantifier.sln
 ```
+</details>
 
-#### Test
+##
 
-From the root directory
+<details>
+  <summary display="inline"> <strong>Test</strong> </summary>
+  <p/>
+  <p/>
+  From the root directory
 
 ```
 dotnet test .\PullRequestQuantifier.sln
 ```
+</details>
 
-## Contributing
+## 
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+<details>
+  <summary display="inline"> <strong>Contributing</strong> </summary>
+  <p/>
+  <p/>
+  This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
@@ -184,11 +211,21 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+</details>
 
-## Trademarks
 
+
+## 
+
+<details>
+  <summary display="inline"> <strong>Trademarks</strong> </summary>
+  <p/>
+  <p/>
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
 trademarks or logos is subject to and must follow 
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+</details>
+
+
