@@ -71,11 +71,11 @@ jobs:
       #if: github.ref == 'refs/heads/main'
       run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
     
-    - name: Upload release clients artifacts
+    - name: Upload release artifacts
       #if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v2
       with:
-        name: clients
+        name: release
         path: release/
 
     - name: Create a Release
@@ -92,7 +92,11 @@ jobs:
 
     - uses: actions/download-artifact@v2
       with:
-        path: artifacts
+        name: release
+        path: ./
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: ./
 
     - name: Upload Release Assets
       #if: github.ref == 'refs/heads/main'
@@ -102,6 +106,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: artifacts
-        asset_name: artifacts.zip
+        asset_path: release
+        asset_name: release.zip
         asset_content_type: application/zip
