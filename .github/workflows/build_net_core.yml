@@ -77,6 +77,9 @@ jobs:
       with:
         name: release
         path: release/
+    - name: Display structure of downloaded files  1
+      run: ls -R
+      working-directory: ./
 
     - name: Create a Release
       #if: github.ref == 'refs/heads/main'
@@ -94,18 +97,18 @@ jobs:
       with:
         name: release
         path: ./
-    - name: Display structure of downloaded files
+    - name: Display structure of downloaded files 2
       run: ls -R
       working-directory: ./
 
     - name: Upload Release Assets
-      #if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/main'
       id: upload-release-assets
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: release
+        asset_path: PullRequestQuantifier/release
         asset_name: release.zip
         asset_content_type: application/zip
