@@ -5,10 +5,11 @@ on:
   push:
     branches: [ main ]
     tags:
-      - 'v*.*.*'
+      - 'v*'
   pull_request:
     branches: [ main ]
-
+    tags:
+      - 'v*'
 jobs:
   build:
 
@@ -22,8 +23,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.100
+
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
+      if: github.ref == 'refs/heads/main'
       uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
@@ -33,17 +36,23 @@ jobs:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     - name: Build
       run: dotnet build PullRequestQuantifier.sln --configuration Release --no-restore
+    
     - name: Restore Windows Projects
+      if: github.ref == 'refs/heads/main'
       run: msbuild PullRequestQuantifierDotNetFull.sln /t:Restore /p:Configuration=Release 
     - name: Build Windows Projects
+      if: github.ref == 'refs/heads/main'
       run: msbuild PullRequestQuantifierDotNetFull.sln /p:Configuration=Release
+
     - name: Test
       run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
     - name: Install and run report generator tool
+      if: github.ref == 'refs/heads/main'
       run: |
         dotnet tool install -g dotnet-reportgenerator-globaltool
         reportgenerator.exe -reports:coverlet-results/**/*.xml -targetdir:./coverage-report -reporttypes:Html
     - name: Upload code coverage results
+      if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v2
       with:
         name: coverage-report
@@ -55,11 +64,10 @@ jobs:
     - name: Push package to NuGet
       if: github.ref == 'refs/heads/main'
       run: dotnet nuget push src\Clients\PullRequestQuantifier.Client\bin\Release\PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json
+
     - name: Publish local context generator
-      if: github.ref == 'refs/heads/main'
       run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Context ./src/Clients/PullRequestQuantifier.Local.Context/PullRequestQuantifier.Local.Context.csproj --self-contained=false /p:PublishSingleFile=true
     - name: Publish local client
-      if: github.ref == 'refs/heads/main'
       run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
     
     - name: Upload release PullRequestQuantifier.Local.Client artifacts
@@ -76,15 +84,6 @@ jobs:
         name: PullRequestQuantifier.Local.Context
         path: release/PullRequestQuantifier.Local.Context/*
 
-    - name: Setup GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.2
-      with:
-        versionSpec: '5.2.4'
-
-    - name: Execute GitVersion
-      id: gitversion
-      uses: gittools/actions/gitversion/execute@v0.9.2
-
     - name: Create a Release
       if: github.ref == 'refs/heads/main'
       id: create_release
@@ -92,31 +91,9 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
-        release_name: Release v${{ steps.gitversion.outputs.majorMinorPatch }}
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
 
-    - name: Upload PullRequestQuantifier.Local.Client Release Asset
-      if: github.ref == 'refs/heads/main'
-      id: upload-release-asset-local-client
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: PullRequestQuantifier.Local.Client.zip
-        asset_name: PullRequestQuantifier.Local.Client.zip
-        asset_content_type: application/zip
-
-    - name: Upload PullRequestQuantifier.Local.Context Release Asset
-      if: github.ref == 'refs/heads/main'
-      id: upload-release-asset-local-context
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: PullRequestQuantifier.Local.Context.zip
-        asset_name: PullRequestQuantifier.Local.Context.zip
-        asset_content_type: application/zip
+    #todo upload artifacts to release
