@@ -201,7 +201,7 @@
                         $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})," +
                         $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
                         $", deletions = {quantifierResult.PercentileDeletion}%," +
-                        $" formula = {quantifierResult.FormulaPercentile}%.{Environment.NewLine}");
+                        $" {quantifierResult.Formula} = {quantifierResult.FormulaPercentile}%.{Environment.NewLine}");
                     break;
                 }
 
