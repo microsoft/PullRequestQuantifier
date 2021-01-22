@@ -71,12 +71,19 @@ jobs:
       #if: github.ref == 'refs/heads/main'
       run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
     
-    - name: Upload release artifacts
-      #if: github.ref == 'refs/heads/main'
+    - name: Upload release PullRequestQuantifier.Local.Client artifacts
+      if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v2
       with:
-        name: release
-        path: release/
+        name: PullRequestQuantifier.Local.Client
+        path: release/PullRequestQuantifier.Local.Client/*
+    - name: Upload release PullRequestQuantifier.Local.Context artifacts
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: PullRequestQuantifier.Local.Context
+        path: release/PullRequestQuantifier.Local.Context/*
+
     - name: Display structure of downloaded files  1
       run: ls -R
       working-directory: ./
@@ -93,21 +100,14 @@ jobs:
         draft: false
         prerelease: false
 
-    - uses: actions/download-artifact@v2
-      with:
-        name: release
-        path: ./
-    - name: Display structure of downloaded files 2
-      run: ls -R
-      working-directory: ./
-
     - name: Upload Release Assets
+      if: github.ref == 'refs/heads/main'
       id: upload-release-assets
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./a/PullRequestQuantifier/PullRequestQuantifier/release
+        asset_path: ./PullRequestQuantifier/PullRequestQuantifier/release
         asset_name: release.zip
         asset_content_type: application/zip
