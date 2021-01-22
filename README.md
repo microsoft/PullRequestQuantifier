@@ -7,7 +7,7 @@ A highly customizable framework to quantify a pull request within a repository c
 Highlights
 
 - Counts pull request changes with high accuracy
-- Provides several customizations through a yaml file for fine grained control over change counts
+- Provides customizations through a yaml file for fine grained control over change counts
 - Uses git history to provide a repository level context to the pull request
 
 ##
@@ -34,7 +34,14 @@ Highlights
 2. Split your problem in subproblems and try to code towards them​.
 3. Don't refactor and code new features in the same time​.
 ```
-
+##### How to interpret git diff:
+```
+1. One line was added: +1 -0
+1. One line was deleted: +0 -1
+1. One line was modified: +1 -1 
+(git diff doesn't know about modified, will 
+interpret that line like one addition plus one deletion)
+```
 </details>
 
 ## 
