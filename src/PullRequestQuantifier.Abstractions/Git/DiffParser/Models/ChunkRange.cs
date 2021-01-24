@@ -1,9 +1,9 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser.Models
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser.Models
 {
     /// <summary>
     /// Represents the +/-s,c in a ChunkRange header (@@ -s,c +s,c @@)
     /// </summary>
-    public class ChunkRange
+    internal class ChunkRange
     {
         public ChunkRange(int startLine, int lineCount)
         {

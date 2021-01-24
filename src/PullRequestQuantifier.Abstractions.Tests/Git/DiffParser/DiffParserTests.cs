@@ -1,10 +1,10 @@
-﻿namespace PullRequestQuantifier.GitEngine.Tests.DiffParser
+﻿namespace PullRequestQuantifier.Abstractions.Tests.Git.DiffParser
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using PullRequestQuantifier.GitEngine.DiffParser;
-    using PullRequestQuantifier.GitEngine.DiffParser.Models;
+    using PullRequestQuantifier.Abstractions.Git.DiffParser;
+    using PullRequestQuantifier.Abstractions.Git.DiffParser.Models;
     using Xunit;
 
     [ExcludeFromCodeCoverage]

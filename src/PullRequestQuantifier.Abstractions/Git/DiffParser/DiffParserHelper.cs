@@ -1,10 +1,10 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser
 {
     using System.Collections.Generic;
     using System.Linq;
-    using PullRequestQuantifier.GitEngine.DiffParser.Models;
+    using PullRequestQuantifier.Abstractions.Git.DiffParser.Models;
 
-    public static class DiffParserHelper
+    internal static class DiffParserHelper
     {
         public static IEnumerable<FileDiff> Parse(string input, string lineEnding = "\n")
         {

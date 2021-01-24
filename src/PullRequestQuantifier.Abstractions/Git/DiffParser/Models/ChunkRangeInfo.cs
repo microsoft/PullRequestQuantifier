@@ -1,6 +1,6 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser.Models
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser.Models
 {
-    public class ChunkRangeInfo
+    internal class ChunkRangeInfo
     {
         public ChunkRangeInfo(ChunkRange originalRange, ChunkRange newRange)
         {

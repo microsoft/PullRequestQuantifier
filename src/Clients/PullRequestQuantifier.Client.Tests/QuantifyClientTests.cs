@@ -23,11 +23,11 @@
         public async Task QuantifyClient_UsingDefaultContext()
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 4);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
             gitRepoHelpers.CommitFilesToRepo();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 5);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
             var quantifierInput = new QuantifierInput();
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
             var quantifyClient = new QuantifyClient(string.Empty);
@@ -48,11 +48,11 @@
         public async Task QuantifyClient_MissingFormulaPercentileContext()
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 4);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
             gitRepoHelpers.CommitFilesToRepo();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 5);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
             var quantifierInput = new QuantifierInput();
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
             var quantifyClient = new QuantifyClient(@"Data\MissingFormulaPercentileContext.prquantifier");

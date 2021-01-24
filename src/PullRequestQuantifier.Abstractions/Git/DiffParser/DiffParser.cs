@@ -1,11 +1,11 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using PullRequestQuantifier.GitEngine.DiffParser.Models;
+    using PullRequestQuantifier.Abstractions.Git.DiffParser.Models;
 
     internal class DiffParser
     {
