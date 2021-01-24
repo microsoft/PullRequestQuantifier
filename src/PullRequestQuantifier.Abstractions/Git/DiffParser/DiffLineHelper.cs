@@ -1,6 +1,6 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser
 {
-    public static class DiffLineHelper
+    internal static class DiffLineHelper
     {
         public static string GetContent(string line)
         {

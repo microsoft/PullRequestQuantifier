@@ -1,11 +1,11 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using PullRequestQuantifier.GitEngine.DiffParser.Models;
+    using PullRequestQuantifier.Abstractions.Git.DiffParser.Models;
 
     internal class DiffParser
     {
@@ -121,6 +121,13 @@
 
         private void Chunk(string line, Match match)
         {
+            // if the file is null at this point, it means that only a chunk was
+            // passed as input to the parser
+            if (file == null)
+            {
+                Restart();
+            }
+
             inDel = oldStart = int.Parse(match.Groups[1].Value);
             oldLines = match.Groups[2].Success ? int.Parse(match.Groups[2].Value) : 0;
             inAdd = newStart = int.Parse(match.Groups[3].Value);

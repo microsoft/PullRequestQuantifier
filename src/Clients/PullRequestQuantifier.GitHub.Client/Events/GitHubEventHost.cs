@@ -88,8 +88,7 @@
                     AbsoluteLinesAdded = pullRequestFile.Additions,
                     AbsoluteLinesDeleted = pullRequestFile.Deletions,
                     DiffContent = pullRequestFile.Patch,
-                    FilePath = pullRequestFile.FileName,
-                    DiffContentLines = pullRequestFile.Patch.Split("\n")
+                    FilePath = pullRequestFile.FileName
                 };
                 quantifierInput.Changes.Add(gitFilePatch);
             }

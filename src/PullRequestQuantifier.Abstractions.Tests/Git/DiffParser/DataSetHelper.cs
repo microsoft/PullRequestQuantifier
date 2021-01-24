@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.GitEngine.Tests.DiffParser
+﻿namespace PullRequestQuantifier.Abstractions.Tests.Git.DiffParser
 {
     using System.Diagnostics.CodeAnalysis;
     using System.IO.Abstractions;
@@ -9,7 +9,7 @@
         public static string ReadFileContent(string dataSetId, string filename)
         {
             var fileSystem = new FileSystem();
-            var fileContent = fileSystem.File.ReadAllText($"DiffParser/Data/{dataSetId}/{filename}");
+            var fileContent = fileSystem.File.ReadAllText($"Git/DiffParser/Data/{dataSetId}/{filename}");
             return fileContent;
         }
     }

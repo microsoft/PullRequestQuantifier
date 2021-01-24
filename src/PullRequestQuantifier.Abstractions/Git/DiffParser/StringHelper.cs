@@ -1,10 +1,10 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public static class StringHelper
+    internal static class StringHelper
     {
         public static IEnumerable<string> SplitLines(string input, string lineEnding)
         {

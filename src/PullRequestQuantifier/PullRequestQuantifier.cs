@@ -8,6 +8,7 @@ namespace PullRequestQuantifier
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Core;
     using global::PullRequestQuantifier.Abstractions.Git;
+    using global::PullRequestQuantifier.Abstractions.Git.DiffParser;
     using global::PullRequestQuantifier.Common;
 
     public sealed class PullRequestQuantifier : IPullRequestQuantifier
@@ -35,21 +36,22 @@ namespace PullRequestQuantifier
         {
             QuantifierResult quantifierResult = null;
 
-            await Task.Factory.StartNew(() =>
-            {
-                quantifierResult = new QuantifierResult
+            await Task.Factory.StartNew(
+                () =>
                 {
-                    QuantifierInput = quantifierInput
-                };
+                    quantifierResult = new QuantifierResult
+                    {
+                        QuantifierInput = quantifierInput
+                    };
 
-                // involve context and compute
-                Parallel.ForEach(quantifierInput.Changes, ApplyContext);
+                    // involve context and compute
+                    Parallel.ForEach(quantifierInput.Changes, ApplyContext);
 
-                CountTotalChanges(quantifierInput, quantifierResult);
+                    CountTotalChanges(quantifierInput, quantifierResult);
 
-                // compute the label using the context percentile information and the thresholds
-                SetLabel(quantifierResult);
-            });
+                    // compute the label using the context percentile information and the thresholds
+                    SetLabel(quantifierResult);
+                });
 
             return quantifierResult;
         }
@@ -140,7 +142,9 @@ namespace PullRequestQuantifier
             }
 
             quantifierResult.PercentileAddition = MathF.Round(GetAdditionDeletionPercentile(quantifierResult, true), 2);
-            quantifierResult.PercentileDeletion = MathF.Round(GetAdditionDeletionPercentile(quantifierResult, false), 2);
+            quantifierResult.PercentileDeletion = MathF.Round(
+                GetAdditionDeletionPercentile(quantifierResult, false),
+                2);
             quantifierResult.FormulaPercentile = MathF.Round(GetFormulaPercentile(quantifierResult), 2);
         }
 
@@ -158,13 +162,19 @@ namespace PullRequestQuantifier
             var finalValue = quantifierResult.Formula switch
             {
                 ThresholdFormula.Sum => quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted,
-                ThresholdFormula.Avg => (quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted) / 2,
-                ThresholdFormula.Min => Math.Min(quantifierResult.QuantifiedLinesAdded, quantifierResult.QuantifiedLinesDeleted),
-                ThresholdFormula.Max => Math.Max(quantifierResult.QuantifiedLinesAdded, quantifierResult.QuantifiedLinesDeleted),
+                ThresholdFormula.Avg => (quantifierResult.QuantifiedLinesAdded +
+                                         quantifierResult.QuantifiedLinesDeleted) / 2,
+                ThresholdFormula.Min => Math.Min(
+                    quantifierResult.QuantifiedLinesAdded,
+                    quantifierResult.QuantifiedLinesDeleted),
+                ThresholdFormula.Max => Math.Max(
+                    quantifierResult.QuantifiedLinesAdded,
+                    quantifierResult.QuantifiedLinesDeleted),
                 _ => throw new ArgumentOutOfRangeException(),
             };
 
-            var contextFormulaPercentile = Context.FormulaPercentile.First(f => f.Item1 == quantifierResult.Formula).Item2;
+            var contextFormulaPercentile =
+                Context.FormulaPercentile.First(f => f.Item1 == quantifierResult.Formula).Item2;
             return GetPercentile(finalValue, contextFormulaPercentile);
         }
 
@@ -208,9 +218,14 @@ namespace PullRequestQuantifier
             return formula switch
             {
                 ThresholdFormula.Sum => quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted,
-                ThresholdFormula.Avg => (quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted) / 2,
-                ThresholdFormula.Min => Math.Min(quantifierResult.QuantifiedLinesAdded, quantifierResult.QuantifiedLinesDeleted),
-                ThresholdFormula.Max => Math.Max(quantifierResult.QuantifiedLinesAdded, quantifierResult.QuantifiedLinesDeleted),
+                ThresholdFormula.Avg => (quantifierResult.QuantifiedLinesAdded +
+                                         quantifierResult.QuantifiedLinesDeleted) / 2,
+                ThresholdFormula.Min => Math.Min(
+                    quantifierResult.QuantifiedLinesAdded,
+                    quantifierResult.QuantifiedLinesDeleted),
+                ThresholdFormula.Max => Math.Max(
+                    quantifierResult.QuantifiedLinesAdded,
+                    quantifierResult.QuantifiedLinesDeleted),
                 _ => 0
             };
         }

@@ -1,10 +1,10 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser
 {
     using System.Collections.Generic;
     using System.Linq;
-    using PullRequestQuantifier.GitEngine.DiffParser.Models;
+    using PullRequestQuantifier.Abstractions.Git.DiffParser.Models;
 
-    public static class PatchHelper
+    internal static class PatchHelper
     {
         public static string Patch(string src, IEnumerable<Chunk> chunks, string lineEnding)
         {

@@ -45,6 +45,13 @@
     <None Update="Data\ContextModel4.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Git\DiffParser\Data\**\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Git" />
   </ItemGroup>
 
 </Project>

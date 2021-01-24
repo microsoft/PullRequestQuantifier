@@ -161,8 +161,6 @@ namespace PullRequestQuantifier.GitEngine
                 ret.Add(new GitFilePatch
                 {
                     DiffContent = patches.Current.Patch,
-                    DiffContentLines = patches.Current.Patch.Split("\n", StringSplitOptions.RemoveEmptyEntries)
-                        .Select(l => l.Trim()).ToArray(),
                     AbsoluteLinesAdded = patches.Current.LinesAdded,
                     AbsoluteLinesDeleted = patches.Current.LinesDeleted,
                     FilePath = patches.Current.Path,
