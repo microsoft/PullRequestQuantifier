@@ -29,7 +29,7 @@
 
             // Init test git repository with gitignore
             Repository.Init(RepoPath);
-            var gitIgnoreContent = fileSystem.File.ReadAllText(@"Data\TestGitIgnore.txt");
+            var gitIgnoreContent = fileSystem.File.ReadAllText(@"Data/TestGitIgnore.txt");
             fileSystem.File.WriteAllText(fileSystem.Path.Combine(RepoPath, ".gitignore"), gitIgnoreContent);
             CommitFilesToRepo();
         }
