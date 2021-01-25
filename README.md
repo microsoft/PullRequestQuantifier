@@ -11,9 +11,6 @@ Highlights
 - Uses git history to provide a repository level context to the pull request
 
 ##
-<strong>Feedback: </strong> <a href=""><strong >:thumbsup:</strong></a> <a href=""><strong>:ok_hand:</strong></a> <a href=""><strong>:thumbsdown:</strong></a> (<a href="MAILTO:prquant@microsoft.com">Email</a>)
-
-##
 <details open>
   <summary display="inline"> <strong>Pull request optimization good practices</strong> </summary>
   <p/>
