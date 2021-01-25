@@ -88,8 +88,7 @@
                     AbsoluteLinesAdded = pullRequestFile.Additions,
                     AbsoluteLinesDeleted = pullRequestFile.Deletions,
                     DiffContent = pullRequestFile.Patch,
-                    FilePath = pullRequestFile.FileName,
-                    DiffContentLines = pullRequestFile.Patch.Split("\n")
+                    FilePath = pullRequestFile.FileName
                 };
                 quantifierInput.Changes.Add(gitFilePatch);
             }
@@ -144,6 +143,7 @@
                           $"Diff                : +{quantifierClientResult.QuantifiedLinesAdded} -{quantifierClientResult.QuantifiedLinesDeleted}\n" +
                           $"Addition percentile : {quantifierClientResult.PercentileAddition}%\n" +
                           $"Deletion percentile : {quantifierClientResult.PercentileDeletion}%\n" +
+                          $"Diff percentile     : {quantifierClientResult.FormulaPercentile}%\n" +
                           $"```";
             await gitHubClientAdapter.CreateIssueCommentAsync(
                 payload.Repository.Id,

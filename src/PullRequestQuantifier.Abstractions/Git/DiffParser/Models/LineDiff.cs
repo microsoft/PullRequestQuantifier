@@ -1,6 +1,6 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser.Models
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser.Models
 {
-    public class LineDiff
+    internal class LineDiff
     {
         public LineDiff(LineChangeType type, int index, string content)
         {

@@ -1,8 +1,8 @@
-﻿namespace PullRequestQuantifier.GitEngine.DiffParser.Models
+﻿namespace PullRequestQuantifier.Abstractions.Git.DiffParser.Models
 {
     using System.Collections.Generic;
 
-    public class FileDiff
+    internal class FileDiff
     {
         public ICollection<Chunk> Chunks { get; } = new List<Chunk>();
 

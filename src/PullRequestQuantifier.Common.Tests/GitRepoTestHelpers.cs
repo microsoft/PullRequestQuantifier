@@ -42,7 +42,12 @@
             repo.Commit("Adding files", author, author);
         }
 
-        public void AddUntrackedFileToRepo(string relativePath, int numLines)
+        public void AddUntrackedFileToRepoWithContent(string relativePath, string content)
+        {
+            fileSystem.File.WriteAllText(fileSystem.Path.Combine(RepoPath, relativePath), content);
+        }
+
+        public void AddUntrackedFileToRepoWithNumLines(string relativePath, int numLines)
         {
             string lineContent = $"Fake content line.{Environment.NewLine}";
             fileSystem.File.WriteAllText(fileSystem.Path.Combine(RepoPath, relativePath), string.Concat(Enumerable.Repeat(lineContent, numLines)));
