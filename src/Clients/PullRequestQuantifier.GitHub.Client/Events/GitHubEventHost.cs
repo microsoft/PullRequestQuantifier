@@ -143,6 +143,7 @@
                           $"Diff                : +{quantifierClientResult.QuantifiedLinesAdded} -{quantifierClientResult.QuantifiedLinesDeleted}\n" +
                           $"Addition percentile : {quantifierClientResult.PercentileAddition}%\n" +
                           $"Deletion percentile : {quantifierClientResult.PercentileDeletion}%\n" +
+                          $"Diff percentile     : {quantifierClientResult.FormulaPercentile}%\n" +
                           $"```";
             await gitHubClientAdapter.CreateIssueCommentAsync(
                 payload.Repository.Id,
