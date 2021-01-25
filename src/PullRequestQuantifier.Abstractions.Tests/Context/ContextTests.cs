@@ -116,7 +116,7 @@
         public void Load_ReturnsValidContext(string file)
         {
             // Act, Assert
-            Assert.True(ContextFactory.Load(@$"Data\{file}") != null);
+            Assert.True(ContextFactory.Load(@$"Data/{file}") != null);
         }
     }
 }

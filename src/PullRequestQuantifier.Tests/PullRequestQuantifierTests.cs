@@ -20,7 +20,7 @@
         public PullRequestQuantifierTests()
         {
             // Setup QuantifierOptions for all tests
-            context = ContextFactory.Load(@"Data\ContextModel3.yaml");
+            context = ContextFactory.Load(@"Data/ContextModel3.yaml");
             context.LanguageOptions = new LanguageOptions();
             gitRepoHelpers.CreateRepo();
         }

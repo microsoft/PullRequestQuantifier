@@ -38,6 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.Commo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{1E9C71B6-F457-4700-B648-6E8AEFD61073}"
 	ProjectSection(SolutionItems) = preProject
+		docs\CSharpCodingGuidelines.md = docs\CSharpCodingGuidelines.md
 		README.md = README.md
 	EndProjectSection
 EndProject
