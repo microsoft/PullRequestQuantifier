@@ -34,12 +34,12 @@
             CommitFilesToRepo();
         }
 
-        public void CommitFilesToRepo()
+        public Commit CommitFilesToRepo()
         {
             var repo = new Repository(RepoPath);
             Commands.Stage(repo, "*");
             var author = new Signature("FakeUser", "fakeemail", DateTimeOffset.Now);
-            repo.Commit("Adding files", author, author);
+            return repo.Commit("Adding files", author, author);
         }
 
         public void AddUntrackedFileToRepoWithContent(string relativePath, string content)

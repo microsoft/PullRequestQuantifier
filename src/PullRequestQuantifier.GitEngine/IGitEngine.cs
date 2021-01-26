@@ -11,6 +11,16 @@
         /// Get the git changes.
         /// </summary>
         /// <param name="path">Path to any item in the repository.</param>
+        /// <param name="commitSha1">Sha1 of the commit (example 78d1ffd2b6fbcdf2b5f278df0c22bb09a0971c0b).</param>
+        /// <returns>Dictionary of counts by operation type.</returns>
+        public IEnumerable<GitFilePatch> GetGitChange(
+            string path,
+            string commitSha1);
+
+        /// <summary>
+        /// Get the git changes.
+        /// </summary>
+        /// <param name="path">Path to any item in the repository.</param>
         /// <returns>Dictionary of counts by operation type.</returns>
         public IEnumerable<GitFilePatch> GetGitChanges(string path);
 

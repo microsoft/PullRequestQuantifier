@@ -22,6 +22,48 @@ namespace PullRequestQuantifier.GitEngine
         };
 
         /// <inheritdoc />
+        public IEnumerable<GitFilePatch> GetGitChange(
+            string path,
+            string commitSha1)
+        {
+            var ret = new ConcurrentBag<GitFilePatch>();
+            var repoRoot = Repository.Discover(path);
+
+            // don't crash when there is no repo to this path, return empty changes
+            if (repoRoot == null)
+            {
+                return ret;
+            }
+
+            using var repo = new Repository(repoRoot);
+
+            var commits = repo.Commits.QueryBy(new CommitFilter
+            {
+                IncludeReachableFrom = commitSha1
+            });
+
+            Parallel.ForEach(commits, commit =>
+            {
+                if (!commit.Sha.Equals(commitSha1, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return;
+                }
+
+                foreach (var parent in commit.Parents)
+                {
+                    var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
+
+                    foreach (var gitFilePatch in GetGitFilePatch(patch))
+                    {
+                        ret.Add(gitFilePatch);
+                    }
+                }
+            });
+
+            return ret;
+        }
+
+        /// <inheritdoc />
         public IEnumerable<GitFilePatch> GetGitChanges(string path)
         {
             var ret = new List<GitFilePatch>();

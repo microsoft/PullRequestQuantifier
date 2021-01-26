@@ -104,5 +104,51 @@
             Assert.NotEmpty(commits);
             Assert.Equal(2, commits.Length);
         }
+
+        [Fact]
+        public void GetGitChange_OneChange_Successful()
+        {
+            // Arrange
+            IGitEngine gitEngine = new GitEngine();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
+            var commit = gitRepoHelpers.CommitFilesToRepo();
+
+            // Act
+            var changes = gitEngine.GetGitChange(
+                gitRepoHelpers.RepoPath,
+                commit.Sha).ToArray();
+
+            // Assert
+            Assert.NotEmpty(changes);
+            Assert.Equal(2, changes.Length);
+        }
+
+        [Fact]
+        public void GetGitChange_MoreChanges_Successful()
+        {
+            // Arrange
+            IGitEngine gitEngine = new GitEngine();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
+            gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake3.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake4.cs", 2);
+            var commit = gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake6.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake5.cs", 2);
+            gitRepoHelpers.CommitFilesToRepo();
+
+            // Act
+            var changes = gitEngine.GetGitChange(
+                gitRepoHelpers.RepoPath,
+                commit.Sha).ToArray();
+
+            // Assert
+            Assert.NotEmpty(changes);
+            Assert.Equal(2, changes.Length);
+            Assert.Contains(changes, c => c.FilePath.Equals("fake3.cs", StringComparison.InvariantCultureIgnoreCase));
+            Assert.Contains(changes, c => c.FilePath.Equals("fake4.cs", StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }
