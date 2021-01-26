@@ -93,6 +93,7 @@ Console.WriteLine(quantifierResult.QuantifiedLinesDeleted);
   <summary display="inline"> <strong>Context customization</strong> </summary>
   <p/>
   <p/>
+  
   See [context specification](./docs/prquantifier-yaml.md) for details of the yaml-based customization.
 
 [Download latest vesion of context generator](https://github.com/microsoft/PullRequestQuantifier/releases) and run it from the command line inside a git repository.
