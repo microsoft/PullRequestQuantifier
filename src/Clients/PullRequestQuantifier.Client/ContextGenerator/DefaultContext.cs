@@ -69,7 +69,7 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                 Excluded = new List<string>
                 {
                     "*.csproj",
-                    "*.prquantifier",
+                    "prquantifier.yaml",
                     "package-lock.json",
                     "*.md",
                     "*.sln"

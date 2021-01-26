@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.Local
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleContexts", "SampleContexts", "{7BC8D1D7-BA30-42ED-9C3D-8352BB8A5EC4}"
 	ProjectSection(SolutionItems) = preProject
-		src\SampleContexts\.prquantifier = src\SampleContexts\.prquantifier
+		src\SampleContexts\prquantifier.yaml = src\SampleContexts\prquantifier.yaml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.Abstractions.Tests", "src\PullRequestQuantifier.Abstractions.Tests\PullRequestQuantifier.Abstractions.Tests.csproj", "{E4C7263F-772C-4AB8-9476-F7457BF37E0B}"

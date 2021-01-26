@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Data\MissingFormulaPercentileContext.prquantifier">
+      <None Update="Data\MissingFormulaPercentileContext.prquantifier.yaml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Data\TestGitIgnore.txt">

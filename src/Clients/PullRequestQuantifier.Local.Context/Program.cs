@@ -24,7 +24,7 @@
             }
 
             // serialize the new context
-            var filePath = Path.Combine(saveContextFilePath, ".prquantifier");
+            var filePath = Path.Combine(saveContextFilePath, "prquantifier.yaml");
             context.SerializeToYaml(filePath);
             Console.WriteLine(
                 $"Generate context for Repo located on '{saveContextFilePath}'" +

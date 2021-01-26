@@ -186,7 +186,7 @@
             string output = $"PrQuantified = {quantifierResult["Label"]},\t" +
                     $"Diff +{quantifierResult["QuantifiedLinesAdded"]} -{quantifierResult["QuantifiedLinesDeleted"]} (Formula = {quantifierResult["Formula"]})," +
                     $"\tPercentiles: additions = {quantifierResult["PercentileAddition"]}%" +
-                    $", deletions = {quantifierResult["PercentileDeletion"]}%, {quantifierResult["Formula"]} = {quantifierResult["FormulaPercentile"]}%.";
+                    $", deletions = {quantifierResult["PercentileDeletion"]}%, Diff = {quantifierResult["FormulaPercentile"]}%.";
 
             statusBar.Clear();
             statusBar.SetText(output);

@@ -60,7 +60,7 @@
 
                 contextFilePath ??= Path.Combine(
                     new DirectoryInfo(repoRootPath).Parent?.FullName,
-                    ".prquantifier");
+                    "prquantifier.yaml");
 
                 // run this as a service in case is configured otherwise only run once
                 if (commandLine.Service)
@@ -201,7 +201,7 @@
                         $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})," +
                         $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
                         $", deletions = {quantifierResult.PercentileDeletion}%," +
-                        $" {quantifierResult.Formula} = {quantifierResult.FormulaPercentile}%.{Environment.NewLine}");
+                        $" Diff = {quantifierResult.FormulaPercentile}%.{Environment.NewLine}");
                     break;
                 }
 

@@ -132,7 +132,7 @@
             Console.WriteLine("  -contextpath           : pull request quantifier context file");
             Console.WriteLine("                          : if not specified");
             Console.WriteLine("                          :   when \"-gitrepopath\" is specified)");
-            Console.WriteLine("                          :     \".prquantifier\" is searched for in the repo root");
+            Console.WriteLine("                          :     \"prquantifier.yaml\" is searched for in the repo root");
             Console.WriteLine("                          :   else uses a default context");
             Console.WriteLine();
         }
