@@ -100,7 +100,7 @@
                 var rawContext = await gitHubClientAdapter.GetRawFileAsync(
                     payload.Repository.Owner.Login,
                     payload.Repository.Name,
-                    "/.prquantifier");
+                    "/prquantifier.yaml");
                 context = Encoding.UTF8.GetString(rawContext);
             }
             catch (NotFoundException)

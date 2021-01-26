@@ -1,7 +1,7 @@
 Included: 
 Excluded:
 - '*.csproj'
-- '*.prquantifier'
+- 'prquantifier.yaml'
 - package-lock.json
 - '*.md'
 GitOperationType:

@@ -55,7 +55,7 @@
             gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
             var quantifierInput = new QuantifierInput();
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
-            var quantifyClient = new QuantifyClient(@"Data/MissingFormulaPercentileContext.prquantifier");
+            var quantifyClient = new QuantifyClient(@"Data/MissingFormulaPercentileContext.prquantifier.yaml");
 
             // Act
             var quantifierResult = await quantifyClient.Compute(quantifierInput);
