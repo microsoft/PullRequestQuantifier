@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.Client.Tests
 {
     using System.Diagnostics.CodeAnalysis;
+    using PullRequestQuantifier.Abstractions.Context;
     using PullRequestQuantifier.Client.ContextGenerator;
     using Xunit;
 
@@ -12,6 +13,7 @@
         {
             // Set up
             var context = DefaultContext.Value;
+            context.SerializeToYaml("E:\\prquantifier.yaml");
 
             // Act, Assert
             Assert.NotEmpty(context.AdditionPercentile);

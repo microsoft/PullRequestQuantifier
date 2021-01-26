@@ -15,7 +15,7 @@ It will also put a comment on the pull request with more details about the resul
 
 Sample output of a quantified GitHub pull request.
 
-![Example](../../../docs/client-github.png)
+![Example](../../../docs/images/client-github.png)
 
 ## Developing
 

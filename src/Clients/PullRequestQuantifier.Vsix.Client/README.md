@@ -11,7 +11,7 @@ show it in the status bar.
 
 Sample output of a change quantified in Visual Studio.
 
-![Example](../../../docs/client-vsix.png)
+![Example](../../../docs/images/client-vsix.png)
 
 ## Developing
 
