@@ -14,13 +14,14 @@
     public sealed class PullRequestQuantifierTests : IDisposable
     {
         private readonly Context context;
-        private readonly GitRepoTestHelpers gitRepoHelpers = new ();
-        private readonly GitEngine gitEngine = new ();
+        private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();
+        private readonly GitEngine gitEngine = new GitEngine();
 
         public PullRequestQuantifierTests()
         {
             // Setup QuantifierOptions for all tests
-            context = ContextFactory.Load(@"Data\ContextModel3.yaml");
+            context = ContextFactory.Load(@"Data/ContextModel3.yaml");
+            context.LanguageOptions = new LanguageOptions();
             gitRepoHelpers.CreateRepo();
         }
 
@@ -36,7 +37,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal("No Changes", quantifierResult.Label);
             Assert.Equal(0, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
         }
@@ -45,7 +46,7 @@
         public async Task Quantify_UntrackedFilesOnly()
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
             var prQuantifier = new PullRequestQuantifier(context);
             var quantifierInput = new QuantifierInput();
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
@@ -54,7 +55,82 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(2, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+        }
+
+        [Fact]
+        public async Task Quantify_FilesWithPlusMinusContent()
+        {
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepoWithContent("fake.cs", "-text\n+add\nnormal\n-44");
+            var prQuantifier = new PullRequestQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+
+            // Act
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+
+            // Assert
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(4, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+        }
+
+        [Fact]
+        public async Task Quantify_IgnoreSpacesFalse()
+        {
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepoWithContent("fake.cs", "some text\n\nmore text");
+            context.LanguageOptions.IgnoreSpaces = false;
+            var prQuantifier = new PullRequestQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+
+            // Act
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+
+            // Assert
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(3, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+        }
+
+        [Fact]
+        public async Task Quantify_IgnoreSpacesTrue()
+        {
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepoWithContent("fake.cs", "some text\n\nmore text");
+            context.LanguageOptions.IgnoreSpaces = true;
+            var prQuantifier = new PullRequestQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+
+            // Act
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+
+            // Assert
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(2, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+        }
+
+        [Fact]
+        public async Task Quantify_IgnoreCommentsTrue()
+        {
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepoWithContent("fake.cs", "some text\n// comment text\n normal text");
+            context.LanguageOptions.IgnoreComments = true;
+            var prQuantifier = new PullRequestQuantifier(context);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+
+            // Act
+            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+
+            // Assert
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(2, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
         }
@@ -63,9 +139,9 @@
         public async Task Quantify_WithIncludedFilterOnly()
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.csproj", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.csproj", 2);
             context.Included = new[] { "*.cs" };
             context.Excluded = new string[] { };
             var prQuantifier = new PullRequestQuantifier(context);
@@ -76,7 +152,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(4, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
         }
@@ -85,9 +161,9 @@
         public async Task Quantify_WithExcludedFilterOnly()
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.xml", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.xml", 2);
             context.Included = new string[] { };
             context.Excluded = new[] { "*.xml" };
             var prQuantifier = new PullRequestQuantifier(context);
@@ -98,7 +174,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(4, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
         }
@@ -107,9 +183,9 @@
         public async Task Quantify_WithBothIncludedAndExcludedFilters()
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.xml", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.xml", 2);
             context.Included = new[] { "*.xml" };
             context.Excluded = new[] { "*.xml" };
             var prQuantifier = new PullRequestQuantifier(context);
@@ -120,7 +196,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(2, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
         }
@@ -129,11 +205,11 @@
         public async Task Quantify_ChangedTrackedFiles()
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 4);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
             gitRepoHelpers.CommitFilesToRepo();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 5);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
             var prQuantifier = new PullRequestQuantifier(context);
             var quantifierInput = new QuantifierInput();
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
@@ -142,7 +218,7 @@
             var quantifierResult = await prQuantifier.Quantify(quantifierInput);
 
             // Assert
-            Assert.True(string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(3, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(2, quantifierResult.QuantifiedLinesDeleted);
         }

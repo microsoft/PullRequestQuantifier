@@ -6,7 +6,7 @@
     public sealed class Threshold
     {
         /// <summary>
-        /// Gets  or sets gitHub operation type.
+        /// Gets or sets gitHub operation type.
         /// </summary>
         public IEnumerable<GitOperationType> GitOperationType { get; set; }
 

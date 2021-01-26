@@ -1,9 +1,10 @@
 ﻿namespace PullRequestQuantifier.Abstractions.Git
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Ignore;
+    using PullRequestQuantifier.Abstractions.Git.DiffParser.Models;
+    using PullRequestQuantifier.Common;
 
     // todo for some of the extensions we need language specific implementation for now just do it for c sharp
     // todo optimize this part to have only one iteration pass over the changes and lines, trim once ...
@@ -22,10 +23,7 @@
             IEnumerable<string> includedPatterns,
             IEnumerable<string> excludedPatterns)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             var ignore = new Ignore();
 
@@ -64,48 +62,38 @@
 
         public static void RemoveWhiteSpacesChanges(this GitFilePatch gitFilePatch)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             // first remove lines containing only white spaces
-            gitFilePatch.DiffContentLines = gitFilePatch.DiffContentLines
-                .Where(IsDiffLine)
-                .Select(line => line.Trim())
-                .Where(line => !line.Equals("+") && !line.Equals("-")).ToArray();
+            gitFilePatch.DiffLines = gitFilePatch.DiffLines
+                .Where(l => l.Type != LineChangeType.Normal)
+                .Where(l => !string.IsNullOrEmpty(l.Content.Trim()));
         }
 
         public static void RemoveCommentsChanges(this GitFilePatch gitFilePatch)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             // todo later expand  to comments sections, and add language specific parsers
-            gitFilePatch.DiffContentLines = gitFilePatch.DiffContentLines
-                .Where(IsDiffLine)
-                .Select(line => line.Trim())
-                .Where(line => !IsLineComment(line)).ToArray();
+            gitFilePatch.DiffLines = gitFilePatch.DiffLines
+                .Where(l => l.Type != LineChangeType.Normal)
+                .Where(l => !IsLineComment(l.Content.Trim()));
         }
 
         public static void RemoveCodeBlockSeparatorChanges(this GitFilePatch gitFilePatch)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             // todo later add language specific parsers
-            gitFilePatch.DiffContentLines = gitFilePatch.DiffContentLines
-                .Where(IsDiffLine)
-                .Select(line => line.Trim())
-                .Where(line => !IsLineCodeBlockSeparator(line)).ToArray();
+            gitFilePatch.DiffLines = gitFilePatch.DiffLines
+                .Where(l => l.Type != LineChangeType.Normal)
+                .Where(l => !IsLineCodeBlockSeparator(l.Content.Trim()));
         }
 
         public static void RemoveRenamedChanges(this GitFilePatch gitFilePatch)
         {
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
+
             if (gitFilePatch.ChangeType != GitChangeType.Renamed)
             {
                 return;
@@ -116,6 +104,8 @@
 
         public static void RemoveCopiedChanges(this GitFilePatch gitFilePatch)
         {
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
+
             if (gitFilePatch.ChangeType != GitChangeType.Copied)
             {
                 return;
@@ -126,10 +116,7 @@
 
         public static void ComputeChanges(this GitFilePatch gitFilePatch)
         {
-            if (gitFilePatch == null)
-            {
-                throw new ArgumentNullException(nameof(gitFilePatch));
-            }
+            ArgumentCheck.ParameterIsNotNull(gitFilePatch, nameof(gitFilePatch));
 
             // if file change was discarded from the counted do nothing.
             if (gitFilePatch.DiscardFromCounting)
@@ -137,34 +124,21 @@
                 return;
             }
 
-            // consider all lines that accounts for addition or deletion, exclude those with multiple ++ or --
-            // example --- a/src/PrQuantifier/PrQuantifier.csproj
-            // +++ b/src/PrQuantifier/PrQuantifier.csproj
-            gitFilePatch.QuantifiedLinesAdded =
-                gitFilePatch.DiffContentLines.Count(line => line.StartsWith('+') && !line.StartsWith("++"));
-            gitFilePatch.QuantifiedLinesDeleted =
-                gitFilePatch.DiffContentLines.Count(line => line.StartsWith('-') && !line.StartsWith("--"));
-        }
-
-        private static bool IsDiffLine(string line)
-        {
-            return (line.StartsWith('+') || line.StartsWith('-'))
-                   && !line.StartsWith("++")
-                   && !line.StartsWith("--");
+            gitFilePatch.QuantifiedLinesAdded = gitFilePatch.DiffLines.Count(l => l.Type == LineChangeType.Add);
+            gitFilePatch.QuantifiedLinesDeleted = gitFilePatch.DiffLines.Count(l => l.Type == LineChangeType.Delete);
         }
 
         private static bool IsLineComment(string line)
         {
-            var simplifyLine = line.Replace("+", string.Empty).Replace("-", string.Empty).Trim();
-
-            return simplifyLine.StartsWith("//") || simplifyLine.StartsWith("/*");
+            line = line.Trim();
+            return line.StartsWith("//") || line.StartsWith("/*");
         }
 
         private static bool IsLineCodeBlockSeparator(string line)
         {
-            var simplifyLine = line.Replace("+", string.Empty).Replace("-", string.Empty).Trim();
+            line = line.Trim();
 
-            return simplifyLine.StartsWith("{") || simplifyLine.Equals("{}") || simplifyLine.StartsWith("}");
+            return line.StartsWith("{") || line.Equals("{}") || line.StartsWith("}");
         }
     }
 }

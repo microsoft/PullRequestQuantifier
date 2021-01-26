@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.Client
+﻿namespace PullRequestQuantifier.Client.ContextGenerator
 {
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;

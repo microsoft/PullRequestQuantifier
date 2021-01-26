@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,10 +24,9 @@
       <ProjectReference Include="..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Update="Data\TestGitIgnore.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
+  <ItemGroup>
+    <None Include="Data/**/*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

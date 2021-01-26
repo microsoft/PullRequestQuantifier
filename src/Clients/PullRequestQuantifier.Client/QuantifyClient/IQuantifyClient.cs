@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.Client
+﻿namespace PullRequestQuantifier.Client.QuantifyClient
 {
     using System.Threading.Tasks;
     using global::PullRequestQuantifier.Abstractions.Context;
@@ -14,8 +14,9 @@
         /// <summary>
         /// Compute using git local evaluation.
         /// </summary>
+        /// <param name="gitRepoPath">Path to the git repository.</param>
         /// <returns>returns an evaluation result.</returns>
-        Task<QuantifierResult> Compute();
+        Task<QuantifierResult> Compute(string gitRepoPath);
 
         /// <summary>
         /// Compute using a quantifier input from outside.

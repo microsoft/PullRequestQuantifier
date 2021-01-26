@@ -1,6 +1,7 @@
-﻿namespace PullRequestQuantifier.Client
+﻿namespace PullRequestQuantifier.Client.ContextGenerator
 {
     using System;
+    using global::PullRequestQuantifier.Common;
 
     public static class ComputePercentile
     {
@@ -13,6 +14,8 @@
         /// <returns>returns the percentile.</returns>
         public static float Percentile(int[] data, int value)
         {
+            ArgumentCheck.ParameterIsNotNull(data, nameof(data));
+
             var maxValue = data[^1];
             var minValue = data[0];
 

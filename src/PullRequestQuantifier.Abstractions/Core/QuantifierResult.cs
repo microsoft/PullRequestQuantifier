@@ -17,7 +17,7 @@ namespace PullRequestQuantifier.Abstractions.Core
         /// <summary>
         /// Gets or sets the formula based onn which  we will combine the additions and deletions.
         /// </summary>
-        [System.Text.Json.Serialization.JsonConverterAttribute(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public ThresholdFormula Formula { get; set; }
 
         /// <summary>
@@ -46,6 +46,11 @@ namespace PullRequestQuantifier.Abstractions.Core
         /// Gets or sets the addition percentile within the context for this quantified results.
         /// </summary>
         public float PercentileAddition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the formula percentile within the context for this quantified results.
+        /// </summary>
+        public float FormulaPercentile { get; set; }
 
         /// <summary>
         /// Gets or sets the quantifier input.

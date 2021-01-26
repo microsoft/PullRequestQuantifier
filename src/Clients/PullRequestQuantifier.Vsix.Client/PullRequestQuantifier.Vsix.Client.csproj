@@ -58,6 +58,7 @@
     <Compile Include="PrQuantifier.Vsix.ClientPackage.cs" />
     <Compile Include="PrQuantifierExtendMenu.cs" />
     <Compile Include="PrQuantifierExtendMenuPackage.cs" />
+    <Compile Include="SolutionProjects.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

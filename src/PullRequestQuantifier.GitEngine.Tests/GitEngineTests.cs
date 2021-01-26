@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using PullRequestQuantifier.Abstractions.Git;
     using PullRequestQuantifier.Common.Tests;
     using Xunit;
 
@@ -28,15 +29,33 @@
         }
 
         [Fact]
+        public void GetGitChanges_ChangedModifiedRenamedFiles()
+        {
+            // Arrange
+            IGitEngine gitEngine = new GitEngine();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fakeRename.cs", 2);
+            gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.RenameFile("fakeRename.cs", "fakeRename1.cs");
+
+            // Act
+            var gitChanges = gitEngine.GetGitChanges(gitRepoHelpers.RepoPath).ToArray();
+
+            // Assert
+            Assert.Single(gitChanges);
+            Assert.Equal(2, gitChanges[0].AbsoluteLinesDeleted);
+            Assert.Equal(GitChangeType.Renamed, gitChanges[0].ChangeType);
+        }
+
+        [Fact]
         public void GetGitChanges_ChangedTrackedFiles()
         {
             // Arrange
             IGitEngine gitEngine = new GitEngine();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 4);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
             gitRepoHelpers.CommitFilesToRepo();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 5);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
 
             // Act
             var gitChanges = gitEngine.GetGitChanges(gitRepoHelpers.RepoPath).ToArray();
@@ -53,11 +72,11 @@
         {
             // Arrange
             IGitEngine gitEngine = new GitEngine();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 4);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
             gitRepoHelpers.CommitFilesToRepo();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 5);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
 
             // Act
             var commits = gitEngine.GetAllCommits(gitRepoHelpers.RepoPath).ToArray();
@@ -72,11 +91,11 @@
         {
             // Arrange
             IGitEngine gitEngine = new GitEngine();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 4);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
             gitRepoHelpers.CommitFilesToRepo();
-            gitRepoHelpers.AddUntrackedFileToRepo("fake.cs", 5);
-            gitRepoHelpers.AddUntrackedFileToRepo("fake2.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
 
             // Act
             var commits = gitEngine.GetGitHistoricalChangesToParent(gitRepoHelpers.RepoPath).ToArray();
