@@ -14,7 +14,7 @@ PullRequestQuantifier.Local.Client.exe
 
 Sample output of a change quantified.
 
-![Example](../../../docs/client-cli.png)
+![Example](../../../docs/images/client-cli.png)
 
 ## Developing
 

@@ -49,9 +49,9 @@ Highlights
 
 | - | Name | Example |
 |------|------|---------|
-| <a href="./src/Clients/PullRequestQuantifier.Local.Client"><img src="./docs/cli-icon.png" width="50"/></a>  | [CLI](./src/Clients/PullRequestQuantifier.Local.Client) | ![](./docs/client-cli.png) |
-| <a href="./src/Clients/PullRequestQuantifier.Vsix.Client"><img src="./docs/visual-studio-icon.png" width="50"/></a>  | [Visual Studio](./src/Clients/PullRequestQuantifier.Vsix.Client) | ![](./docs/client-vsix.png) |
-| <a href="./src/Clients/PullRequestQuantifier.GitHub.Client"><img src="./docs/github-icon.png" width="50"/></a>  | [GitHub](./src/Clients/PullRequestQuantifier.GitHub.Client) | ![](./docs/client-github.png) |
+| <a href="./src/Clients/PullRequestQuantifier.Local.Client"><img src="./docs/images/cli-icon.png" width="50"/></a>  | [CLI](./src/Clients/PullRequestQuantifier.Local.Client) | ![](./docs/images/client-cli.png) |
+| <a href="./src/Clients/PullRequestQuantifier.Vsix.Client"><img src="./docs/images/visual-studio-icon.png" width="50"/></a>  | [Visual Studio](./src/Clients/PullRequestQuantifier.Vsix.Client) | ![](./docs/images/client-vsix.png) |
+| <a href="./src/Clients/PullRequestQuantifier.GitHub.Client"><img src="./docs/images/github-icon.png" width="50"/></a>  | [GitHub](./src/Clients/PullRequestQuantifier.GitHub.Client) | ![](./docs/images/client-github.png) |
 
 
 </details>
@@ -93,93 +93,13 @@ Console.WriteLine(quantifierResult.QuantifiedLinesDeleted);
   <summary display="inline"> <strong>Context customization</strong> </summary>
   <p/>
   <p/>
-  -TODO explain each setting
+  
+  See [context specification](./docs/prquantifier-yaml.md) for details of the yaml-based customization.
 
-[Download latest vesion of conntext generator](https://github.com/microsoft/PullRequestQuantifier/releases) and run it from the command line inside a git repository.
+[Download latest vesion of context generator](https://github.com/microsoft/PullRequestQuantifier/releases) and run it from the command line inside a git repository.
 
-![](./docs/client_context_generator.png) 
+![](./docs/images/client_context_generator.png) 
 
-Simple context file:
-
-```yml
-Thresholds:
-- Value: 10
-  Label: Extra Small
-  Color: Green
-- Value: 40
-  Label: Small
-  Color: Green
-- Value: 100
-  Label: Medium
-  Color: Yellow
-- Value: 400
-  Label: Large
-  Color: Red
-- Value: 1000
-  Label: Extra Large
-  Color: Red
-```
-
-More detailed context file:
-
-```yml
-Included: 
-Excluded:
-- '*.csproj'
-GitOperationType:
-- Add
-- Delete
-Thresholds:
-- GitOperationType:
-  - Add
-  - Delete
-  Value: 9
-  Label: Extra Small
-  Color: Green
-  Formula: Sum
-- GitOperationType:
-  - Add
-  - Delete
-  Value: 29
-  Label: Small
-  Color: Green
-  Formula: Sum
-- GitOperationType:
-  - Add
-  - Delete
-  Value: 99
-  Label: Medium
-  Color: Yellow
-  Formula: Sum
-- GitOperationType:
-  - Add
-  - Delete
-  Value: 499
-  Label: Large
-  Color: Red
-  Formula: Sum
-- GitOperationType:
-  - Add
-  - Delete
-  Value: 999
-  Label: Extra Large
-  Color: Red
-  Formula: Sum
-LanguageOptions:
-  IgnoreSpaces: true
-  IgnoreComments: true
-  IgnoreCodeBlockSeparator: true
-DynamicBehaviour: false
-AdditionPercentile:
-  1: 12.302839279174805
-  2: 17.981073379516602
-  3: 22.082019805908203
-  ...(auto generated when we run the context generator)
-DeletionPercentile:
-  1: 17.69230842590332
-  2: 34.615386962890625
-  ...(auto generated when we run the context generator)
-```
 </details>
 
 ## 

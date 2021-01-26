@@ -1,4 +1,4 @@
-📖 **CloudMine C# Coding Guidelines**
+📖 **C# Coding Guidelines**
 
 
 [[_TOC_]]
@@ -64,23 +64,13 @@ Incorrect:
 
 ✔ **Do** use <TBD Namespace> as the root namespace prefix. 
 
-✔ **Do** include the following copyright banner at the beginning of every source file:
-
-```c#
-//----------------------------------------------------------------
-// <copyright company="Microsoft Corporation">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//----------------------------------------------------------------
-```
-
 ✔ **Do** place the using directives outside the namespace declaration at the top of each source code file:
 
 ```csharp
 using System;
 using System.Text;
 
-namespace Microsoft.CloudMine.<InsertServiceNameHere> 
+namespace PullRequestQuantifier.Clients... 
 {
     ...
 }
@@ -149,27 +139,17 @@ Byte[] ReadData( Stream stream )
 
 ❌ **Avoid** using `#if` and `#endif` for purposes other than conditional compliation. 
 
-✔️ **Do** use `TODO` comments as a convenient way to reference issues tracked by bugs in TFS. 
+✔️ **Do** use `TODO` comments as a convenient way to describe stuff that is pending.
 
 A `TODO` comment should have the following format:
 
 ```csharp
 //
-// TODO, <alias>, [<database>,] <bugNumber>, <comment>
+// TODO: <description>
 //
 ```
 
-where `<alias>` is the alias of the person creating the comment, `<database>` is the TFS server name (use when necessary to disambiguate bug numbers from different servers), and `<bugNumber>` is the TFS BugId. 
-
-For example:
-
-```csharp
-//
-// TODO, dougo, OSGS, 13440, add algorithm suite
-//
-```
-
-❌ **Do not** use comments to capture ideas for changes and enhancements in future releases of the product. These should be tracked by issues in TFS and design documents. For example, do not include a comment like this one:
+❌ **Do not** use comments to capture ideas for changes and enhancements in future releases of the product. These should be tracked by issues in the repository. For example, do not include a comment like this one:
 
 ```csharp
 //
