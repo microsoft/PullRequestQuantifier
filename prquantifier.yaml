@@ -28,7 +28,7 @@ Thresholds:
   - Delete
   Value: 100
   Label: Medium
-  Color: Yellow
+  Color: DarkYellow
   Formula: Sum
 - GitOperationType:
   - Add
