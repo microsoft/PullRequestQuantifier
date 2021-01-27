@@ -72,7 +72,8 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                     "prquantifier.yaml",
                     "package-lock.json",
                     "*.md",
-                    "*.sln"
+                    "*.sln",
+                    "*.snap"
                 },
                 GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete },
                 AdditionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value)),
