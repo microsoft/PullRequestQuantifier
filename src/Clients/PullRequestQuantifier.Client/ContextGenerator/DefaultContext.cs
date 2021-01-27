@@ -20,7 +20,7 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                 new Threshold
                 {
                     Label = "Extra Small",
-                    Value = 20,
+                    Value = 30,
                     Color = "Green",
                     GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete }
                 },
