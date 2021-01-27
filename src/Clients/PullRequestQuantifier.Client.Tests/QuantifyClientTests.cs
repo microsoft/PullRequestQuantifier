@@ -69,5 +69,53 @@
             Assert.Equal(0, quantifierResult.PercentileDeletion);
             Assert.Equal(0, quantifierResult.FormulaPercentile);
         }
+
+        [Fact]
+        public async Task QuantifyClient_AgainstCommit()
+        {
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
+            gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake3.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake4.cs", 2);
+            var commit = gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake6.cs", 3);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake5.cs", 6);
+            gitRepoHelpers.CommitFilesToRepo();
+            var quantifyClient = new QuantifyClient(string.Empty);
+
+            // Act
+            var quantifierResult = await quantifyClient.Compute(
+                gitRepoHelpers.RepoPath,
+                commit.Sha);
+
+            // Assert
+            Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
+            Assert.Equal(7, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+            Assert.Equal(4, (int)quantifierResult.PercentileAddition);
+            Assert.Equal(0, quantifierResult.PercentileDeletion);
+            Assert.Equal(4, (int)quantifierResult.FormulaPercentile);
+        }
+
+        [Fact]
+        public async Task QuantifyClient_AgainstCommitNotFound()
+        {
+            var quantifyClient = new QuantifyClient(string.Empty);
+
+            // Act
+            var quantifierResult = await quantifyClient.Compute(
+                gitRepoHelpers.RepoPath,
+                nameof(string.Empty));
+
+            // Assert
+            Assert.Equal("No Changes", quantifierResult.Label);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesAdded);
+            Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
+            Assert.Equal(0, quantifierResult.PercentileAddition);
+            Assert.Equal(0, quantifierResult.PercentileDeletion);
+            Assert.Equal(0, quantifierResult.FormulaPercentile);
+        }
     }
 }
