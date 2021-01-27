@@ -1,0 +1,20 @@
+- Name: Org1
+  Projects:
+  - Name: Proj1
+    Repositories:
+    - Name: Repo11
+    - Name: Repo12
+  - Name: Proj2
+    Repositories:
+    - Name: Repo21
+    - Name: Repo22
+- Name: Org2
+  Projects:
+  - Name: Proj3
+    Repositories:
+    - Name: Repo31
+    - Name: Repo32
+  - Name: Proj4
+    Repositories:
+    - Name: Repo41
+    - Name: Repo42
