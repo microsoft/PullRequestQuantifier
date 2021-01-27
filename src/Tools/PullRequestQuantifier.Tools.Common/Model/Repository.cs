@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.Tools.CloneAdoRepo.Model
+﻿namespace PullRequestQuantifier.Tools.Common.Model
 {
     public sealed class Repository
     {
