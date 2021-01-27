@@ -1,9 +1,8 @@
-﻿using System.IO;
-
-namespace PullRequestQuantifier.GitHub.Client.Events
+﻿namespace PullRequestQuantifier.GitHub.Client.Events
 {
     using System;
     using System.Drawing;
+    using System.IO;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -147,6 +146,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
             var defaultBranch = payload.Repository.DefaultBranch;
             var quantifierContextLink = $"{payload.Repository.HtmlUrl}/blob/{defaultBranch}/prquantifier.yaml";
             var comment = await quantifierClientResult.ToMarkdownCommentAsync(
+                payload.Repository.HtmlUrl,
                 quantifierContextLink,
                 payload.PullRequest.HtmlUrl,
                 payload.PullRequest.User.Login);

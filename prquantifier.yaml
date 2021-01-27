@@ -5,6 +5,7 @@ Excluded:
 - package-lock.json
 - '*.md'
 - '*.sln'
+- '*.mustache'
 GitOperationType:
 - Add
 - Delete

@@ -16,6 +16,7 @@
         public static async Task<string> ToMarkdownCommentAsync(
             this QuantifierResult quantifierResult,
             string repositoryLink,
+            string contextFileLink,
             string pullRequestLink,
             string authorName)
         {
@@ -54,10 +55,11 @@
                     quantifierResult.PercentileDeletion,
                     quantifierResult.FormulaPercentile,
                     Formula = quantifierResult.Formula.ToString(),
-                    RepositoryLink = repositoryLink,
+                    ContextFileLink = contextFileLink,
                     FeedbackLinkUp = feedbackLinkThumbsUp,
                     FeedbackLinkNeutral = feedbackLinkNeutral,
                     FeedbackLinkDown = feedbackLinkThumbsDown,
+                    TotalFilesChanged = quantifierResult.QuantifierInput.Changes.Count,
                     Details = string.Join(
                         Environment.NewLine,
                         quantifierResult.QuantifierInput.Changes
