@@ -20,21 +20,21 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                 new Threshold
                 {
                     Label = "Extra Small",
-                    Value = 10,
+                    Value = 30,
                     Color = "Green",
                     GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete }
                 },
                 new Threshold
                 {
                     Label = "Small",
-                    Value = 40,
+                    Value = 70,
                     Color = "Green",
                     GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete }
                 },
                 new Threshold
                 {
                     Label = "Medium",
-                    Value = 100,
+                    Value = 150,
                     Color = "DarkYellow",
                     GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete }
                 },
@@ -72,7 +72,8 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                     "prquantifier.yaml",
                     "package-lock.json",
                     "*.md",
-                    "*.sln"
+                    "*.sln",
+                    "*.snap"
                 },
                 GitOperationType = new List<GitOperationType> { GitOperationType.Add, GitOperationType.Delete },
                 AdditionPercentile = DefaultPercentile(defaultThresholds.OrderBy(t => t.Value)),
