@@ -33,9 +33,21 @@
         /// <inheritdoc />
         public async Task<QuantifierResult> Compute(string gitRepoPath)
         {
-            // todo add more options and introduce arguments lib QuantifyAgainstBranch, QuantifyCommit
+            // todo add more options and introduce arguments lib QuantifyAgainstBranch
             // get current location changes
             var quantifierInput = GetChanges(gitRepoPath);
+
+            // quantify the changes
+            return await prQuantifier.Quantify(quantifierInput);
+        }
+
+        /// <inheritdoc />
+        public async Task<QuantifierResult> Compute(
+            string gitRepoPath,
+            string commitSha1)
+        {
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChange(gitRepoPath, commitSha1));
 
             // quantify the changes
             return await prQuantifier.Quantify(quantifierInput);

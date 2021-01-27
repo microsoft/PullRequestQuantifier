@@ -37,28 +37,34 @@ namespace PullRequestQuantifier.GitEngine
 
             using var repo = new Repository(repoRoot);
 
-            var commits = repo.Commits.QueryBy(new CommitFilter
+            try
             {
-                IncludeReachableFrom = commitSha1
-            });
-
-            Parallel.ForEach(commits, commit =>
-            {
-                if (!commit.Sha.Equals(commitSha1, StringComparison.InvariantCultureIgnoreCase))
+                var commits = repo.Commits.QueryBy(new CommitFilter
                 {
-                    return;
-                }
+                    IncludeReachableFrom = commitSha1
+                });
 
-                foreach (var parent in commit.Parents)
+                Parallel.ForEach(commits, commit =>
                 {
-                    var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
-
-                    foreach (var gitFilePatch in GetGitFilePatch(patch))
+                    if (!commit.Sha.Equals(commitSha1, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        ret.Add(gitFilePatch);
+                        return;
                     }
-                }
-            });
+
+                    foreach (var parent in commit.Parents)
+                    {
+                        var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
+
+                        foreach (var gitFilePatch in GetGitFilePatch(patch))
+                        {
+                            ret.Add(gitFilePatch);
+                        }
+                    }
+                });
+            }
+            catch (NotFoundException)
+            {
+            }
 
             return ret;
         }

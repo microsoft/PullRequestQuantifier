@@ -13,21 +13,21 @@ Thresholds:
 - GitOperationType:
   - Add
   - Delete
-  Value: 10
+  Value: 30
   Label: Extra Small
   Color: Green
   Formula: Sum
 - GitOperationType:
   - Add
   - Delete
-  Value: 40
+  Value: 70
   Label: Small
   Color: Green
   Formula: Sum
 - GitOperationType:
   - Add
   - Delete
-  Value: 100
+  Value: 150
   Label: Medium
   Color: DarkYellow
   Formula: Sum
