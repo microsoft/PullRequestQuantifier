@@ -52,17 +52,5 @@ jobs:
       with:
         name: release
         path: release/*
-
-    - name: Create a Release
-      if: github.ref == 'refs/heads/main'
-      id: create_release
-      uses: actions/create-release@main
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: true
-
+    #todo create release
     #todo upload artifacts to release
