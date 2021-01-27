@@ -1,4 +1,6 @@
-﻿namespace PullRequestQuantifier.GitHub.Client.Events
+﻿using System.IO;
+
+namespace PullRequestQuantifier.GitHub.Client.Events
 {
     using System;
     using System.Drawing;
@@ -9,6 +11,7 @@
     using Octokit;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
+    using PullRequestQuantifier.Client.Extensions;
     using PullRequestQuantifier.Client.QuantifyClient;
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
     using PullRequestQuantifier.GitHub.Client.Telemetry;
@@ -82,13 +85,17 @@
                         break;
                 }
 
+                var fileExtension = !string.IsNullOrWhiteSpace(pullRequestFile.FileName)
+                    ? new FileInfo(pullRequestFile.FileName).Extension
+                    : string.Empty;
                 var gitFilePatch = new GitFilePatch
                 {
                     ChangeType = changeType,
                     AbsoluteLinesAdded = pullRequestFile.Additions,
                     AbsoluteLinesDeleted = pullRequestFile.Deletions,
                     DiffContent = pullRequestFile.Patch,
-                    FilePath = pullRequestFile.FileName
+                    FilePath = pullRequestFile.FileName,
+                    FileExtension = fileExtension
                 };
                 quantifierInput.Changes.Add(gitFilePatch);
             }
@@ -137,14 +144,12 @@
                 new[] { quantifierClientResult.Label });
 
             // create a comment on the issue
-            var comment = $"### PullRequestQuantified\n" +
-                          $"```\n" +
-                          $"Label               : {quantifierClientResult.Label}\n" +
-                          $"Diff                : +{quantifierClientResult.QuantifiedLinesAdded} -{quantifierClientResult.QuantifiedLinesDeleted}\n" +
-                          $"Addition percentile : {quantifierClientResult.PercentileAddition}%\n" +
-                          $"Deletion percentile : {quantifierClientResult.PercentileDeletion}%\n" +
-                          $"Diff percentile     : {quantifierClientResult.FormulaPercentile}%\n" +
-                          $"```";
+            var defaultBranch = payload.Repository.DefaultBranch;
+            var quantifierContextLink = $"{payload.Repository.HtmlUrl}/blob/{defaultBranch}/prquantifier.yaml";
+            var comment = await quantifierClientResult.ToMarkdownCommentAsync(
+                quantifierContextLink,
+                payload.PullRequest.HtmlUrl,
+                payload.PullRequest.User.Login);
             await gitHubClientAdapter.CreateIssueCommentAsync(
                 payload.Repository.Id,
                 payload.PullRequest.Number,
