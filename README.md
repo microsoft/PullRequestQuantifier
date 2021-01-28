@@ -7,8 +7,8 @@ A highly customizable framework to quantify a pull request within a repository c
 Highlights
 
 - Counts pull request changes with high accuracy
-- Provides customizations through a yaml file for fine grained control over change counts
 - Uses git history to provide a repository level context to the pull request
+- Provides customizations through a yaml file for fine grained behavior control
 
 ##
 <details open>
