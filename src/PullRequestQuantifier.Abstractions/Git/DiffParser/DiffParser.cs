@@ -156,12 +156,9 @@
 
         private void ParseNormalLine(string line)
         {
-            if (file == null)
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(line))
+            if (file == null
+            || string.IsNullOrEmpty(line)
+            || current == null)
             {
                 return;
             }
