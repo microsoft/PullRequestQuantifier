@@ -38,7 +38,7 @@
             var quantifierInput = GetChanges(gitRepoPath);
 
             // quantify the changes
-            return await prQuantifier.Quantify(quantifierInput);
+            return await prQuantifier.QuantifyChanges(quantifierInput);
         }
 
         /// <inheritdoc />
@@ -50,14 +50,14 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChange(gitRepoPath, commitSha1));
 
             // quantify the changes
-            return await prQuantifier.Quantify(quantifierInput);
+            return await prQuantifier.QuantifyChanges(quantifierInput);
         }
 
         /// <inheritdoc />
         public async Task<QuantifierResult> Compute(QuantifierInput quantifierInput)
         {
             // quantify the changes
-            return await prQuantifier.Quantify(quantifierInput);
+            return await prQuantifier.QuantifyChanges(quantifierInput);
         }
 
         private Context LoadContext(string contextFilePathOrContent)

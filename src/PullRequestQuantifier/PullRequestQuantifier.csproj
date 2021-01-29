@@ -4,9 +4,6 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>Latest</LangVersion>
         <RootNamespace>PullRequestQuantifier</RootNamespace>
-        <AssemblyName>PullRequestQuantifier</AssemblyName>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
     </PropertyGroup>
 
     <ItemGroup>

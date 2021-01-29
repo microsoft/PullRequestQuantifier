@@ -31,9 +31,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Data\ContextModel3.yaml">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <None Update="Data\TestGitIgnore.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>

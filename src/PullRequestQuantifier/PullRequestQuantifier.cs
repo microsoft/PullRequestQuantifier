@@ -24,7 +24,7 @@ namespace PullRequestQuantifier
         public Context Context { get; set; }
 
         /// <inheritdoc />
-        public async Task<QuantifierResult> Quantify(QuantifierInput quantifierInput)
+        public async Task<QuantifierResult> QuantifyChanges(QuantifierInput quantifierInput)
         {
             ArgumentCheck.ParameterIsNotNull(quantifierInput, nameof(quantifierInput));
 

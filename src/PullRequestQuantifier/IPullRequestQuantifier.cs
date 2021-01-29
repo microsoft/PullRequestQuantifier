@@ -16,6 +16,6 @@ namespace PullRequestQuantifier
         /// </summary>
         /// <param name="quantifierInput">Input quantifier.</param>
         /// <returns>returns a quantifier result.</returns>
-        Task<QuantifierResult> Quantify(QuantifierInput quantifierInput);
+        Task<QuantifierResult> QuantifyChanges(QuantifierInput quantifierInput);
     }
 }

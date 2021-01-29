@@ -34,7 +34,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.Equal("No Changes", quantifierResult.Label);
@@ -52,7 +52,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
@@ -70,7 +70,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
@@ -89,7 +89,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
@@ -108,7 +108,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
@@ -127,7 +127,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
@@ -149,7 +149,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
@@ -171,7 +171,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
@@ -193,7 +193,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
@@ -215,7 +215,7 @@
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
 
             // Act
-            var quantifierResult = await prQuantifier.Quantify(quantifierInput);
+            var quantifierResult = await prQuantifier.QuantifyChanges(quantifierInput);
 
             // Assert
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));

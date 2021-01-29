@@ -35,7 +35,7 @@
             IPullRequestQuantifier prQuantifier = new PullRequestQuantifier(context);
             var quantifierInput = new QuantifierInput();
             quantifierInput.Changes.AddRange(historicalChanges.Values.SelectMany(v => v));
-            await prQuantifier.Quantify(quantifierInput);
+            await prQuantifier.QuantifyChanges(quantifierInput);
 
             context.AdditionPercentile = AdditionDeletionPercentile(historicalChanges, true);
             context.DeletionPercentile = AdditionDeletionPercentile(historicalChanges, false);
