@@ -27,6 +27,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="Data\AssertCommentSummaryCollapsed.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\AssertCommentSummaryNotCollapsed.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="Data\MissingFormulaPercentileContext.prquantifier.yaml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
