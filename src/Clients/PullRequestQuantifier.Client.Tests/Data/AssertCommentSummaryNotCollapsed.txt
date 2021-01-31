@@ -1,0 +1,2 @@
+﻿<details open>
+    <summary display="inline"> <strong>Summary of changes in this pull request</strong></summary>
