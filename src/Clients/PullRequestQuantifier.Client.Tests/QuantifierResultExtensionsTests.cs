@@ -16,14 +16,12 @@
         private const string ContextFileLink = "http://www.test1.com";
         private const string PullRequestLink = "http://www.test2.com";
         private const string AuthorName = "name";
-        private static string assertCommentSummaryCollapsed;
         private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();
         private readonly GitEngine gitEngine = new GitEngine();
 
         public QuantifierResultExtensionsTests()
         {
             gitRepoHelpers.CreateRepo();
-            assertCommentSummaryCollapsed = File.ReadAllText(@"Data\AssertCommentSummaryCollapsed.txt");
         }
 
         [Fact]
@@ -86,13 +84,13 @@
             if (collapseChangesSummarySection)
             {
                 Assert.True(comment.IndexOf(
-                    await File.ReadAllTextAsync(@"Data\AssertCommentSummaryCollapsed.txt"),
+                    await File.ReadAllTextAsync(@"Data/AssertCommentSummaryCollapsed.txt"),
                     StringComparison.Ordinal) > -1);
             }
             else
             {
                 Assert.True(comment.IndexOf(
-                    await File.ReadAllTextAsync(@"Data\AssertCommentSummaryNotCollapsed.txt"),
+                    await File.ReadAllTextAsync(@"Data/AssertCommentSummaryNotCollapsed.txt"),
                     StringComparison.Ordinal) > -1);
             }
         }
