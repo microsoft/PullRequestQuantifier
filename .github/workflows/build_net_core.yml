@@ -4,13 +4,16 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ main ]
-
+    tags:
+      - 'v*'
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -20,20 +23,34 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.100
+
     - name: Install dependencies
       run: dotnet restore PullRequestQuantifier.sln
       env:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     - name: Build
       run: dotnet build PullRequestQuantifier.sln --configuration Release --no-restore
-    #- name: Test
-     # run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --filter Category!=Watchdog --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
-    #- name: Install and run report generator tool
-    #  run: |
-    #    dotnet tool install -g dotnet-reportgenerator-globaltool
-    #    reportgenerator.exe -reports:coverlet-results/**/*.xml -targetdir:./coverage-report -reporttypes:Html
-    #- name: Upload code coverage results
-    #  uses: actions/upload-artifact@v2
-    #  with:
-    #    name: coverage-report
-    #   path: coverage-report/*
+    
+    - name: Test
+      run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
+
+    - name: Pack
+      if: github.ref == 'refs/heads/main'
+      run: dotnet pack PullRequestQuantifier.sln --configuration Release  /p:PublicRelease=true
+    - name: Push package to NuGet
+      if: github.ref == 'refs/heads/main'
+      run: dotnet nuget push ./src/Clients/PullRequestQuantifier.Client/bin/Release/PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json
+
+    - name: Publish local context generator
+      run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Context ./src/Clients/PullRequestQuantifier.Local.Context/PullRequestQuantifier.Local.Context.csproj --self-contained=false /p:PublishSingleFile=true
+    - name: Publish local client
+      run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
+    
+    - name: Upload release artifacts
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: release
+        path: release/*
+    #todo create release
+    #todo upload artifacts to release

@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -20,7 +20,19 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\PullRequestQuantifier.Abstractions\PullRequestQuantifier.Abstractions.csproj" />
+      <ProjectReference Include="..\..\PullRequestQuantifier.Common.Tests\PullRequestQuantifier.Common.Tests.csproj" />
+      <ProjectReference Include="..\..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" />
       <ProjectReference Include="..\PullRequestQuantifier.Client\PullRequestQuantifier.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Data\MissingFormulaPercentileContext.prquantifier.yaml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\TestGitIgnore.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

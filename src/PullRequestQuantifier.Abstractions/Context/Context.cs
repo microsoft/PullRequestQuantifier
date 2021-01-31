@@ -27,14 +27,14 @@
         public IEnumerable<string> Excluded { get; set; }
 
         /// <summary>
-        /// Gets  or sets gitOperationType.
+        /// Gets or sets <see cref="GitOperationType"/>.
         /// If empty all operations will be considered,
         /// otherwise if something specified.
         /// </summary>
         public IEnumerable<GitOperationType> GitOperationType { get; set; }
 
         /// <summary>
-        /// Gets  or sets thresholds.
+        /// Gets or sets thresholds.
         /// Thresholds for this model.
         /// </summary>
         public IEnumerable<Threshold> Thresholds { get; set; }
@@ -45,20 +45,35 @@
         public LanguageOptions LanguageOptions { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the DynamicBehaviour.
-        /// this setting will allow the behaviour to be adjusted based on the previous previous
-        /// will look into the local git merge history.
+        /// Gets or sets the DynamicBehaviour value.
+        /// This setting will allow the behaviour to be adjusted based on the previous
+        /// local git merge history.
         /// </summary>
         public bool DynamicBehaviour { get; set; }
 
         /// <summary>
-        /// Gets  or sets AdditionPercentile. Used in quantifier final computation.
+        /// Gets or sets a value indicating whether we should ignore the renamed files.
+        /// </summary>
+        public bool IgnoreRenamed { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether we should ignore the copied files.
+        /// </summary>
+        public bool IgnoreCopied { get; set; }
+
+        /// <summary>
+        /// Gets or sets AdditionPercentile. Used in quantifier final computation.
         /// </summary>
         public SortedDictionary<int, float> AdditionPercentile { get; set; }
 
         /// <summary>
-        /// Gets  or sets DeletionPercentile. Used in quantifier final computation.
+        /// Gets or sets DeletionPercentile. Used in quantifier final computation.
         /// </summary>
         public SortedDictionary<int, float> DeletionPercentile { get; set; }
+
+        /// <summary>
+        /// Gets or sets FormulaPercentile. Used in quantifier final computation.
+        /// </summary>
+        public IEnumerable<(ThresholdFormula, SortedDictionary<int, float>)> FormulaPercentile { get; set; }
     }
 }

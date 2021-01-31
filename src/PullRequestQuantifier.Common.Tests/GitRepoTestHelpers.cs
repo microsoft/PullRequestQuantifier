@@ -29,23 +29,35 @@
 
             // Init test git repository with gitignore
             Repository.Init(RepoPath);
-            var gitIgnoreContent = fileSystem.File.ReadAllText(@"Data\TestGitIgnore.txt");
+            var gitIgnoreContent = fileSystem.File.ReadAllText(@"Data/TestGitIgnore.txt");
             fileSystem.File.WriteAllText(fileSystem.Path.Combine(RepoPath, ".gitignore"), gitIgnoreContent);
             CommitFilesToRepo();
         }
 
-        public void CommitFilesToRepo()
+        public Commit CommitFilesToRepo()
         {
             var repo = new Repository(RepoPath);
             Commands.Stage(repo, "*");
             var author = new Signature("FakeUser", "fakeemail", DateTimeOffset.Now);
-            repo.Commit("Adding files", author, author);
+            return repo.Commit("Adding files", author, author);
         }
 
-        public void AddUntrackedFileToRepo(string relativePath, int numLines)
+        public void AddUntrackedFileToRepoWithContent(string relativePath, string content)
+        {
+            fileSystem.File.WriteAllText(fileSystem.Path.Combine(RepoPath, relativePath), content);
+        }
+
+        public void AddUntrackedFileToRepoWithNumLines(string relativePath, int numLines)
         {
             string lineContent = $"Fake content line.{Environment.NewLine}";
             fileSystem.File.WriteAllText(fileSystem.Path.Combine(RepoPath, relativePath), string.Concat(Enumerable.Repeat(lineContent, numLines)));
+        }
+
+        public void RenameFile(string relativeFilePath, string renameToRelativeFilePath)
+        {
+            fileSystem.File.Move(
+                fileSystem.Path.Combine(RepoPath, relativeFilePath),
+                fileSystem.Path.Combine(RepoPath, renameToRelativeFilePath));
         }
 
         // This implementation of delete directory is based on the stack overflow
@@ -56,20 +68,34 @@
             var dirInfo = fileSystem.DirectoryInfo.FromDirectoryName(RepoPath);
             if (dirInfo.Exists)
             {
-                SetNormalAttribute(dirInfo);
+                try
+                {
+                    SetNormalAttribute(dirInfo);
+                    dirInfo.Delete(true);
+                }
+#pragma warning disable CA1031 // Do not catch general exception types
+                catch
+#pragma warning restore CA1031 // Do not catch general exception types
+                {
+                }
             }
-
-            dirInfo.Delete(true);
         }
 
         private static void SetNormalAttribute(IDirectoryInfo dirInfo)
         {
-            foreach (var subDir in dirInfo.GetDirectories())
+            if (!dirInfo.Exists)
+            {
+                return;
+            }
+
+            var directories = dirInfo.GetDirectories().ToArray();
+            foreach (var subDir in directories)
             {
                 SetNormalAttribute(subDir);
             }
 
-            foreach (var file in dirInfo.GetFiles())
+            var files = dirInfo.GetFiles().ToArray();
+            foreach (var file in files)
             {
                 file.Attributes = FileAttributes.Normal;
             }

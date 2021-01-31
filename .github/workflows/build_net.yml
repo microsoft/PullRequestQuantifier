@@ -1,0 +1,38 @@
+name: .NET Core Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+    tags:
+      - 'v*'
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    
+    - name: Restore Windows Projects
+      run: msbuild PullRequestQuantifierDotNetFull.sln /t:Restore /p:Configuration=Release 
+    - name: Build Windows Projects
+      run: msbuild PullRequestQuantifierDotNetFull.sln /p:Configuration=Release
+
+    #todo upload artifacts to release

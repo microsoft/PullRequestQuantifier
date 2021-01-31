@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CloneAdoRepo": {
+      "commandName": "Project",
+      "commandLineArgs": "-clonepath {} -configfile {} -user {} -pat {}"
+    }
+  }
+}
