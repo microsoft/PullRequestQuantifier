@@ -13,6 +13,30 @@
     {
         private const string FeedbackLinkRoot = "https://compliance.ppe.startclean.microsoft.com/api/feedback?payload=";
 
+        public static async Task<string> ToShortConsoleOutput(this QuantifierResult quantifierResult)
+        {
+            var stubble = new StubbleBuilder()
+                .Configure(settings => { settings.SetIgnoreCaseOnKeyLookup(true); }).Build();
+
+            using var stream = new StreamReader(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                    $"{typeof(QuantifierResultExtensions).Namespace}.ConsoleOutput.mustache") !);
+
+            var consoleOutput = await stubble.RenderAsync(
+                await stream.ReadToEndAsync(),
+                new
+                {
+                    quantifierResult.Label,
+                    quantifierResult.QuantifiedLinesAdded,
+                    quantifierResult.QuantifiedLinesDeleted,
+                    quantifierResult.PercentileAddition,
+                    quantifierResult.PercentileDeletion,
+                    quantifierResult.FormulaPercentile,
+                    Formula = quantifierResult.Formula.ToString(),
+                });
+            return consoleOutput;
+        }
+
         public static async Task<string> ToMarkdownCommentAsync(
             this QuantifierResult quantifierResult,
             string repositoryLink,

@@ -30,6 +30,9 @@
     <EmbeddedResource Include="Extensions\QuantifierComment.mustache">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Extensions\ConsoleOutput.mustache">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
     <!--
       The following solves the problem that 'dotnet pack' does not include the DLLs from referenced projects.
