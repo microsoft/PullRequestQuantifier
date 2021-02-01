@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <NodeJsRoot>pull-request-quantifier\</NodeJsRoot>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    </PropertyGroup>
+
+    <Target Name="BuildAndPublishVsix" AfterTargets="ComputeFilesToPublish">
+        <!-- Ensure Node.js is installed -->
+        <Exec Command="node --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+        </Exec>
+        <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE."/>
+        <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..."/>
+       
+        <RemoveDir Directories="$(NodeJsRoot)\out"/>
+        <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm install"/>
+        <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run compile"/>
+
+        <!-- Include the dlls in the js output -->
+        <ItemGroup>
+            <_CopyItemsDlls Include="bin\$(Configuration)\net5.0\publish\*"/>
+            <_CopyItemsRuntime Include="bin\$(Configuration)\net5.0\publish\runtimes\$(RuntimeIdentifier)\**"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(_CopyItemsDlls)" DestinationFolder="$(NodeJsRoot)\out\%(RecursiveDir)"/>
+        <Copy SourceFiles="@(_CopyItemsRuntime)" DestinationFolder="$(NodeJsRoot)\out\runtimes\$(RuntimeIdentifier)\%(RecursiveDir)"/>
+
+        <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run package"/>
+    </Target>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PullRequestQuantifier.Local.Client\PullRequestQuantifier.Local.Client.csproj"/>
+    </ItemGroup>
+
+</Project>
