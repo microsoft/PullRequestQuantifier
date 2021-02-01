@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj" />
     <ProjectReference Include="..\PullRequestQuantifier.Tools.Common\PullRequestQuantifier.Tools.Common.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.Tools.CloneAdoRepo
+﻿namespace PullRequestQuantifier.Tools.Common
 {
     using System;
     using System.Collections.Generic;
@@ -39,12 +39,6 @@
         public string User { get; set; }
 
         public string Pat { get; set; }
-
-        /// <summary>
-        /// Gets or sets if <see cref="QuantifierInputFile"/> is specified, this is given preference
-        /// over <see cref="ClonePath"/>.
-        /// </summary>
-        public string QuantifierInputFile { get; set; }
 
         private void ParseArgs()
         {

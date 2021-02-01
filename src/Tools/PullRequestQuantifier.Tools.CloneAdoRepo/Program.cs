@@ -6,6 +6,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using LibGit2Sharp;
+    using PullRequestQuantifier.Tools.Common;
     using PullRequestQuantifier.Tools.Common.Model;
     using YamlDotNet.Serialization;
     using Repository = LibGit2Sharp.Repository;

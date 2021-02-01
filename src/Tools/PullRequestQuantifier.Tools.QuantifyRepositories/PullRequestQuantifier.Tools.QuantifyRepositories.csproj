@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+    <PackageReference Include="YamlDotNet" Version="9.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Clients\PullRequestQuantifier.Client\PullRequestQuantifier.Client.csproj" />
+    <ProjectReference Include="..\..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" />
+    <ProjectReference Include="..\PullRequestQuantifier.Tools.CloneAdoRepo\PullRequestQuantifier.Tools.CloneAdoRepo.csproj" />
+    <ProjectReference Include="..\PullRequestQuantifier.Tools.Common\PullRequestQuantifier.Tools.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+
+</Project>
