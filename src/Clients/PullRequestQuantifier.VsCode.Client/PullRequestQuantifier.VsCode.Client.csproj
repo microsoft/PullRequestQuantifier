@@ -4,6 +4,7 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <NodeJsRoot>pull-request-quantifier\</NodeJsRoot>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     </PropertyGroup>
 
     <Target Name="EnsureNodeEnv" BeforeTargets="Build">
@@ -16,14 +17,17 @@
     </Target>
 
     <Target Name="BuildNodeJs" AfterTargets="ComputeFilesToPublish">
+        <RemoveDir Directories="$(NodeJsRoot)\out" />
         <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm install" />
         <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run compile" />
        
         <!-- Include the dlls in the js output -->
         <ItemGroup>
-            <_CopyItems Include="bin\$(Configuration)\net5.0\publish\**" />
+            <_CopyItemsDlls Include="bin\$(Configuration)\net5.0\publish\*" />
+            <_CopyItemsRuntime Include="bin\$(Configuration)\net5.0\publish\runtimes\$(RuntimeIdentifier)\**" />
         </ItemGroup>
-        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(NodeJsRoot)\out\%(RecursiveDir)" />
+        <Copy SourceFiles="@(_CopyItemsDlls)" DestinationFolder="$(NodeJsRoot)\out\%(RecursiveDir)" />
+        <Copy SourceFiles="@(_CopyItemsRuntime)" DestinationFolder="$(NodeJsRoot)\out\runtimes\$(RuntimeIdentifier)\%(RecursiveDir)" />
 
         <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run package" />
     </Target>
