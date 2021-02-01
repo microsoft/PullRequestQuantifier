@@ -7,8 +7,8 @@
     [ExcludeFromCodeCoverage]
     public sealed class DefaultContextTests
     {
-         [Fact]
-         public void DefaultContext_Successful()
+        [Fact]
+        public void DefaultContext_Successful()
         {
             // Set up
             var context = DefaultContext.Value;

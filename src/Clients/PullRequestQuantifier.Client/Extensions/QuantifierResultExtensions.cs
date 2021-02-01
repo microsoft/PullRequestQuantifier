@@ -18,8 +18,11 @@
             string repositoryLink,
             string contextFileLink,
             string pullRequestLink,
-            string authorName)
+            string authorName,
+            MarkdownCommentOptions markdownCommentOptions = null)
         {
+            markdownCommentOptions ??= new MarkdownCommentOptions();
+
             var stubble = new StubbleBuilder()
                 .Configure(settings => { settings.SetIgnoreCaseOnKeyLookup(true); }).Build();
 
@@ -66,7 +69,9 @@
                             .GroupBy(c => c.FileExtension)
                             .Select(
                                 g =>
-                                    $"{g.Key} : +{g.Sum(v => v.QuantifiedLinesAdded)} -{g.Sum(v => v.QuantifiedLinesDeleted)}"))
+                                    $"{g.Key} : +{g.Sum(v => v.QuantifiedLinesAdded)} -{g.Sum(v => v.QuantifiedLinesDeleted)}")),
+                    CollapseChangesSummarySection = markdownCommentOptions.CollapseChangesSummarySection ? string.Empty : "open",
+                    CollapsePullRequestQuantifiedSection = markdownCommentOptions.CollapsePullRequestQuantifiedSection ? string.Empty : "open"
                 });
             return comment;
         }
