@@ -71,6 +71,7 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                     "*.csproj",
                     "prquantifier.yaml",
                     "package-lock.json",
+                    "packages.lock.json",
                     "*.md",
                     "*.sln",
                     "*.snap"
