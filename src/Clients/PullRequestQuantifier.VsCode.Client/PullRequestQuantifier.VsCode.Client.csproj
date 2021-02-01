@@ -1,9 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <NodeJsRoot>pull-request-quantifier\</NodeJsRoot>
     </PropertyGroup>
+
+    <Target Name="EnsureNodeEnv" BeforeTargets="Build">
+        <!-- Ensure Node.js is installed -->
+        <Exec Command="node --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+        </Exec>
+        <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+        <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    </Target>
+
+    <Target Name="BuildNodeJs" AfterTargets="ComputeFilesToPublish">
+        <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm install" />
+        <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run compile" />
+       
+        <!-- Include the dlls in the js output -->
+        <ItemGroup>
+            <_CopyItems Include="bin\$(Configuration)\net5.0\publish\**" />
+        </ItemGroup>
+        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(NodeJsRoot)\out\%(RecursiveDir)" />
+
+        <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run package" />
+    </Target>
 
     <ItemGroup>
         <ProjectReference Include="..\PullRequestQuantifier.Local.Client\PullRequestQuantifier.Local.Client.csproj" />

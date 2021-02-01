@@ -46,7 +46,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{2F57C36C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.Tools.CloneAdoRepo", "src\Tools\PullRequestQuantifier.Tools.CloneAdoRepo\PullRequestQuantifier.Tools.CloneAdoRepo.csproj", "{394885DD-5317-44D0-A719-580536F75712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PullRequestQuantifier.Tools.Common", "src\Tools\PullRequestQuantifier.Tools.Common\PullRequestQuantifier.Tools.Common.csproj", "{30EF695F-2A80-4062-BC1E-A1D43EAB3D6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.Tools.Common", "src\Tools\PullRequestQuantifier.Tools.Common\PullRequestQuantifier.Tools.Common.csproj", "{30EF695F-2A80-4062-BC1E-A1D43EAB3D6D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.VsCode.Client", "src\Clients\PullRequestQuantifier.VsCode.Client\PullRequestQuantifier.VsCode.Client.csproj", "{2835545C-5F28-4749-8CF4-AD0BDBFDFC1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,6 +116,10 @@ Global
 		{30EF695F-2A80-4062-BC1E-A1D43EAB3D6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30EF695F-2A80-4062-BC1E-A1D43EAB3D6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30EF695F-2A80-4062-BC1E-A1D43EAB3D6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2835545C-5F28-4749-8CF4-AD0BDBFDFC1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2835545C-5F28-4749-8CF4-AD0BDBFDFC1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2835545C-5F28-4749-8CF4-AD0BDBFDFC1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2835545C-5F28-4749-8CF4-AD0BDBFDFC1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{F9ED6691-A004-40FF-A14B-03D34CF85434} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 		{394885DD-5317-44D0-A719-580536F75712} = {2F57C36C-F742-4F79-BD6F-5A010BC42493}
 		{30EF695F-2A80-4062-BC1E-A1D43EAB3D6D} = {2F57C36C-F742-4F79-BD6F-5A010BC42493}
+		{2835545C-5F28-4749-8CF4-AD0BDBFDFC1B} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8F5E1E3-3A8D-4D1C-8A8B-CA608A972B61}
