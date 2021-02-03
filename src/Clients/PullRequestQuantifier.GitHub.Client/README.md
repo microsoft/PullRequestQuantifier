@@ -2,7 +2,7 @@
 
 ## Installation
 
-Install the [GitHub app](<link-to-app>) on your organization/repository.
+Install the [GitHub app](https://github.com/marketplace/pull-request-quantifier) on your organization/repository.
 
 The app will request certain permissions during the installation that enable it to 
 read details of pull requests and the code itself.
