@@ -206,13 +206,13 @@ namespace PullRequestQuantifier.GitEngine
                     ? ChangeKind.Renamed
                     : patches.Current.Status;
 
-                ret.Add(new GitFilePatch
+                ret.Add(new GitFilePatch(
+                    patches.Current.Path,
+                    new FileInfo(patches.Current.Path).Extension)
                 {
                     DiffContent = patches.Current.Patch,
                     AbsoluteLinesAdded = patches.Current.LinesAdded,
                     AbsoluteLinesDeleted = patches.Current.LinesDeleted,
-                    FilePath = patches.Current.Path,
-                    FileExtension = new FileInfo(patches.Current.Path).Extension,
                     ChangeType = changeKind.ConvertToChangeType()
                 });
             }
