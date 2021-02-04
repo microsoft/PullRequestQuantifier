@@ -69,12 +69,12 @@
         /// <summary>
         /// Gets or sets the path of the changed file.
         /// </summary>
-        public string FilePath { get; set; }
+        public string FilePath { get; }
 
         /// <summary>
         /// Gets or sets the file extension.
         /// </summary>
-        public string FileExtension { get; set; }
+        public string FileExtension { get; }
 
         /// <summary>
         /// Gets or sets the kind of change reported by diff.
