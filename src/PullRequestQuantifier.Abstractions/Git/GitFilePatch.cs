@@ -10,6 +10,27 @@
         private string diffContent;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="GitFilePatch"/> class.
+        /// </summary>
+        /// <param name="filePath">Relative path to the file. </param>
+        /// <param name="fileExtension">File extension.</param>
+        public GitFilePatch(
+            string filePath,
+            string fileExtension)
+        {
+            FilePath = filePath;
+            FileExtension = fileExtension;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GitFilePatch"/> class.
+        /// Block parameter less constructor.
+        /// </summary>
+        private GitFilePatch()
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the absolute total number of lines added in this diff.
         /// </summary>
         public int AbsoluteLinesAdded { get; set; }
@@ -48,12 +69,12 @@
         /// <summary>
         /// Gets or sets the path of the changed file.
         /// </summary>
-        public string FilePath { get; set; }
+        public string FilePath { get; }
 
         /// <summary>
         /// Gets or sets the file extension.
         /// </summary>
-        public string FileExtension { get; set; }
+        public string FileExtension { get; }
 
         /// <summary>
         /// Gets or sets the kind of change reported by diff.

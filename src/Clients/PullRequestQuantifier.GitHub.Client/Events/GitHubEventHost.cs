@@ -87,14 +87,14 @@
                 var fileExtension = !string.IsNullOrWhiteSpace(pullRequestFile.FileName)
                     ? new FileInfo(pullRequestFile.FileName).Extension
                     : string.Empty;
-                var gitFilePatch = new GitFilePatch
+                var gitFilePatch = new GitFilePatch(
+                    pullRequestFile.FileName,
+                    fileExtension)
                 {
                     ChangeType = changeType,
                     AbsoluteLinesAdded = pullRequestFile.Additions,
                     AbsoluteLinesDeleted = pullRequestFile.Deletions,
                     DiffContent = pullRequestFile.Patch,
-                    FilePath = pullRequestFile.FileName,
-                    FileExtension = fileExtension
                 };
                 quantifierInput.Changes.Add(gitFilePatch);
             }
