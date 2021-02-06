@@ -9,6 +9,8 @@ namespace PullRequestQuantifier.Feedback.Service
 
     public class Startup
     {
+        private const string NamespaceName = "PullRequestQuantifier.Feedback.Service";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -20,7 +22,7 @@ namespace PullRequestQuantifier.Feedback.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "PullRequestQuantifier.GitHub.Client", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = NamespaceName, Version = "v1" }); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,7 +32,7 @@ namespace PullRequestQuantifier.Feedback.Service
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PullRequestQuantifier.GitHub.Client v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{NamespaceName} v1"));
             }
 
             app.UseHttpsRedirection();
