@@ -52,6 +52,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PullRequestQuantifier.VsCod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PullRequestQuantifier.Tools.QuantifyRepositories", "src\Tools\PullRequestQuantifier.Tools.QuantifyRepositories\PullRequestQuantifier.Tools.QuantifyRepositories.csproj", "{84C62145-2622-425F-B50B-DDD716AA7A32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PullRequestQuantifier.GitHub.Client.Tests", "src\Clients\PullRequestQuantifier.GitHub.Client.Tests\PullRequestQuantifier.GitHub.Client.Tests.csproj", "{18873758-0972-450A-B43E-9DD7D5C2EF4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{84C62145-2622-425F-B50B-DDD716AA7A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84C62145-2622-425F-B50B-DDD716AA7A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84C62145-2622-425F-B50B-DDD716AA7A32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18873758-0972-450A-B43E-9DD7D5C2EF4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18873758-0972-450A-B43E-9DD7D5C2EF4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18873758-0972-450A-B43E-9DD7D5C2EF4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18873758-0972-450A-B43E-9DD7D5C2EF4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +146,7 @@ Global
 		{30EF695F-2A80-4062-BC1E-A1D43EAB3D6D} = {2F57C36C-F742-4F79-BD6F-5A010BC42493}
 		{2835545C-5F28-4749-8CF4-AD0BDBFDFC1B} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 		{84C62145-2622-425F-B50B-DDD716AA7A32} = {2F57C36C-F742-4F79-BD6F-5A010BC42493}
+		{18873758-0972-450A-B43E-9DD7D5C2EF4A} = {113A67BC-21CF-45D1-98A5-28EBC75E2584}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8F5E1E3-3A8D-4D1C-8A8B-CA608A972B61}
