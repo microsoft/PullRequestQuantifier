@@ -3,6 +3,7 @@ namespace PullRequestQuantifier.GitHub.Client
     using GitHubJwt;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
     using PullRequestQuantifier.Common;
     using PullRequestQuantifier.GitHub.Client.Events;
@@ -11,7 +12,7 @@ namespace PullRequestQuantifier.GitHub.Client
 
     public static class Registrar
     {
-        internal static IServiceCollection RegisterServices(
+        public static IServiceCollection RegisterServices(
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
@@ -34,7 +35,7 @@ namespace PullRequestQuantifier.GitHub.Client
                     });
             });
             serviceCollection.AddSingleton<IGitHubClientAdapterFactory, GitHubClientAdapterFactory>();
-            serviceCollection.AddSingleton<IEventBus, AzureServiceBus>();
+            serviceCollection.TryAddSingleton<IEventBus, AzureServiceBus>();
             serviceCollection.AddHostedService<GitHubEventHost>();
 
             serviceCollection.AddApmForWebHost(configuration, typeof(Registrar).Namespace);
