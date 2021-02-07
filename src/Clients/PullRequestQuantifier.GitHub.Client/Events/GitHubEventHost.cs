@@ -6,6 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Linq;
     using PullRequestQuantifier.GitHub.Client.Models;
     using PullRequestQuantifier.GitHub.Client.Telemetry;
@@ -13,16 +14,19 @@
     public class GitHubEventHost : IHostedService
     {
         private readonly IEventBus eventBus;
-        private readonly IAppTelemetry appTelemetry;
+        private readonly IAppTelemetry telemetry;
+        private readonly ILogger<GitHubEventHost> logger;
         private readonly IDictionary<GitHubEventActions, IGitHubEventHandler> gitHubEventHandlers;
 
         public GitHubEventHost(
             IEventBus eventBus,
-            IAppTelemetry appTelemetry,
-            IEnumerable<IGitHubEventHandler> gitHubEventHandlers)
+            IAppTelemetry telemetry,
+            IEnumerable<IGitHubEventHandler> gitHubEventHandlers,
+            ILogger<GitHubEventHost> logger)
         {
             this.eventBus = eventBus;
-            this.appTelemetry = appTelemetry;
+            this.telemetry = telemetry;
+            this.logger = logger;
             this.gitHubEventHandlers = gitHubEventHandlers.ToDictionary(h => h.EventType);
         }
 
@@ -39,11 +43,12 @@
             return Task.CompletedTask;
         }
 
-        private async Task HandleGitHubEvent(string gitHubEvent)
+        private async Task HandleGitHubEvent(string gitHubEvent, DateTimeOffset messageEnqueueTime)
         {
             var eventJtoken = JToken.Parse(gitHubEvent);
+            var eventType = eventJtoken["eventType"].ToString();
             if (!Enum.TryParse(
-                eventJtoken["eventType"].ToString(),
+                eventType,
                 true,
                 out GitHubEventActions parsedEvent))
             {
@@ -58,8 +63,15 @@
             {
                 // this should never happen
                 // there must always be a handler for an accepted eventType
-                // TODO: log
+                logger.LogError("Received unknown event in GitHubEventHost. {eventType}", eventType);
+                telemetry.RecordMetric("GitHubEventHost-UnknownEvent", 1);
             }
+
+            var messageProcessingCompleteDelay = DateTimeOffset.UtcNow - messageEnqueueTime;
+            telemetry.RecordMetric(
+                "EndMessageProcessing-Delay",
+                (long)messageProcessingCompleteDelay.TotalSeconds,
+                ("EventType", eventType));
         }
 
         private Task ErrorHandler(Exception exception)

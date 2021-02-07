@@ -2,8 +2,10 @@ namespace PullRequestQuantifier.GitHub.Client.Events
 {
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.Logging;
     using Octokit;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
@@ -11,14 +13,22 @@ namespace PullRequestQuantifier.GitHub.Client.Events
     using PullRequestQuantifier.Client.QuantifyClient;
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
     using PullRequestQuantifier.GitHub.Client.Models;
+    using PullRequestQuantifier.GitHub.Client.Telemetry;
 
     public class PullRequestEventHandler : IGitHubEventHandler
     {
         private readonly IGitHubClientAdapterFactory gitHubClientAdapterFactory;
+        private readonly IAppTelemetry telemetry;
+        private readonly ILogger<PullRequestEventHandler> logger;
 
-        public PullRequestEventHandler(IGitHubClientAdapterFactory gitHubClientAdapterFactory)
+        public PullRequestEventHandler(
+            IGitHubClientAdapterFactory gitHubClientAdapterFactory,
+            IAppTelemetry telemetry,
+            ILogger<PullRequestEventHandler> logger)
         {
             this.gitHubClientAdapterFactory = gitHubClientAdapterFactory;
+            this.telemetry = telemetry;
+            this.logger = logger;
         }
 
         public GitHubEventActions EventType { get; } = GitHubEventActions.Pull_Request;
@@ -28,6 +38,38 @@ namespace PullRequestQuantifier.GitHub.Client.Events
             var payload =
                 new Octokit.Internal.SimpleJsonSerializer().Deserialize<PullRequestEventPayload>(gitHubEvent);
 
+            logger.LogInformation(
+                "Quantifying pull request: {pullRequestUrl}|{pullRequestId}|{sha}",
+                payload.PullRequest.HtmlUrl,
+                payload.PullRequest.Id,
+                payload.PullRequest.Head.Sha);
+            telemetry.RecordMetric(
+                "PullRequest-QuantifyRequest",
+                1);
+
+            var quantifierResult = await QuantifyPullRequest(payload);
+
+            logger.LogInformation(
+                "Quantified pull request: {pullRequestUrl}|{pullRequestId}|{sha}|" +
+                "{label}|{formula}|{absoluteLinesAdded}|{absoluteLinesDeleted}|" +
+                "{quantifiedLinesAdded}|{quantifiedLinesDeleted}|" +
+                "{percentileAddition}|{percentileDeletion}|{formulaPercentile}",
+                payload.PullRequest.HtmlUrl,
+                payload.PullRequest.Id,
+                payload.PullRequest.Head.Sha,
+                quantifierResult.Label,
+                quantifierResult.Formula,
+                quantifierResult.QuantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded),
+                quantifierResult.QuantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted),
+                quantifierResult.QuantifiedLinesAdded,
+                quantifierResult.QuantifiedLinesDeleted,
+                quantifierResult.PercentileAddition,
+                quantifierResult.PercentileDeletion,
+                quantifierResult.FormulaPercentile);
+        }
+
+        private async Task<QuantifierResult> QuantifyPullRequest(PullRequestEventPayload payload)
+        {
             var gitHubClientAdapter =
                 await gitHubClientAdapterFactory.GetGitHubClientAdapterAsync(payload.Installation.Id);
 
@@ -133,6 +175,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 payload.Repository.Id,
                 payload.PullRequest.Number,
                 comment);
+            return quantifierClientResult;
         }
 
         private string ConvertToHex(Color c)
