@@ -71,6 +71,7 @@
                 Enum.TryParse(action, true, out GitHubEventActions parsedAction) &&
                 (parsedEvent & parsedAction) == parsedAction)
             {
+                payload["eventType"] = eventType;
                 await eventBus.WriteAsync(payload);
             }
 

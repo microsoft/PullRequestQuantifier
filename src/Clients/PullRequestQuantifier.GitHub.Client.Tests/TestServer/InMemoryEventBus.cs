@@ -2,6 +2,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
     using Newtonsoft.Json.Linq;
@@ -23,7 +24,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
         }
 
         public Task SubscribeAsync(
-            Func<string, Task> messageHandler,
+            Func<string, DateTimeOffset, Task> messageHandler,
             Func<Exception, Task> errorHandler,
             CancellationToken cancellationToken)
         {

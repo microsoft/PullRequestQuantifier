@@ -4,8 +4,11 @@ namespace PullRequestQuantifier.GitHub.Client.Events
     using System.Threading;
     using System.Threading.Tasks;
     using Azure.Messaging.ServiceBus;
+    using Microsoft.ApplicationInsights.DataContracts;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json.Linq;
+    using PullRequestQuantifier.GitHub.Client.Telemetry;
 
     public class AzureServiceBus : IEventBus
     {
@@ -13,10 +16,18 @@ namespace PullRequestQuantifier.GitHub.Client.Events
         private readonly ServiceBusClient serviceBusClient;
         private readonly ServiceBusSender sender;
         private readonly ServiceBusProcessor processor;
+        private readonly IAppTelemetry telemetry;
+        private readonly ILogger<AzureServiceBus> logger;
 
-        public AzureServiceBus(IOptions<AzureServiceBusSettings> settings)
+        public AzureServiceBus(
+            IOptions<AzureServiceBusSettings> settings,
+            IAppTelemetry telemetry,
+            ILogger<AzureServiceBus> logger)
         {
+            this.telemetry = telemetry;
+            this.logger = logger;
             this.settings = settings.Value;
+
             serviceBusClient = new ServiceBusClient(this.settings.ConnectionString);
 
             // create a sender for the topic
@@ -39,25 +50,34 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 return;
             }
 
-            await sender.SendMessageAsync(new ServiceBusMessage(payload.ToString()));
+            var message = new ServiceBusMessage(payload.ToString());
+            message.CorrelationId = telemetry.OperationId;
+            await sender.SendMessageAsync(message);
         }
 
         public async Task SubscribeAsync(
-            Func<string, Task> messageHandler,
+            Func<string, DateTimeOffset, Task> messageHandler,
             Func<Exception, Task> errorHandler,
             CancellationToken cancellationToken)
         {
             // add handler to process messages
             processor.ProcessMessageAsync += async args =>
             {
-                await messageHandler(args.Message.Body.ToString());
+                using var operation = telemetry.StartOperation<RequestTelemetry>(this, args.Message.CorrelationId);
+
+                var messageProcessingStartDelay = DateTimeOffset.UtcNow - args.Message.EnqueuedTime;
+                telemetry.RecordMetric(
+                    "StartMessageProcessing-Delay",
+                    (long)messageProcessingStartDelay.TotalSeconds);
+
+                await messageHandler(args.Message.Body.ToString(), args.Message.EnqueuedTime);
 
                 // delete the message
                 await args.CompleteMessageAsync(args.Message, cancellationToken);
             };
 
             // add handler to process any errors
-            processor.ProcessErrorAsync += async args => await errorHandler(args.Exception);
+            processor.ProcessErrorAsync += async args => { await errorHandler(args.Exception); };
 
             // start processing
             await processor.StartProcessingAsync(cancellationToken);
