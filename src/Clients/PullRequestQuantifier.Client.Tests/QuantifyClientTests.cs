@@ -40,9 +40,9 @@
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(3, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(2, quantifierResult.QuantifiedLinesDeleted);
-            Assert.True(Math.Abs(quantifierResult.PercentileAddition - 2) < float.Epsilon);
-            Assert.Equal(1, (int)quantifierResult.PercentileDeletion);
-            Assert.Equal(3, (int)quantifierResult.FormulaPercentile);
+            Assert.Equal(1, (int)quantifierResult.PercentileAddition);
+            Assert.Equal(0, (int)quantifierResult.PercentileDeletion);
+            Assert.Equal(2, (int)quantifierResult.FormulaPercentile);
         }
 
         [Fact]
@@ -94,9 +94,9 @@
             Assert.True(!string.IsNullOrEmpty(quantifierResult.Label));
             Assert.Equal(7, quantifierResult.QuantifiedLinesAdded);
             Assert.Equal(0, quantifierResult.QuantifiedLinesDeleted);
-            Assert.Equal(4, (int)quantifierResult.PercentileAddition);
+            Assert.Equal(2, (int)quantifierResult.PercentileAddition);
             Assert.Equal(0, quantifierResult.PercentileDeletion);
-            Assert.Equal(4, (int)quantifierResult.FormulaPercentile);
+            Assert.Equal(2, (int)quantifierResult.FormulaPercentile);
         }
 
         [Fact]

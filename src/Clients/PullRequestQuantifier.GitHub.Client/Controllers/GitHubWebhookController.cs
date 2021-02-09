@@ -67,9 +67,11 @@
                 throw new UnauthorizedAccessException("The signature couldn't be authenticated.");
             }
 
-            if (Enum.TryParse(eventType, true, out AcceptedGitHubEventTypes _) &&
-                Enum.TryParse(action, true, out AcceptedGitHubActionTypes _))
+            if (Enum.TryParse(eventType, true, out GitHubEventActions parsedEvent) &&
+                Enum.TryParse(action, true, out GitHubEventActions parsedAction) &&
+                (parsedEvent & parsedAction) == parsedAction)
             {
+                payload["eventType"] = eventType;
                 await eventBus.WriteAsync(payload);
             }
 

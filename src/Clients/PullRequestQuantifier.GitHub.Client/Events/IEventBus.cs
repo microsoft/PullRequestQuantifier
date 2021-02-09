@@ -1,6 +1,7 @@
 namespace PullRequestQuantifier.GitHub.Client.Events
 {
     using System;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
     using Newtonsoft.Json.Linq;
@@ -10,7 +11,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
         Task WriteAsync(JObject payload);
 
         Task SubscribeAsync(
-            Func<string, Task> messageHandler,
+            Func<string, DateTimeOffset, Task> messageHandler,
             Func<Exception, Task> errorHandler,
             CancellationToken cancellationToken);
     }
