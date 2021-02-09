@@ -1,0 +1,104 @@
+namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
+{
+    using System;
+    using System.IO;
+    using System.Net.Http;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using PullRequestQuantifier.GitHub.Client.Models;
+    using PullRequestQuantifier.GitHub.Client.Tests.TestServer;
+    using Xunit;
+
+    public class GitHubWebhookEndpointTests : IDisposable
+    {
+        private readonly HttpClient httpClient;
+        private readonly GitHubClientTestServer testServer;
+
+        public GitHubWebhookEndpointTests()
+        {
+            testServer = new GitHubClientTestServer();
+            httpClient = testServer.CreateClient();
+        }
+
+        [Fact]
+        public async Task Accepts_PullRequestOpened()
+        {
+            var response = await GetServerResponseAsync(GitHubEventActions.Pull_Request, GitHubEventActions.Opened);
+
+            response.EnsureSuccessStatusCode();
+            Assert.Single(testServer.InMemoryEventBus.Events);
+        }
+
+        [Fact]
+        public async Task Accepts_PullRequestSynchronize()
+        {
+            var response = await GetServerResponseAsync(GitHubEventActions.Pull_Request, GitHubEventActions.Synchronize);
+
+            response.EnsureSuccessStatusCode();
+            Assert.Single(testServer.InMemoryEventBus.Events);
+        }
+
+        [Fact]
+        public async Task Accepts_InstallationCreated()
+        {
+            var response = await GetServerResponseAsync(GitHubEventActions.Installation, GitHubEventActions.Created);
+
+            response.EnsureSuccessStatusCode();
+            Assert.Single(testServer.InMemoryEventBus.Events);
+        }
+
+        [Fact]
+        public async Task Rejects_PullRequestCreated()
+        {
+            var response = await GetServerResponseAsync(GitHubEventActions.Pull_Request, GitHubEventActions.Created);
+
+            response.EnsureSuccessStatusCode();
+            Assert.Empty(testServer.InMemoryEventBus.Events);
+        }
+
+        [Fact]
+        public async Task Rejects_InstallationOpened()
+        {
+            var response = await GetServerResponseAsync(GitHubEventActions.Installation, GitHubEventActions.Opened);
+
+            response.EnsureSuccessStatusCode();
+            Assert.Empty(testServer.InMemoryEventBus.Events);
+        }
+
+        public void Dispose()
+        {
+            httpClient?.Dispose();
+            testServer?.Dispose();
+        }
+
+        private async Task<HttpResponseMessage> GetServerResponseAsync(GitHubEventActions eventActionToSend, GitHubEventActions actionActionToSend)
+        {
+            var testWebhookData = JToken.Parse(File.ReadAllText("Controllers/Data/TestGitHubWebhook1.json"));
+            testWebhookData["action"] = actionActionToSend.ToString();
+
+            var content = new StringContent(
+                testWebhookData.ToString(Formatting.None),
+                Encoding.UTF8);
+
+            var webhookSignature = ComputeHash(testWebhookData.ToString(Formatting.None), testServer.TestGitHubAppSettings.WebhookSecret);
+            httpClient.DefaultRequestHeaders.Add("X-GitHub-Event", eventActionToSend.ToString());
+            httpClient.DefaultRequestHeaders.Add("X-GitHub-Delivery", Guid.NewGuid().ToString());
+            httpClient.DefaultRequestHeaders.Add("X-Hub-Signature", webhookSignature);
+            return await httpClient.PostAsync("/githubWebhook", content);
+        }
+
+        private string ComputeHash(string request, string secretValue)
+        {
+            var secretBytes = Encoding.ASCII.GetBytes(secretValue);
+            var requestBytes = Encoding.ASCII.GetBytes(request);
+#pragma warning disable CA5350 // GitHub sends webhook encoded with sha1
+            var hmacSha1 = new HMACSHA1(secretBytes);
+#pragma warning restore CA5350 // GitHub sends webhook encoded with sha1
+            var hashBytes = hmacSha1.ComputeHash(requestBytes);
+            return $"sha1={BitConverter.ToString(hashBytes).Replace("-", string.Empty).ToLower()}";
+        }
+    }
+}
