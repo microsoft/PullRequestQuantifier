@@ -197,7 +197,7 @@
             {
                 case ClientOutputType.None:
                 {
-                    Console.WriteLine(quantifierResult.ToShortConsoleOutput().Result);
+                    Console.WriteLine(quantifierResult.ToConsoleOutput().Result);
                     break;
                 }
 

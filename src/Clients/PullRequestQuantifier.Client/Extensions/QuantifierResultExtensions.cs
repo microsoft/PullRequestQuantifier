@@ -13,7 +13,7 @@
     {
         private const string FeedbackLinkRoot = "https://compliance.ppe.startclean.microsoft.com/api/feedback?payload=";
 
-        public static async Task<string> ToShortConsoleOutput(this QuantifierResult quantifierResult)
+        public static async Task<string> ToConsoleOutput(this QuantifierResult quantifierResult)
         {
             var stubble = new StubbleBuilder()
                 .Configure(settings => { settings.SetIgnoreCaseOnKeyLookup(true); }).Build();

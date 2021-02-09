@@ -4,7 +4,6 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <NodeJsRoot>pull-request-quantifier\</NodeJsRoot>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     </PropertyGroup>
 
     <Target Name="BuildAndPublishVsix" AfterTargets="ComputeFilesToPublish">
@@ -32,6 +31,13 @@
 
     <ItemGroup>
         <ProjectReference Include="..\PullRequestQuantifier.Local.Client\PullRequestQuantifier.Local.Client.csproj"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="..\PullRequestQuantifier.Client\Extensions\ConsoleOutput.mustache">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </None>
     </ItemGroup>
 
 </Project>
