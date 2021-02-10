@@ -10,6 +10,7 @@
     using LibGit2Sharp;
     using PullRequestQuantifier.Abstractions.Core;
     using PullRequestQuantifier.Abstractions.Git;
+    using PullRequestQuantifier.Client.Extensions;
     using PullRequestQuantifier.Client.Helpers;
     using PullRequestQuantifier.Client.QuantifyClient;
 
@@ -196,12 +197,7 @@
             {
                 case ClientOutputType.None:
                 {
-                    Console.WriteLine(
-                        $"PrQuantified = {quantifierResult.Label},\t" +
-                        $"Diff +{quantifierResult.QuantifiedLinesAdded} -{quantifierResult.QuantifiedLinesDeleted} (Formula = {quantifierResult.Formula})," +
-                        $"\tTeam percentiles: additions = {quantifierResult.PercentileAddition}%" +
-                        $", deletions = {quantifierResult.PercentileDeletion}%," +
-                        $" Diff = {quantifierResult.FormulaPercentile}%.{Environment.NewLine}");
+                    Console.WriteLine(quantifierResult.ToConsoleOutput().Result);
                     break;
                 }
 
