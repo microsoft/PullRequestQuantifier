@@ -172,11 +172,6 @@ namespace PullRequestQuantifier.GitHub.Client.Events
 
         private async Task<QuantifierInput> GetQuantifierInputFromPullRequest(PullRequestEventPayload payload, IGitHubClientAdapter gitHubClientAdapter)
         {
-            // get pull request
-            var pullRequest = await gitHubClientAdapter.GetPullRequestAsync(
-                payload.Repository.Id,
-                payload.PullRequest.Number);
-
             // get pull request files
             var pullRequestFiles = await gitHubClientAdapter.GetPullRequestFilesAsync(
                 payload.Repository.Id,

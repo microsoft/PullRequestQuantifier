@@ -7,13 +7,13 @@ namespace PullRequestQuantifier.GitHub.Client.Events
     using PullRequestQuantifier.GitHub.Client.Models;
     using PullRequestQuantifier.GitHub.Client.Telemetry;
 
-    public class InstallationEventHandler : IGitHubEventHandler
+    public class InstallationRepositoriesEventHandler : IGitHubEventHandler
     {
         private readonly IGitHubClientAdapterFactory gitHubClientAdapterFactory;
         private readonly IAppTelemetry telemetry;
         private readonly ILogger<PullRequestEventHandler> logger;
 
-        public InstallationEventHandler(
+        public InstallationRepositoriesEventHandler(
             IGitHubClientAdapterFactory gitHubClientAdapterFactory,
             IAppTelemetry telemetry,
             ILogger<PullRequestEventHandler> logger)
@@ -23,23 +23,25 @@ namespace PullRequestQuantifier.GitHub.Client.Events
             this.logger = logger;
         }
 
-        public GitHubEventActions EventType { get; } = GitHubEventActions.Installation;
+        public GitHubEventActions EventType { get; } = GitHubEventActions.Installation_Repositories;
 
         public Task HandleEvent(string gitHubEvent)
         {
             var payload =
-                new Octokit.Internal.SimpleJsonSerializer().Deserialize<InstallationEventPayload>(gitHubEvent);
+                new Octokit.Internal.SimpleJsonSerializer().Deserialize<InstallationRepositoriesEventPayload>(gitHubEvent);
 
             logger.LogInformation(
-                "Installation event: {accountId} | {accountLogin} | {accountUrl} | {accountType} | " +
-                "{action} | {repositorySelection} | {repositories}",
+                "Installation_Repositories event: {accountId} | {accountLogin} | {accountUrl} | {accountType} | " +
+                "{action} | {repositorySelection} | {newRepositorySelection} | {repositoriesAdded} | {repositoriesRemoved}",
                 payload.Installation.Account.Id,
                 payload.Installation.Account.Login,
                 payload.Installation.Account.Url,
                 payload.Installation.Account.Type.ToString(),
                 payload.Action,
                 payload.Installation.RepositorySelection,
-                string.Join(" | ", payload.Repositories.Select(r => r.FullName)));
+                payload.RepositorySelection,
+                string.Join(" | ", payload.RepositoriesAdded.Select(r => r.FullName)),
+                string.Join(" | ", payload.RepositoriesRemoved.Select(r => r.FullName)));
             telemetry.RecordMetric(
                 "Installation-Event",
                 1,
