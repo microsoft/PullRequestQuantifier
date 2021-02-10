@@ -71,7 +71,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
         private async Task<QuantifierResult> QuantifyPullRequest(PullRequestEventPayload payload)
         {
             var gitHubClientAdapter =
-                await gitHubClientAdapterFactory.GetGitHubClientAdapterForInstallationAsync(payload.Installation.Id);
+                await gitHubClientAdapterFactory.GetGitHubClientAdapterAsync(payload.Installation.Id);
 
             // get pull request
             var pullRequest = await gitHubClientAdapter.GetPullRequestAsync(

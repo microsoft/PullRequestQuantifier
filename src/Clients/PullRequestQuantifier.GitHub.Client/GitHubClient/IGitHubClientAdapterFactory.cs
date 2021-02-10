@@ -9,6 +9,6 @@
     {
         /// <summary>Gets the GitHub client adapter.</summary>
         /// <returns>The <see cref="Task"/>.</returns>
-        Task<IGitHubClientAdapter> GetGitHubClientAdapterForInstallationAsync(long installationId);
+        Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(long installationId);
     }
 }

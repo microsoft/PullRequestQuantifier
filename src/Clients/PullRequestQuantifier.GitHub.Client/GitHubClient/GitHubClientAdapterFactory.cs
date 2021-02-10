@@ -27,7 +27,7 @@
         }
 
         /// <inheritdoc />
-        public async Task<IGitHubClientAdapter> GetGitHubClientAdapterForInstallationAsync(long installationId)
+        public async Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(long installationId)
         {
             var gitHubClient = CreateClient(
                 new Credentials(gitHubJwtFactory.CreateEncodedJwtToken(), AuthenticationType.Bearer),
