@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json.Linq;
+    using PullRequestQuantifier.Common;
     using PullRequestQuantifier.GitHub.Client.Events;
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
     using PullRequestQuantifier.GitHub.Client.Models;
@@ -18,20 +19,24 @@
     [Produces("application/json")]
     public class GitHubWebhookController : ControllerBase
     {
-        private readonly GitHubAppSettings gitHubAppSettings;
+        private readonly GitHubAppFlavorSettings gitHubAppFlavorSettings;
 
         private readonly IAppTelemetry appTelemetry;
 
         private readonly IEventBus eventBus;
 
         public GitHubWebhookController(
-            IOptions<GitHubAppSettings> gitHubAppSettings,
+            IOptions<GitHubAppFlavorSettings> gitHubAppFlavorSettings,
             IAppTelemetry appTelemetry,
             IEventBus eventBus)
         {
+            ArgumentCheck.ParameterIsNotNull(gitHubAppFlavorSettings, nameof(gitHubAppFlavorSettings));
+            ArgumentCheck.ParameterIsNotNull(gitHubAppFlavorSettings, nameof(gitHubAppFlavorSettings));
+            ArgumentCheck.ParameterIsNotNull(appTelemetry, nameof(appTelemetry));
+
             this.appTelemetry = appTelemetry;
             this.eventBus = eventBus;
-            this.gitHubAppSettings = gitHubAppSettings.Value;
+            this.gitHubAppFlavorSettings = gitHubAppFlavorSettings.Value;
         }
 
         [HttpPost]
@@ -40,7 +45,7 @@
         public async Task<IActionResult> ProcessWebhook(
             [FromHeader(Name = "X-GitHub-Event")] string eventType,
             [FromHeader(Name = "X-Github-Delivery")] string deliveryId,
-            [FromHeader(Name = "X-Hub-Signature")] string signature)
+            [FromHeader(Name = "X-Hub-Signature-256")] string signature)
         {
             string content;
             using (var reader = new StreamReader(Request.Body))
@@ -58,7 +63,10 @@
                 ("deliveryId", deliveryId)
             };
 
-            if (!Authenticate(signature, content))
+            if (!Authenticate(
+                signature,
+                content,
+                new Uri((string)payload[eventType]["url"]).DnsSafeHost))
             {
                 appTelemetry.RecordMetric(
                     "GitHubWebhook-AuthFailure",
@@ -78,27 +86,24 @@
             return Ok();
         }
 
-        private bool Authenticate(string signature, string content)
+        private bool Authenticate(
+            string signature,
+            string content,
+            string dnsHost)
         {
-            var hashValue = ComputeHash(content);
-
-            if (("sha1=" + hashValue).Equals(signature))
-            {
-                return true;
-            }
-
-            return false;
+            var hashValue = ComputeHash(content, dnsHost);
+            return $"sha256={hashValue}".Equals(signature);
         }
 
-        private string ComputeHash(string content)
+        private string ComputeHash(
+            string content,
+            string dnsHost)
         {
-            var secretBytes = Encoding.UTF8.GetBytes(gitHubAppSettings.WebhookSecret);
+            var secretBytes = Encoding.UTF8.GetBytes(gitHubAppFlavorSettings[dnsHost].WebhookSecret);
             var contentBytes = Encoding.UTF8.GetBytes(content);
 
-#pragma warning disable CA5350 // GitHub sends webhook encoded with sha1
-            using var hmacSha1 = new HMACSHA1(secretBytes);
-#pragma warning restore CA5350 // GitHub sends webhook encoded with sha1
-            var contentHash = hmacSha1.ComputeHash(contentBytes);
+            using var hmacSha256 = new HMACSHA256(secretBytes);
+            var contentHash = hmacSha256.ComputeHash(contentBytes);
 
             return BitConverter.ToString(contentHash).Replace("-", string.Empty).ToLower();
         }

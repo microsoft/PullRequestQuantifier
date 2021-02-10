@@ -1,5 +1,6 @@
 namespace PullRequestQuantifier.GitHub.Client.Events
 {
+    using System;
     using System.Drawing;
     using System.IO;
     using System.Linq;
@@ -71,7 +72,9 @@ namespace PullRequestQuantifier.GitHub.Client.Events
         private async Task<QuantifierResult> QuantifyPullRequest(PullRequestEventPayload payload)
         {
             var gitHubClientAdapter =
-                await gitHubClientAdapterFactory.GetGitHubClientAdapterAsync(payload.Installation.Id);
+                await gitHubClientAdapterFactory.GetGitHubClientAdapterAsync(
+                    payload.Installation.Id,
+                    new Uri(payload.PullRequest.HtmlUrl).DnsSafeHost);
 
             // get pull request
             var pullRequest = await gitHubClientAdapter.GetPullRequestAsync(
