@@ -3,7 +3,7 @@
 	"displayName": "Pull Request Quantifier",
 	"description": "A highly customizable framework to quantify a pull request within a repository context.",
 	"publisher": "ms",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"repository": {
 		"url": "https://github.com/microsoft/PullRequestQuantifier.git",
 		"type": "git"
