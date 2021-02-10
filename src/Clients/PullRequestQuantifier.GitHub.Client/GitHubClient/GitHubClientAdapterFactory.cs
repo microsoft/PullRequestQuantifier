@@ -15,7 +15,6 @@
         private readonly GitHubAppSettings gitHubAppSettings;
         private readonly IGitHubJwtFactory gitHubJwtFactory;
         private readonly IAppTelemetry appTelemetry;
-        private GitHubClient gitHubClient;
 
         public GitHubClientAdapterFactory(
             IGitHubJwtFactory gitHubJwtFactory,
@@ -28,17 +27,20 @@
         }
 
         /// <inheritdoc />
-        public async Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(long installationId)
+        public async Task<IGitHubClientAdapter> GetGitHubClientAdapterForInstallationAsync(long installationId)
         {
-            gitHubClient = CreateClient(
+            var gitHubClient = CreateClient(
                 new Credentials(gitHubJwtFactory.CreateEncodedJwtToken(), AuthenticationType.Bearer),
-                this.gitHubAppSettings,
+                gitHubAppSettings,
                 appTelemetry);
             var (token, expirationTime) =
-                await CreateInstallationTokenByInstallationId(installationId, gitHubAppSettings);
+                await CreateInstallationTokenByInstallationId(
+                    gitHubClient,
+                    installationId,
+                    gitHubAppSettings);
 
             gitHubClient.Credentials = new Credentials(token, AuthenticationType.Bearer);
-            return new GitHubClientAdapter(gitHubClient);
+            return new GitHubClientAdapter(gitHubClient, gitHubAppSettings);
         }
 
         private static GitHubClient CreateClient(
@@ -59,11 +61,13 @@
             catch (Exception ex)
             {
                 throw new CreateGitHubClientException(
-                    $"Failed to create client for GitHubApp: {gitHubAppSettings.Name}", ex);
+                    $"Failed to create client for GitHubApp: {gitHubAppSettings.Name}",
+                    ex);
             }
         }
 
         private async Task<(string, DateTimeOffset)> CreateInstallationTokenByInstallationId(
+            GitHubClient gitHubClient,
             long installationId,
             GitHubAppSettings gitHubAppSettings)
         {
@@ -75,7 +79,8 @@
             catch (NotFoundException ex)
             {
                 throw new CreateGitHubClientException(
-                    $"GitHub installation ({installationId}) not found or insufficient access privileges.", ex);
+                    $"GitHub installation ({installationId}) not found or insufficient access privileges.",
+                    ex);
             }
             catch (Exception ex)
             {

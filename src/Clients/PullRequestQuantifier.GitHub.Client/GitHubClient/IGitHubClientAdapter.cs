@@ -9,6 +9,8 @@
     /// </summary>
     public interface IGitHubClientAdapter
     {
+        GitHubAppSettings GitHubAppSettings { get; }
+
         /// <summary>
         /// Gets a repository by name.
         /// </summary>
@@ -196,5 +198,25 @@
             long repositoryId,
             int issueNumber,
             string comment);
+
+        /// <summary>
+        /// Get all comments on an issue.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="issueNumber">Issue number.</param>
+        /// <returns>List of comments on the issue.</returns>
+        Task<IReadOnlyList<IssueComment>> GetIssueCommentsAsync(
+            long repositoryId,
+            int issueNumber);
+
+        /// <summary>
+        /// Delete a comment.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="commentId">Comment ID.</param>
+        /// <returns>Task.</returns>
+        Task DeleteIssueCommentAsync(
+            long repositoryId,
+            int commentId);
     }
 }

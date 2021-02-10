@@ -71,7 +71,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
         private async Task<QuantifierResult> QuantifyPullRequest(PullRequestEventPayload payload)
         {
             var gitHubClientAdapter =
-                await gitHubClientAdapterFactory.GetGitHubClientAdapterAsync(payload.Installation.Id);
+                await gitHubClientAdapterFactory.GetGitHubClientAdapterForInstallationAsync(payload.Installation.Id);
 
             // get pull request
             var pullRequest = await gitHubClientAdapter.GetPullRequestAsync(
@@ -162,6 +162,14 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 payload.Repository.Id,
                 payload.PullRequest.Number,
                 new[] { quantifierClientResult.Label });
+
+            // get existing comments created by us
+            var existingComments = await gitHubClientAdapter.GetIssueCommentsAsync(payload.Repository.Id, payload.PullRequest.Number);
+            var existingCommentsCreatedByUs = existingComments.Where(ec => ec.User.Login.Equals($"{gitHubClientAdapter.GitHubAppSettings.Name}[bot]"));
+            foreach (var existingComment in existingCommentsCreatedByUs)
+            {
+                await gitHubClientAdapter.DeleteIssueCommentAsync(payload.Repository.Id, existingComment.Id);
+            }
 
             // create a comment on the issue
             var defaultBranch = payload.Repository.DefaultBranch;

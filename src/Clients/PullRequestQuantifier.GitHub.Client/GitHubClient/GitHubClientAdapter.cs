@@ -10,12 +10,15 @@
     {
         // this value should be considered as non existing repo
         private const int NotInitializedRepositoryId = 0;
-        private readonly Octokit.IGitHubClient gitHubClient;
+        private readonly IGitHubClient gitHubClient;
 
-        public GitHubClientAdapter(Octokit.IGitHubClient gitHubClient)
+        public GitHubClientAdapter(IGitHubClient gitHubClient, GitHubAppSettings gitHubAppSettings)
         {
             this.gitHubClient = gitHubClient;
+            GitHubAppSettings = gitHubAppSettings;
         }
+
+        public GitHubAppSettings GitHubAppSettings { get; }
 
         /// <inheritdoc />
         public async Task<Repository> GetRepositoryByNameAsync(string organizationName, string repositoryName)
@@ -224,6 +227,22 @@
                 repositoryId,
                 issueNumber,
                 comment);
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<IssueComment>> GetIssueCommentsAsync(
+            long repositoryId,
+            int issueNumber)
+        {
+            return await gitHubClient.Issue.Comment.GetAllForIssue(repositoryId, issueNumber);
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteIssueCommentAsync(
+            long repositoryId,
+            int commentId)
+        {
+            await gitHubClient.Issue.Comment.Delete(repositoryId, commentId);
         }
     }
 }
