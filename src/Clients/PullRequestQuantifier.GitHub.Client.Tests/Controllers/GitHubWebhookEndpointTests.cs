@@ -1,6 +1,7 @@
 namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Net.Http;
     using System.Security.Cryptography;
@@ -12,6 +13,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
     using PullRequestQuantifier.GitHub.Client.Tests.TestServer;
     using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public class GitHubWebhookEndpointTests : IDisposable
     {
         private readonly HttpClient httpClient;

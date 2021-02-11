@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -12,6 +13,7 @@
     using PullRequestQuantifier.Tools.Common.Model;
     using YamlDotNet.Serialization;
 
+    [ExcludeFromCodeCoverage]
     public static class Program
     {
         public static async Task Main(string[] args)

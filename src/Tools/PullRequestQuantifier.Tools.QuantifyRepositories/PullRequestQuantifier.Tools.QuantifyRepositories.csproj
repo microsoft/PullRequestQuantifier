@@ -17,8 +17,4 @@
     <ProjectReference Include="..\PullRequestQuantifier.Tools.Common\PullRequestQuantifier.Tools.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
-
 </Project>
