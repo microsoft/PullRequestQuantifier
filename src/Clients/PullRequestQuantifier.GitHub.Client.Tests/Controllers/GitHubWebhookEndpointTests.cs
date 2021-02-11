@@ -76,17 +76,17 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
 
         private async Task<HttpResponseMessage> GetServerResponseAsync(GitHubEventActions eventActionToSend, GitHubEventActions actionActionToSend)
         {
-            var testWebhookData = JToken.Parse(File.ReadAllText("Controllers/Data/TestGitHubWebhook1.json"));
+            var testWebhookData = JToken.Parse(await File.ReadAllTextAsync("Controllers/Data/TestGitHubWebhook1.json"));
             testWebhookData["action"] = actionActionToSend.ToString();
 
             var content = new StringContent(
                 testWebhookData.ToString(Formatting.None),
                 Encoding.UTF8);
 
-            var webhookSignature = ComputeHash(testWebhookData.ToString(Formatting.None), testServer.TestGitHubAppSettings.WebhookSecret);
-            httpClient.DefaultRequestHeaders.Add("X-GitHub-Event", eventActionToSend.ToString());
+            var webhookSignature = ComputeHash(testWebhookData.ToString(Formatting.None), testServer.TestGitHubAppSettings[GitHubClientTestServer.TestDomain].WebhookSecret);
+            httpClient.DefaultRequestHeaders.Add("X-GitHub-Event", eventActionToSend.ToString().ToLower());
             httpClient.DefaultRequestHeaders.Add("X-GitHub-Delivery", Guid.NewGuid().ToString());
-            httpClient.DefaultRequestHeaders.Add("X-Hub-Signature", webhookSignature);
+            httpClient.DefaultRequestHeaders.Add("X-Hub-Signature-256", webhookSignature);
             return await httpClient.PostAsync("/githubWebhook", content);
         }
 
@@ -94,11 +94,9 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
         {
             var secretBytes = Encoding.ASCII.GetBytes(secretValue);
             var requestBytes = Encoding.ASCII.GetBytes(request);
-#pragma warning disable CA5350 // GitHub sends webhook encoded with sha1
-            var hmacSha1 = new HMACSHA1(secretBytes);
-#pragma warning restore CA5350 // GitHub sends webhook encoded with sha1
-            var hashBytes = hmacSha1.ComputeHash(requestBytes);
-            return $"sha1={BitConverter.ToString(hashBytes).Replace("-", string.Empty).ToLower()}";
+            var hmacSha256 = new HMACSHA256(secretBytes);
+            var hashBytes = hmacSha256.ComputeHash(requestBytes);
+            return $"sha256={BitConverter.ToString(hashBytes).Replace("-", string.Empty).ToLower()}";
         }
     }
 }

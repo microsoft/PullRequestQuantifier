@@ -1,6 +1,5 @@
 ﻿namespace PullRequestQuantifier.Client.Tests
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using PullRequestQuantifier.Abstractions.Core;

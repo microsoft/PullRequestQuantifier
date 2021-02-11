@@ -63,10 +63,14 @@
                 ("deliveryId", deliveryId)
             };
 
+            var payloadDnsHost = payload[eventType]["url"] != null
+                ? new Uri((string)payload[eventType]["url"]).DnsSafeHost
+                : new Uri((string)payload[eventType]["html_url"]).DnsSafeHost;
+
             if (!Authenticate(
                 signature,
                 content,
-                new Uri((string)payload[eventType]["url"]).DnsSafeHost))
+                payloadDnsHost))
             {
                 appTelemetry.RecordMetric(
                     "GitHubWebhook-AuthFailure",

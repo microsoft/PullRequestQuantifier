@@ -8,7 +8,6 @@ namespace PullRequestQuantifier
     using global::PullRequestQuantifier.Abstractions.Context;
     using global::PullRequestQuantifier.Abstractions.Core;
     using global::PullRequestQuantifier.Abstractions.Git;
-    using global::PullRequestQuantifier.Abstractions.Git.DiffParser;
     using global::PullRequestQuantifier.Common;
 
     public sealed class PullRequestQuantifier : IPullRequestQuantifier
