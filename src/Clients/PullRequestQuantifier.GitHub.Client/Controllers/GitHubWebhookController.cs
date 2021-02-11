@@ -75,7 +75,7 @@
             if (!Authenticate(
                 signature,
                 content,
-                new Uri((string)payload[eventType]["html_url"]).DnsSafeHost))
+                new Uri((string)payload[eventType][PayloadUrlKeyName]).DnsSafeHost))
             {
                 appTelemetry.RecordMetric(
                     "GitHubWebhook-AuthFailure",
