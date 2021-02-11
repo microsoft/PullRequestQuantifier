@@ -19,10 +19,9 @@
     [Produces("application/json")]
     public class GitHubWebhookController : ControllerBase
     {
+        private const string PayloadUrlKeyName = "html_url";
         private readonly GitHubAppFlavorSettings gitHubAppFlavorSettings;
-
         private readonly IAppTelemetry appTelemetry;
-
         private readonly IEventBus eventBus;
 
         public GitHubWebhookController(
@@ -62,6 +61,16 @@
                 ("action", action),
                 ("deliveryId", deliveryId)
             };
+
+            if (payload[eventType][PayloadUrlKeyName] == null)
+            {
+                appTelemetry.RecordMetric(
+                    "GitHubWebhook-PayloadUrlKeyName missing",
+                    1,
+                    dims);
+                throw new UnauthorizedAccessException($"The signature couldn't be authenticated." +
+                                                      $" Payload url key name ({PayloadUrlKeyName}) is missing.");
+            }
 
             if (!Authenticate(
                 signature,
