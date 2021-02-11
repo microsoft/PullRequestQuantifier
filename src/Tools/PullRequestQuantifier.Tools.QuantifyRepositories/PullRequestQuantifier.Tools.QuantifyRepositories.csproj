@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <None Remove="Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
     <PackageReference Include="YamlDotNet" Version="9.1.4" />
   </ItemGroup>
@@ -15,10 +21,6 @@
     <ProjectReference Include="..\..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" />
     <ProjectReference Include="..\PullRequestQuantifier.Tools.CloneAdoRepo\PullRequestQuantifier.Tools.CloneAdoRepo.csproj" />
     <ProjectReference Include="..\PullRequestQuantifier.Tools.Common\PullRequestQuantifier.Tools.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Model\" />
   </ItemGroup>
 
 </Project>

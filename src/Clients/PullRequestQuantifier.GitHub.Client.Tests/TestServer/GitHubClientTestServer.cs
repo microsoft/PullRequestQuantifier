@@ -2,6 +2,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
     using System.Text;
     using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
     using PullRequestQuantifier.GitHub.Client.Telemetry;
 
+    [ExcludeFromCodeCoverage]
     public class GitHubClientTestServer : IDisposable
     {
         public const string TestDomain = "fakeurl";

@@ -2,11 +2,13 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
     using Newtonsoft.Json.Linq;
     using PullRequestQuantifier.GitHub.Client.Events;
 
+    [ExcludeFromCodeCoverage]
     public class InMemoryEventBus : IEventBus
     {
         public List<JObject> Events { get; private set; } = new List<JObject>();

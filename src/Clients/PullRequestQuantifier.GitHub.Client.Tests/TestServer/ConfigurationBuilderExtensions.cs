@@ -1,7 +1,9 @@
 namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
 {
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.Extensions.Configuration;
 
+    [ExcludeFromCodeCoverage]
     public static class ConfigurationBuilderExtensions
     {
         public static ConfigurationBuilder AddInMemoryObject(
