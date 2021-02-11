@@ -82,7 +82,7 @@
     "url": "https://fakeurl/api/v3/repos/dradboia/PullRequestQuantifierTest/pulls/1",
     "id": 806,
     "node_id": "MDExOlB1bGxSZXF1ZXN0ODA2",
-    "html_url": "https://microsoft.githubenterprise.com/dradboia/PullRequestQuantifierTest/pull/1",
+    "html_url": "https://fakeurl/dradboia/PullRequestQuantifierTest/pull/1",
     "diff_url": "https://microsoft.githubenterprise.com/dradboia/PullRequestQuantifierTest/pull/1.diff",
     "patch_url": "https://microsoft.githubenterprise.com/dradboia/PullRequestQuantifierTest/pull/1.patch",
     "issue_url": "https://microsoft.githubenterprise.com/api/v3/repos/dradboia/PullRequestQuantifierTest/issues/1",
