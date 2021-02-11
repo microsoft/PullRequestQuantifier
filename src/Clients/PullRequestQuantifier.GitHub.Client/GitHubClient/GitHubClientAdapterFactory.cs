@@ -1,57 +1,64 @@
 ﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using GitHubJwt;
     using Microsoft.Extensions.Options;
     using Octokit;
     using Octokit.Internal;
+    using PullRequestQuantifier.Common;
     using PullRequestQuantifier.GitHub.Client.GitHubClient.Exceptions;
     using PullRequestQuantifier.GitHub.Client.Telemetry;
 
     /// <inheritdoc cref="IGitHubClientAdapterFactory"/>
     public sealed class GitHubClientAdapterFactory : IGitHubClientAdapterFactory
     {
-        private readonly GitHubAppSettings gitHubAppSettings;
-        private readonly IGitHubJwtFactory gitHubJwtFactory;
+        private readonly GitHubAppFlavorSettings gitHubAppFlavorSettings;
+        private readonly IReadOnlyDictionary<string, IGitHubJwtFactory> gitHubJwtFactories;
         private readonly IAppTelemetry appTelemetry;
         private GitHubClient gitHubClient;
 
         public GitHubClientAdapterFactory(
-            IGitHubJwtFactory gitHubJwtFactory,
-            IOptions<GitHubAppSettings> gitHubAppSettings,
+            IReadOnlyDictionary<string, IGitHubJwtFactory> gitHubJwtFactories,
+            IOptions<GitHubAppFlavorSettings> gitHubAppFlavorSettings,
             IAppTelemetry appTelemetry)
         {
-            this.gitHubJwtFactory = gitHubJwtFactory;
+            ArgumentCheck.ParameterIsNotNull(gitHubJwtFactories, nameof(gitHubJwtFactories));
+            ArgumentCheck.ParameterIsNotNull(gitHubAppFlavorSettings, nameof(gitHubAppFlavorSettings));
+            ArgumentCheck.ParameterIsNotNull(appTelemetry, nameof(appTelemetry));
+
+            this.gitHubJwtFactories = gitHubJwtFactories;
             this.appTelemetry = appTelemetry;
-            this.gitHubAppSettings = gitHubAppSettings.Value;
+            this.gitHubAppFlavorSettings = gitHubAppFlavorSettings.Value;
         }
 
         /// <inheritdoc />
-        public async Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(long installationId)
+        public async Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(
+            long installationId,
+            string dnsHost)
         {
             gitHubClient = CreateClient(
-                new Credentials(gitHubJwtFactory.CreateEncodedJwtToken(), AuthenticationType.Bearer),
-                this.gitHubAppSettings,
-                appTelemetry);
+                dnsHost,
+                new Credentials(gitHubJwtFactories[dnsHost].CreateEncodedJwtToken(), AuthenticationType.Bearer));
+
             var (token, expirationTime) =
-                await CreateInstallationTokenByInstallationId(installationId, gitHubAppSettings);
+                await CreateInstallationTokenByInstallationId(installationId, dnsHost);
 
             gitHubClient.Credentials = new Credentials(token, AuthenticationType.Bearer);
             return new GitHubClientAdapter(gitHubClient);
         }
 
-        private static GitHubClient CreateClient(
-            Credentials credentials,
-            GitHubAppSettings gitHubAppSettings,
-            IAppTelemetry appTelemetry)
+        private GitHubClient CreateClient(
+            string dnsHost,
+            Credentials credentials)
         {
             try
             {
                 return new GitHubClient(
                     new Connection(
-                        new ProductHeaderValue(gitHubAppSettings.Name),
-                        new Uri(gitHubAppSettings.EnterpriseApiRoot),
+                        new ProductHeaderValue(gitHubAppFlavorSettings[dnsHost].Name),
+                        new Uri(gitHubAppFlavorSettings[dnsHost].EnterpriseApiRoot),
                         new InMemoryCredentialStore(credentials),
                         new HttpClientAdapter(() => new GitHubClientMessageHandler(appTelemetry)),
                         new SimpleJsonSerializer()));
@@ -59,13 +66,13 @@
             catch (Exception ex)
             {
                 throw new CreateGitHubClientException(
-                    $"Failed to create client for GitHubApp: {gitHubAppSettings.Name}", ex);
+                    $"Failed to create client for GitHubApp: {gitHubAppFlavorSettings[dnsHost].Name}", ex);
             }
         }
 
         private async Task<(string, DateTimeOffset)> CreateInstallationTokenByInstallationId(
             long installationId,
-            GitHubAppSettings gitHubAppSettings)
+            string dnsHost)
         {
             try
             {
@@ -80,7 +87,7 @@
             catch (Exception ex)
             {
                 throw new CreateGitHubClientException(
-                    $"Failed to get access token for installation: {installationId}, GitHubApp: {gitHubAppSettings.Name}",
+                    $"Failed to get access token for installation: {installationId}, GitHubApp: {gitHubAppFlavorSettings[dnsHost].Name}",
                     ex);
             }
         }
