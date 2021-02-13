@@ -40,8 +40,8 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 payload.Action,
                 payload.Installation.RepositorySelection,
                 payload.RepositorySelection,
-                string.Join(" | ", payload.RepositoriesAdded.Select(r => r.FullName)),
-                string.Join(" | ", payload.RepositoriesRemoved.Select(r => r.FullName)));
+                string.Join(" , ", payload.RepositoriesAdded.Select(r => r.FullName)),
+                string.Join(" , ", payload.RepositoriesRemoved.Select(r => r.FullName)));
             telemetry.RecordMetric(
                 "Installation-Event",
                 1,

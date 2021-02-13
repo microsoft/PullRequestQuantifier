@@ -62,20 +62,20 @@
                 ("deliveryId", deliveryId)
             };
 
-            if (payload[eventType][PayloadUrlKeyName] == null)
+            var senderHtmlUrl = payload["sender"]?[PayloadUrlKeyName]?.ToString();
+            if (string.IsNullOrEmpty(senderHtmlUrl))
             {
                 appTelemetry.RecordMetric(
                     "GitHubWebhook-PayloadUrlKeyName missing",
                     1,
                     dims);
-                throw new UnauthorizedAccessException($"The signature couldn't be authenticated." +
-                                                      $" Payload url key name ({PayloadUrlKeyName}) is missing.");
+                throw new UnauthorizedAccessException($"Payload url key name ({PayloadUrlKeyName}) is missing.");
             }
 
             if (!Authenticate(
                 signature,
                 content,
-                new Uri((string)payload[eventType][PayloadUrlKeyName]).DnsSafeHost))
+                new Uri(senderHtmlUrl).DnsSafeHost))
             {
                 appTelemetry.RecordMetric(
                     "GitHubWebhook-AuthFailure",

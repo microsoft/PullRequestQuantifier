@@ -3,6 +3,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Net;
     using System.Net.Http;
     using System.Security.Cryptography;
     using System.Text;
@@ -18,11 +19,22 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
     {
         private readonly HttpClient httpClient;
         private readonly GitHubClientTestServer testServer;
+        private readonly JToken testWebhookData;
 
         public GitHubWebhookEndpointTests()
         {
             testServer = new GitHubClientTestServer();
             httpClient = testServer.CreateClient();
+            testWebhookData = JToken.Parse(File.ReadAllTextAsync("Controllers/Data/TestGitHubWebhook1.json").Result);
+        }
+
+        [Fact]
+        public async Task PayloadWithoutSenderHtmlUrl_InternalServerError()
+        {
+            testWebhookData["sender"]["html_url"] = string.Empty;
+            var response = await GetServerResponseAsync(GitHubEventActions.Pull_Request, GitHubEventActions.Opened);
+
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Fact]
@@ -78,14 +90,15 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
 
         private async Task<HttpResponseMessage> GetServerResponseAsync(GitHubEventActions eventActionToSend, GitHubEventActions actionActionToSend)
         {
-            var testWebhookData = JToken.Parse(await File.ReadAllTextAsync("Controllers/Data/TestGitHubWebhook1.json"));
             testWebhookData["action"] = actionActionToSend.ToString();
 
             var content = new StringContent(
                 testWebhookData.ToString(Formatting.None),
                 Encoding.UTF8);
 
-            var webhookSignature = ComputeHash(testWebhookData.ToString(Formatting.None), testServer.TestGitHubAppSettings[GitHubClientTestServer.TestDomain].WebhookSecret);
+            var webhookSignature = ComputeHash(
+                testWebhookData.ToString(Formatting.None),
+                testServer.TestGitHubAppSettings[GitHubClientTestServer.TestDomain].WebhookSecret);
             httpClient.DefaultRequestHeaders.Add("X-GitHub-Event", eventActionToSend.ToString().ToLower());
             httpClient.DefaultRequestHeaders.Add("X-GitHub-Delivery", Guid.NewGuid().ToString());
             httpClient.DefaultRequestHeaders.Add("X-Hub-Signature-256", webhookSignature);
