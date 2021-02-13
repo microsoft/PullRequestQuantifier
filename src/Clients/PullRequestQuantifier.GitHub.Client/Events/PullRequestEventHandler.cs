@@ -76,11 +76,105 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                     payload.Installation.Id,
                     new Uri(payload.PullRequest.HtmlUrl).DnsSafeHost);
 
-            // get pull request
-            var pullRequest = await gitHubClientAdapter.GetPullRequestAsync(
-                payload.Repository.Id,
-                payload.PullRequest.Number);
+            var quantifierInput = await GetQuantifierInputFromPullRequest(payload, gitHubClientAdapter);
 
+            var context = await GetContextFromRepoIfPresent(payload, gitHubClientAdapter);
+
+            var quantifyClient = new QuantifyClient(context);
+            var quantifierClientResult = await quantifyClient.Compute(quantifierInput);
+
+            await ApplyLabelToPullRequest(
+                payload,
+                gitHubClientAdapter,
+                quantifierClientResult);
+
+            await UpdateCommentOnPullRequest(
+                payload,
+                gitHubClientAdapter,
+                quantifierClientResult);
+            return quantifierClientResult;
+        }
+
+        private async Task UpdateCommentOnPullRequest(
+            PullRequestEventPayload payload,
+            IGitHubClientAdapter gitHubClientAdapter,
+            QuantifierResult quantifierClientResult)
+        {
+            // delete existing comments created by us
+            var existingComments = await gitHubClientAdapter.GetIssueCommentsAsync(payload.Repository.Id, payload.PullRequest.Number);
+            var existingCommentsCreatedByUs = existingComments.Where(ec => ec.User.Login.Equals($"{gitHubClientAdapter.GitHubAppSettings.Name}[bot]"));
+            foreach (var existingComment in existingCommentsCreatedByUs)
+            {
+                await gitHubClientAdapter.DeleteIssueCommentAsync(payload.Repository.Id, existingComment.Id);
+            }
+
+            // create a new comment on the issue
+            var defaultBranch = payload.Repository.DefaultBranch;
+            var quantifierContextLink = $"{payload.Repository.HtmlUrl}/blob/{defaultBranch}/prquantifier.yaml";
+            var comment = await quantifierClientResult.ToMarkdownCommentAsync(
+                payload.Repository.HtmlUrl,
+                quantifierContextLink,
+                payload.PullRequest.HtmlUrl,
+                payload.PullRequest.User.Login);
+            await gitHubClientAdapter.CreateIssueCommentAsync(
+                payload.Repository.Id,
+                payload.PullRequest.Number,
+                comment);
+        }
+
+        private async Task ApplyLabelToPullRequest(
+            PullRequestEventPayload payload,
+            IGitHubClientAdapter gitHubClientAdapter,
+            QuantifierResult quantifierClientResult)
+        {
+            // create a new label in the repository if doesn't exist
+            try
+            {
+                var existingLabel = await gitHubClientAdapter.GetLabelAsync(
+                    payload.Repository.Id,
+                    quantifierClientResult.Label);
+            }
+            catch (NotFoundException)
+            {
+                // create new label
+                var color = Color.FromName(quantifierClientResult.Color);
+                await gitHubClientAdapter.CreateLabelAsync(
+                    payload.Repository.Id,
+                    new NewLabel(quantifierClientResult.Label, ConvertToHex(color)));
+            }
+
+            // apply label to pull request
+            await gitHubClientAdapter.ApplyLabelAsync(
+                payload.Repository.Id,
+                payload.PullRequest.Number,
+                new[] { quantifierClientResult.Label });
+        }
+
+        private async Task<string> GetContextFromRepoIfPresent(PullRequestEventPayload payload, IGitHubClientAdapter gitHubClientAdapter)
+        {
+            // get context if present
+            string context = null;
+            try
+            {
+                var rawContext = await gitHubClientAdapter.GetRawFileAsync(
+                    payload.Repository.Owner.Login,
+                    payload.Repository.Name,
+                    "/prquantifier.yaml");
+                context = Encoding.UTF8.GetString(rawContext);
+            }
+            catch (NotFoundException)
+            {
+            }
+            catch
+            {
+                // ignored
+            }
+
+            return context;
+        }
+
+        private async Task<QuantifierInput> GetQuantifierInputFromPullRequest(PullRequestEventPayload payload, IGitHubClientAdapter gitHubClientAdapter)
+        {
             // get pull request files
             var pullRequestFiles = await gitHubClientAdapter.GetPullRequestFilesAsync(
                 payload.Repository.Id,
@@ -123,62 +217,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 quantifierInput.Changes.Add(gitFilePatch);
             }
 
-            // get context if present
-            string context = null;
-            try
-            {
-                var rawContext = await gitHubClientAdapter.GetRawFileAsync(
-                    payload.Repository.Owner.Login,
-                    payload.Repository.Name,
-                    "/prquantifier.yaml");
-                context = Encoding.UTF8.GetString(rawContext);
-            }
-            catch (NotFoundException)
-            {
-            }
-            catch
-            {
-                // ignored
-            }
-
-            var quantifyClient = new QuantifyClient(context);
-            var quantifierClientResult = await quantifyClient.Compute(quantifierInput);
-
-            // create a new label in the repository if doesn't exist
-            try
-            {
-                var existingLabel = await gitHubClientAdapter.GetLabelAsync(
-                    payload.Repository.Id,
-                    quantifierClientResult.Label);
-            }
-            catch (NotFoundException)
-            {
-                // create new label
-                var color = Color.FromName(quantifierClientResult.Color);
-                await gitHubClientAdapter.CreateLabelAsync(
-                    payload.Repository.Id,
-                    new NewLabel(quantifierClientResult.Label, ConvertToHex(color)));
-            }
-
-            // apply label to pull request
-            await gitHubClientAdapter.ApplyLabelAsync(
-                payload.Repository.Id,
-                payload.PullRequest.Number,
-                new[] { quantifierClientResult.Label });
-
-            // create a comment on the issue
-            var defaultBranch = payload.Repository.DefaultBranch;
-            var quantifierContextLink = $"{payload.Repository.HtmlUrl}/blob/{defaultBranch}/prquantifier.yaml";
-            var comment = await quantifierClientResult.ToMarkdownCommentAsync(
-                payload.Repository.HtmlUrl,
-                quantifierContextLink,
-                payload.PullRequest.HtmlUrl,
-                payload.PullRequest.User.Login);
-            await gitHubClientAdapter.CreateIssueCommentAsync(
-                payload.Repository.Id,
-                payload.PullRequest.Number,
-                comment);
-            return quantifierClientResult;
+            return quantifierInput;
         }
 
         private string ConvertToHex(Color c)

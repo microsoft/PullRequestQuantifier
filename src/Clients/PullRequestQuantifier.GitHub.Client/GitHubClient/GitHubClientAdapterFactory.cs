@@ -17,7 +17,6 @@
         private readonly GitHubAppFlavorSettings gitHubAppFlavorSettings;
         private readonly IReadOnlyDictionary<string, IGitHubJwtFactory> gitHubJwtFactories;
         private readonly IAppTelemetry appTelemetry;
-        private GitHubClient gitHubClient;
 
         public GitHubClientAdapterFactory(
             IReadOnlyDictionary<string, IGitHubJwtFactory> gitHubJwtFactories,
@@ -38,15 +37,18 @@
             long installationId,
             string dnsHost)
         {
-            gitHubClient = CreateClient(
+            var gitHubClient = CreateClient(
                 dnsHost,
                 new Credentials(gitHubJwtFactories[dnsHost].CreateEncodedJwtToken(), AuthenticationType.Bearer));
 
             var (token, expirationTime) =
-                await CreateInstallationTokenByInstallationId(installationId, dnsHost);
+                await CreateInstallationTokenByInstallationId(
+                    gitHubClient,
+                    installationId,
+                    dnsHost);
 
             gitHubClient.Credentials = new Credentials(token, AuthenticationType.Bearer);
-            return new GitHubClientAdapter(gitHubClient);
+            return new GitHubClientAdapter(gitHubClient, gitHubAppFlavorSettings[dnsHost]);
         }
 
         private GitHubClient CreateClient(
@@ -66,11 +68,13 @@
             catch (Exception ex)
             {
                 throw new CreateGitHubClientException(
-                    $"Failed to create client for GitHubApp: {gitHubAppFlavorSettings[dnsHost].Name}", ex);
+                    $"Failed to create client for GitHubApp: {gitHubAppFlavorSettings[dnsHost].Name}",
+                    ex);
             }
         }
 
         private async Task<(string, DateTimeOffset)> CreateInstallationTokenByInstallationId(
+            GitHubClient gitHubClient,
             long installationId,
             string dnsHost)
         {
@@ -82,7 +86,8 @@
             catch (NotFoundException ex)
             {
                 throw new CreateGitHubClientException(
-                    $"GitHub installation ({installationId}) not found or insufficient access privileges.", ex);
+                    $"GitHub installation ({installationId}) not found or insufficient access privileges.",
+                    ex);
             }
             catch (Exception ex)
             {

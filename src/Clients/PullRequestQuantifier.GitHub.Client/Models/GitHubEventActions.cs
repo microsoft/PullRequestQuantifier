@@ -15,7 +15,11 @@ namespace PullRequestQuantifier.GitHub.Client.Models
         Added = 1 << 4,
         Deleted = 1 << 5,
         Removed = 1 << 6,
+        Suspend = 1 << 7,
+        Unsuspend = 1 << 8,
+        New_Permissions_Accepted = 1 << 9,
         Pull_Request = Opened | Reopened | Synchronize,
-        Installation = Created | Added | Deleted | Removed
+        Installation = Created | Deleted | Suspend | Unsuspend | New_Permissions_Accepted,
+        Installation_Repositories = Added | Removed
     }
 }

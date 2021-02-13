@@ -48,7 +48,8 @@ namespace PullRequestQuantifier.GitHub.Client
                 new[]
                 {
                     ServiceDescriptor.Singleton<IGitHubEventHandler, PullRequestEventHandler>(),
-                    ServiceDescriptor.Singleton<IGitHubEventHandler, InstallationEventHandler>()
+                    ServiceDescriptor.Singleton<IGitHubEventHandler, InstallationEventHandler>(),
+                    ServiceDescriptor.Singleton<IGitHubEventHandler, InstallationRepositoriesEventHandler>()
                 });
             serviceCollection.AddHostedService<GitHubEventHost>();
 

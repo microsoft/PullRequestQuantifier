@@ -18,7 +18,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
     [ExcludeFromCodeCoverage]
     public class GitHubClientTestServer : IDisposable
     {
-        public const string TestDomain = "fakeurl";
+        public const string TestDomain = "github.com";
         private readonly IWebHostBuilder hostBuilder;
         private readonly AzureServiceBusSettings azureServiceBusSettings;
         private readonly TestServer testServer;
