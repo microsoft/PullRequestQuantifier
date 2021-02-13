@@ -29,15 +29,6 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
         }
 
         [Fact]
-        public async Task PayloadWithoutSenderHtmlUrl_InternalServerError()
-        {
-            testWebhookData["sender"]["html_url"] = string.Empty;
-            var response = await GetServerResponseAsync(GitHubEventActions.Pull_Request, GitHubEventActions.Opened);
-
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-        }
-
-        [Fact]
         public async Task Accepts_PullRequestOpened()
         {
             var response = await GetServerResponseAsync(GitHubEventActions.Pull_Request, GitHubEventActions.Opened);
