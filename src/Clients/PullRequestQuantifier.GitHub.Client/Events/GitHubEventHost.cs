@@ -76,6 +76,8 @@
 
         private Task ErrorHandler(Exception exception)
         {
+            logger.LogError(exception, "Error during event processing.");
+            telemetry.RecordMetric("MessageProcessing-Error", 1);
             return Task.CompletedTask;
         }
     }
