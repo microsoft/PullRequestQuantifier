@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.Client.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Threading.Tasks;
     using PullRequestQuantifier.Abstractions.Core;
@@ -10,6 +11,7 @@
     using PullRequestQuantifier.GitEngine;
     using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public sealed class QuantifierResultExtensionsTests
     {
         private const string RepositoryLink = "http://www.test.com";

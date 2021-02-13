@@ -1,5 +1,6 @@
 namespace PullRequestQuantifier.GitHub.Client
 {
+    using System.Collections.Generic;
     using GitHubJwt;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -16,24 +17,30 @@ namespace PullRequestQuantifier.GitHub.Client
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
-            serviceCollection.Configure<GitHubAppSettings>(configuration.GetSection(nameof(GitHubAppSettings)));
+            serviceCollection.Configure<GitHubAppFlavorSettings>(configuration.GetSection(nameof(GitHubAppFlavorSettings)));
             serviceCollection.Configure<AzureServiceBusSettings>(
                 configuration.GetSection(nameof(AzureServiceBusSettings)));
-            serviceCollection.AddSingleton<IGitHubJwtFactory>(
+            serviceCollection.AddSingleton<IReadOnlyDictionary<string, IGitHubJwtFactory>>(
                 sp =>
                 {
                     // register a GitHubJwtFactory used to create tokens to access github for a particular org on behalf  of the  app
-                    var gitHubAppSettings = sp.GetRequiredService<IOptions<GitHubAppSettings>>().Value;
-                    ArgumentCheck.ParameterIsNotNull(gitHubAppSettings, nameof(gitHubAppSettings));
+                    var gitHubAppFlavorSettings = sp.GetRequiredService<IOptions<GitHubAppFlavorSettings>>().Value;
+                    ArgumentCheck.ParameterIsNotNull(gitHubAppFlavorSettings, nameof(gitHubAppFlavorSettings));
 
-                    // Use GitHubJwt library to create the GitHubApp Jwt Token using our private certificate PEM file
-                    return new GitHubJwtFactory(
-                        new StringPrivateKeySource(gitHubAppSettings.PrivateKey),
-                        new GitHubJwtFactoryOptions
-                        {
-                            AppIntegrationId = int.Parse(gitHubAppSettings.Id), // The GitHub App Id
-                            ExpirationSeconds = 600 // 10 minutes is the maximum time allowed
-                        });
+                    var ret = new Dictionary<string, IGitHubJwtFactory>();
+                    foreach (var gitHubAppSettings in gitHubAppFlavorSettings.GitHubAppsSettings)
+                    {
+                        // Use GitHubJwt library to create the GitHubApp Jwt Token using our private certificate PEM file
+                        ret[gitHubAppSettings.Key] = new GitHubJwtFactory(
+                            new StringPrivateKeySource(gitHubAppSettings.Value.PrivateKey),
+                            new GitHubJwtFactoryOptions
+                            {
+                                AppIntegrationId = int.Parse(gitHubAppSettings.Value.Id), // The GitHub App Id
+                                ExpirationSeconds = 600 // 10 minutes is the maximum time allowed
+                            });
+                    }
+
+                    return ret;
                 });
             serviceCollection.AddSingleton<IGitHubClientAdapterFactory, GitHubClientAdapterFactory>();
             serviceCollection.TryAddSingleton<IEventBus, AzureServiceBus>();

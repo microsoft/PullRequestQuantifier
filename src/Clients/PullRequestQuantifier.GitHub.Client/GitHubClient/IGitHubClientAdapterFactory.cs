@@ -9,6 +9,8 @@
     {
         /// <summary>Gets the GitHub client adapter.</summary>
         /// <returns>The <see cref="Task"/>.</returns>
-        Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(long installationId);
+        Task<IGitHubClientAdapter> GetGitHubClientAdapterAsync(
+            long installationId,
+            string dnsHost);
     }
 }

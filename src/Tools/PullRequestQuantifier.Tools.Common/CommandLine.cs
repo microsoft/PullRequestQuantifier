@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
     using PullRequestQuantifier.Common;
 
+    [ExcludeFromCodeCoverage]
     public class CommandLine
     {
         private readonly Stack<string> arguments = new Stack<string>();

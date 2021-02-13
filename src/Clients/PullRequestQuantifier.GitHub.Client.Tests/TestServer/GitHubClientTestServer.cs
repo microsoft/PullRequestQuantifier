@@ -2,11 +2,9 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
+    using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
-    using System.Security.Cryptography;
     using System.Text;
-    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
     using Microsoft.Extensions.Configuration;
@@ -15,12 +13,12 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
     using Moq;
     using PullRequestQuantifier.GitHub.Client.Events;
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
-    using PullRequestQuantifier.GitHub.Client.Models;
     using PullRequestQuantifier.GitHub.Client.Telemetry;
-    using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public class GitHubClientTestServer : IDisposable
     {
+        public const string TestDomain = "fakeurl";
         private readonly IWebHostBuilder hostBuilder;
         private readonly AzureServiceBusSettings azureServiceBusSettings;
         private readonly TestServer testServer;
@@ -28,15 +26,31 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
         public GitHubClientTestServer()
         {
             var webhookSecret = Convert.ToBase64String(Encoding.UTF8.GetBytes("github-webhook-secret-value"));
-            TestGitHubAppSettings = new GitHubAppSettings
+            TestGitHubAppSettings = new GitHubAppFlavorSettings
             {
-                Id = "23",
-                Name = "fakeName",
-                EnterpriseApiRoot = "https://fakeApiRoot",
-                EnterpriseUrl = "https://fakeUrl",
-                PrivateKey = "fakeKey",
-                WebhookSecret = webhookSecret
+                GitHubAppsSettings = new Dictionary<string, GitHubAppSettings>
+                {
+                    [TestDomain] = new GitHubAppSettings
+                    {
+                        Id = "23",
+                        Name = "fakeName",
+                        EnterpriseApiRoot = "https://fakeApiRoot",
+                        EnterpriseUrl = $"https://{TestDomain}",
+                        PrivateKey = "fakeKey",
+                        WebhookSecret = webhookSecret
+                    },
+                    ["github.com"] = new GitHubAppSettings
+                    {
+                        Id = "23",
+                        Name = "fakeName",
+                        EnterpriseApiRoot = "https://fakeApiRoot",
+                        EnterpriseUrl = $"https://{TestDomain}",
+                        PrivateKey = "fakeKey",
+                        WebhookSecret = webhookSecret
+                    }
+                }
             };
+
             azureServiceBusSettings = new AzureServiceBusSettings
             {
                 ConnectionString = "fakeString",
@@ -48,7 +62,9 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
                     (context, services) =>
                     {
                         context.Configuration = new ConfigurationBuilder()
-                            .AddInMemoryObject(TestGitHubAppSettings, nameof(GitHubAppSettings))
+                            .AddInMemoryObject(
+                                TestGitHubAppSettings.GitHubAppsSettings[TestDomain],
+                                $"{nameof(GitHubAppFlavorSettings)}:GitHubAppsSettings:{TestDomain}")
                             .AddInMemoryObject(azureServiceBusSettings, nameof(AzureServiceBusSettings))
                             .AddInMemoryCollection(
                                 new List<KeyValuePair<string, string>>
@@ -66,7 +82,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
             testServer = new TestServer(hostBuilder);
         }
 
-        public GitHubAppSettings TestGitHubAppSettings { get; }
+        public GitHubAppFlavorSettings TestGitHubAppSettings { get; }
 
         public InMemoryEventBus InMemoryEventBus { get; private set; }
 
@@ -90,19 +106,6 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
         {
             var mockTelemetry = new Mock<IAppTelemetry>();
             services.TryAddSingleton(_ => mockTelemetry.Object);
-        }
-
-        private string ComputeHash(string request, string secretValue)
-        {
-            var secretBytes = Encoding.ASCII.GetBytes(secretValue);
-            var requestBytes = Encoding.ASCII.GetBytes(request);
-
-#pragma warning disable CA5350 // GitHub sends webhook encoded with sha1
-            var hmacSha1 = new HMACSHA1(secretBytes);
-#pragma warning restore CA5350 // GitHub sends webhook encoded with sha1
-            var hashBytes = hmacSha1.ComputeHash(requestBytes);
-
-            return $"sha1={BitConverter.ToString(hashBytes).Replace("-", string.Empty).ToLower()}";
         }
     }
 }

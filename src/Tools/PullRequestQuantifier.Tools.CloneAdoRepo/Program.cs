@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
@@ -11,6 +12,7 @@
     using YamlDotNet.Serialization;
     using Repository = LibGit2Sharp.Repository;
 
+    [ExcludeFromCodeCoverage]
     public static class Program
     {
         public static async Task Main(string[] args)
