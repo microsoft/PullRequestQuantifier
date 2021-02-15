@@ -11,7 +11,7 @@
 
     public static class QuantifierResultExtensions
     {
-        private const string FeedbackLinkRoot = "https://compliance.ppe.startclean.microsoft.com/api/feedback?payload=";
+        private const string FeedbackLinkRoot = "https://pullrequestquantifierfeedback.azurewebsites.net/api/feedback?payload=";
 
         public static async Task<string> ToConsoleOutput(this QuantifierResult quantifierResult)
         {
@@ -43,6 +43,7 @@
             string contextFileLink,
             string pullRequestLink,
             string authorName,
+            bool anonymous = true,
             MarkdownCommentOptions markdownCommentOptions = null)
         {
             markdownCommentOptions ??= new MarkdownCommentOptions();
@@ -58,17 +59,20 @@
                 "ThumbsUp",
                 authorName,
                 repositoryLink,
-                pullRequestLink);
+                pullRequestLink,
+                anonymous);
             var feedbackLinkNeutral = CreateFeedbackLink(
                 "Neutral",
                 authorName,
                 repositoryLink,
-                pullRequestLink);
+                pullRequestLink,
+                anonymous);
             var feedbackLinkThumbsDown = CreateFeedbackLink(
                 "ThumbsDown",
                 authorName,
                 repositoryLink,
-                pullRequestLink);
+                pullRequestLink,
+                anonymous);
 
             var comment = await stubble.RenderAsync(
                 await stream.ReadToEndAsync(),
@@ -104,7 +108,8 @@
             string eventType,
             string authorName,
             string repositoryLink,
-            string pullRequestLink)
+            string pullRequestLink,
+            bool anonymous)
         {
             var payload = Base64Encode(
                 JsonConvert.SerializeObject(
@@ -116,7 +121,7 @@
                         EventType = eventType
                     }));
 
-            return $"{FeedbackLinkRoot}{payload}";
+            return $"{FeedbackLinkRoot}{payload}&anonymous={anonymous}";
         }
 
         private static string Base64Encode(string plainText)

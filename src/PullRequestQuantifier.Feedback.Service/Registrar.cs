@@ -5,12 +5,16 @@ namespace PullRequestQuantifier.Feedback.Service
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using PullRequestQuantifier.Common.Azure.BlobStorage;
+    using PullRequestQuantifier.Feedback.Service.Models;
 
     public static class Registrar
     {
         internal static void AddSettings(this IConfigurationBuilder builder)
         {
-            builder.AddJsonFile("appsettings.json", false);
+            string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            builder
+                .AddJsonFile("appsettings.json", false)
+                .AddJsonFile($"appsettings.{environmentName}.json", true);
             string endPoint = builder.Build().GetValue<string>("ConfigEndpoint");
 
             var managedIdentityCredential = new DefaultAzureCredential();
@@ -26,11 +30,12 @@ namespace PullRequestQuantifier.Feedback.Service
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
-            var pppConfiguration = configuration.GetSection(nameof(AppConfiguration)).Get<AppConfiguration>();
+            var appConfiguration = configuration.GetSection(nameof(AppConfiguration)).Get<AppConfiguration>();
 
+            serviceCollection.Configure<FeedbackForm>(configuration.GetSection(nameof(FeedbackForm)));
             serviceCollection.AddSingleton<IBlobStorage>(p => new BlobStorage(
-                pppConfiguration.BlobStorageAccountName,
-                pppConfiguration.BlobStorageKey,
+                appConfiguration.BlobStorageAccountName,
+                appConfiguration.BlobStorageKey,
                 true));
 
             return serviceCollection;
