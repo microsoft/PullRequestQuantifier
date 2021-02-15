@@ -1,11 +1,10 @@
-using Microsoft.Extensions.Logging;
-
 namespace PullRequestQuantifier.Feedback.Service
 {
     using System;
     using Azure.Identity;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using PullRequestQuantifier.Common.Azure.BlobStorage;
     using PullRequestQuantifier.Feedback.Service.Models;
 
