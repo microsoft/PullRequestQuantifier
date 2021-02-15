@@ -13,9 +13,9 @@ namespace PullRequestQuantifier.Feedback.Service.Controllers
     // todo move this to a separate service if the new feedback is going well.
     // todo The only reason to place it here for now is to do it have a fast deployment for the new MerlinBot feedback feature.
     // don't deal for now with Auth, we only experiment, in case is working then we can use azure API, which provides a key based auth system
-    [AllowAnonymous]
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
+    [Produces("application/json")]
     public class FeedbackController : ControllerBase
     {
         private readonly IBlobStorage blobStorage;
