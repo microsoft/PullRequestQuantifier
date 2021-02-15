@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace PullRequestQuantifier.Feedback.Service
 {
     using System;
@@ -30,6 +32,7 @@ namespace PullRequestQuantifier.Feedback.Service
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
+            serviceCollection.AddLogging(b => b.AddConsole());
             var appConfiguration = configuration.GetSection(nameof(AppConfiguration)).Get<AppConfiguration>();
 
             serviceCollection.Configure<FeedbackForm>(configuration.GetSection(nameof(FeedbackForm)));
