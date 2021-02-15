@@ -32,6 +32,12 @@ namespace PullRequestQuantifier.Feedback.Service.Controllers
             this.feedbackFormSettings = feedbackFormSettings.Value;
         }
 
+        [HttpGet("/test")]
+        public IActionResult Test(string name)
+        {
+            return Ok(name);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Feedback(string payload, bool anonymous = true)
         {
