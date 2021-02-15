@@ -26,10 +26,10 @@ jobs:
       run: dotnet build src/PullRequestQuantifier.Feedback.Service/PullRequestQuantifier.Feedback.Service.csproj --configuration Release --no-restore
     - name: dotnet publish
       run: dotnet publish src/PullRequestQuantifier.Feedback.Service/PullRequestQuantifier.Feedback.Service.csproj -c Release -o ${{env.DOTNET_ROOT}}/pullrequestquantifierfeedback
-    # - name: Deploy to Azure Web App
-    #   uses: azure/webapps-deploy@v2
-    #   with:
-    #     app-name: 'pullrequestquantifierfeedback'
-    #     slot-name: 'production'
-    #     publish-profile: ${{ secrets.AzureAppService_PublishProfile_Password }}
-    #     package: ${{env.DOTNET_ROOT}}/pullrequestquantifierfeedback
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'pullrequestquantifierfeedback'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.FEEDBACK_SERVICE_AZUREAPPSECRET }}
+        package: ${{env.DOTNET_ROOT}}/pullrequestquantifierfeedback
