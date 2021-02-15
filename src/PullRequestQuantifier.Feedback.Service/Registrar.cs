@@ -18,7 +18,6 @@ namespace PullRequestQuantifier.Feedback.Service
                 .AddJsonFile($"appsettings.{environmentName}.json", true);
             string endPoint = builder.Build().GetValue<string>("ConfigEndpoint");
 
-            Console.WriteLine($"Connecting to appconfig {endPoint}");
             var managedIdentityCredential = new DefaultAzureCredential();
             builder.AddAzureAppConfiguration(
                     options =>
@@ -26,7 +25,6 @@ namespace PullRequestQuantifier.Feedback.Service
                                 new Uri(endPoint), managedIdentityCredential)
                             .ConfigureKeyVault(kv => kv.SetCredential(managedIdentityCredential)))
                 .Build();
-            Console.WriteLine($"Connected to appconfig {endPoint}");
         }
 
         internal static IServiceCollection RegisterServices(

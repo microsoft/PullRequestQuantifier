@@ -10,9 +10,6 @@ namespace PullRequestQuantifier.Feedback.Service.Controllers
     using PullRequestQuantifier.Common.Azure.BlobStorage;
     using PullRequestQuantifier.Feedback.Service.Models;
 
-    // todo move this to a separate service if the new feedback is going well.
-    // todo The only reason to place it here for now is to do it have a fast deployment for the new MerlinBot feedback feature.
-    // don't deal for now with Auth, we only experiment, in case is working then we can use azure API, which provides a key based auth system
     [ApiController]
     [Route("[controller]")]
     [Produces("application/json")]
@@ -30,12 +27,6 @@ namespace PullRequestQuantifier.Feedback.Service.Controllers
             this.blobStorage = blobStorage;
             this.logger = logger;
             this.feedbackFormSettings = feedbackFormSettings.Value;
-        }
-
-        [HttpGet("/test")]
-        public IActionResult Test(string name)
-        {
-            return Ok(name);
         }
 
         [HttpGet]
