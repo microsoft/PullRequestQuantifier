@@ -11,7 +11,7 @@
 
     public static class QuantifierResultExtensions
     {
-        private const string FeedbackLinkRoot = "https://pullrequestquantifierfeedback.azurewebsites.net/api/feedback?payload=";
+        private const string FeedbackLinkRoot = "https://pullrequestquantifierfeedback.azurewebsites.net/feedback?payload=";
 
         public static async Task<string> ToConsoleOutput(this QuantifierResult quantifierResult)
         {
