@@ -75,6 +75,7 @@
                 ContextFileLink,
                 PullRequestLink,
                 AuthorName,
+                false,
                 new MarkdownCommentOptions
                 {
                     CollapseChangesSummarySection = collapseChangesSummarySection

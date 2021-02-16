@@ -1,0 +1,35 @@
+name: Build and Deploy feedback service
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Install dependencies
+      run: dotnet restore src/PullRequestQuantifier.Feedback.Service/PullRequestQuantifier.Feedback.Service.csproj
+      env:
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    - name: Build
+      run: dotnet build src/PullRequestQuantifier.Feedback.Service/PullRequestQuantifier.Feedback.Service.csproj --configuration Release --no-restore
+    - name: dotnet publish
+      run: dotnet publish src/PullRequestQuantifier.Feedback.Service/PullRequestQuantifier.Feedback.Service.csproj -c Release -o ${{env.DOTNET_ROOT}}/pullrequestquantifierfeedback
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'pullrequestquantifierfeedback'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.FEEDBACK_SERVICE_AZUREAPPSECRET }}
+        package: ${{env.DOTNET_ROOT}}/pullrequestquantifierfeedback
