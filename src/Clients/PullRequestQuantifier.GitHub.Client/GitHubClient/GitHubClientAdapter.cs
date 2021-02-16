@@ -218,6 +218,18 @@
         }
 
         /// <inheritdoc />
+        public async Task<IReadOnlyList<Label>> RemoveLabelFromIssueAsync(
+            long repositoryId,
+            int issueNumber,
+            string labelName)
+        {
+            return await gitHubClient.Issue.Labels.RemoveFromIssue(
+                repositoryId,
+                issueNumber,
+                labelName);
+        }
+
+        /// <inheritdoc />
         public async Task<IssueComment> CreateIssueCommentAsync(
             long repositoryId,
             int issueNumber,
