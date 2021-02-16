@@ -115,11 +115,19 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 payload.Repository.HtmlUrl,
                 quantifierContextLink,
                 payload.PullRequest.HtmlUrl,
-                payload.PullRequest.User.Login);
+                payload.PullRequest.User.Login,
+                ShouldPostAnonymousFeedbackLink(payload),
+                new MarkdownCommentOptions { CollapsePullRequestQuantifiedSection = false, CollapseChangesSummarySection = true });
             await gitHubClientAdapter.CreateIssueCommentAsync(
                 payload.Repository.Id,
                 payload.PullRequest.Number,
                 comment);
+        }
+
+        // only post anonymous feedback link in case of github.com flavor
+        private bool ShouldPostAnonymousFeedbackLink(PullRequestEventPayload payload)
+        {
+            return new Uri(payload.PullRequest.HtmlUrl).DnsSafeHost.Equals("github.com");
         }
 
         private async Task ApplyLabelToPullRequest(
