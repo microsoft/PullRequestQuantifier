@@ -10,6 +10,12 @@
         private string diffContent;
 
         /// <summary>
+        /// Contains parsed value of <see cref="DiffContent"/>.
+        /// Only for internal use.
+        /// </summary>
+        private FileDiff fileDiff;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GitFilePatch"/> class.
         /// </summary>
         /// <param name="filePath">Relative path to the file. </param>
@@ -61,20 +67,20 @@
             set
             {
                 diffContent = value;
-                FileDiff = DiffParserHelper.Parse(value).First();
-                DiffLines = FileDiff.Chunks.SelectMany(c => c.Changes);
+                fileDiff = DiffParserHelper.Parse(value).First();
+                DiffLines = fileDiff.Chunks.SelectMany(c => c.Changes);
             }
         }
 
         /// <summary>
         /// Gets or sets the path of the changed file.
         /// </summary>
-        public string FilePath { get; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// Gets or sets the file extension.
         /// </summary>
-        public string FileExtension { get; }
+        public string FileExtension { get; set; }
 
         /// <summary>
         /// Gets or sets the kind of change reported by diff.
@@ -93,11 +99,5 @@
         /// Only for internal use.
         /// </summary>
         internal IEnumerable<LineDiff> DiffLines { get; set; }
-
-        /// <summary>
-        /// Contains parsed value of <see cref="DiffContent"/>.
-        /// Only for internal use.
-        /// </summary>
-        private FileDiff FileDiff { get; set; }
     }
 }
