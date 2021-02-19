@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
+﻿namespace PullRequestQuantifier.GitHub.Common.GitHubClient
 {
     using System.Threading.Tasks;
 

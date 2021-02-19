@@ -13,7 +13,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
     using Moq;
     using PullRequestQuantifier.Common.Azure.ServiceBus;
     using PullRequestQuantifier.Common.Azure.Telemetry;
-    using PullRequestQuantifier.GitHub.Client.GitHubClient;
+    using PullRequestQuantifier.GitHub.Common.GitHubClient;
 
     [ExcludeFromCodeCoverage]
     public class GitHubClientTestServer : IDisposable

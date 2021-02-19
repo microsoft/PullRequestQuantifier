@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
+﻿namespace PullRequestQuantifier.GitHub.Common.GitHubClient
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -160,7 +160,7 @@
             LabelUpdate labelUpdate);
 
         /// <summary>
-        /// Create a new label in the repository
+        /// Create a new label in the repository.
         /// </summary>
         /// <param name="repositoryId">Repository ID.</param>
         /// <param name="label">Label to create.</param>

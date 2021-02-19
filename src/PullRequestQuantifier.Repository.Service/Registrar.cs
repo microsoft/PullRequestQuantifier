@@ -1,23 +1,51 @@
-namespace PullRequestQuantifier.GitHub.Client
+namespace PullRequestQuantifier.Repository.Service
 {
+    using System;
     using System.Collections.Generic;
+    using Azure.Identity;
     using GitHubJwt;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using PullRequestQuantifier.Common;
+    using PullRequestQuantifier.Common.Azure.BlobStorage;
     using PullRequestQuantifier.Common.Azure.ServiceBus;
     using PullRequestQuantifier.Common.Azure.Telemetry;
-    using PullRequestQuantifier.GitHub.Client.Events;
     using PullRequestQuantifier.GitHub.Common.GitHubClient;
 
     public static class Registrar
     {
-        public static IServiceCollection RegisterServices(
+        internal static void AddSettings(this IConfigurationBuilder builder)
+        {
+            string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            builder
+                .AddJsonFile("appsettings.json", false)
+                .AddJsonFile($"appsettings.{environmentName}.json", true);
+            string endPoint = builder.Build().GetValue<string>("ConfigEndpoint");
+
+            var managedIdentityCredential = new DefaultAzureCredential();
+            builder.AddAzureAppConfiguration(
+                    options =>
+                        options.Connect(
+                                new Uri(endPoint), managedIdentityCredential)
+                            .ConfigureKeyVault(kv => kv.SetCredential(managedIdentityCredential)))
+                .Build();
+        }
+
+        internal static IServiceCollection RegisterServices(
             this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
+            serviceCollection.AddLogging(b => b.AddConsole());
+            var appConfiguration = configuration.GetSection(nameof(AppConfiguration)).Get<AppConfiguration>();
+
+            serviceCollection.AddSingleton<IBlobStorage>(p => new BlobStorage(
+                appConfiguration.BlobStorageAccountName,
+                appConfiguration.BlobStorageKey,
+                true)).AddHostedService<WorkerService>();
+
             serviceCollection.Configure<GitHubAppFlavorSettings>(configuration.GetSection(nameof(GitHubAppFlavorSettings)));
             serviceCollection.Configure<AzureServiceBusSettings>(
                 configuration.GetSection(nameof(AzureServiceBusSettings)));
@@ -45,16 +73,8 @@ namespace PullRequestQuantifier.GitHub.Client
                 });
             serviceCollection.AddSingleton<IGitHubClientAdapterFactory, GitHubClientAdapterFactory>();
             serviceCollection.TryAddSingleton<IEventBus, AzureServiceBus>();
-            serviceCollection.TryAddEnumerable(
-                new[]
-                {
-                    ServiceDescriptor.Singleton<IGitHubEventHandler, PullRequestEventHandler>(),
-                    ServiceDescriptor.Singleton<IGitHubEventHandler, InstallationEventHandler>(),
-                    ServiceDescriptor.Singleton<IGitHubEventHandler, InstallationRepositoriesEventHandler>()
-                });
-            serviceCollection.AddHostedService<GitHubEventHost>();
-
             serviceCollection.AddApmForWebHost(configuration, typeof(Registrar).Namespace);
+
             return serviceCollection;
         }
     }

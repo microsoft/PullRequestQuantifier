@@ -11,8 +11,8 @@
     using PullRequestQuantifier.Common;
     using PullRequestQuantifier.Common.Azure.ServiceBus;
     using PullRequestQuantifier.Common.Azure.Telemetry;
-    using PullRequestQuantifier.GitHub.Client.GitHubClient;
     using PullRequestQuantifier.GitHub.Client.Models;
+    using PullRequestQuantifier.GitHub.Common.GitHubClient;
 
     [ApiController]
     [Route("[controller]")]
