@@ -8,8 +8,9 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Linq;
+    using PullRequestQuantifier.Common.Azure.ServiceBus;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
     using PullRequestQuantifier.GitHub.Client.Models;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
 
     public class GitHubEventHost : IHostedService
     {

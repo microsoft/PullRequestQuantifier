@@ -7,9 +7,10 @@ namespace PullRequestQuantifier.GitHub.Client
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
     using PullRequestQuantifier.Common;
+    using PullRequestQuantifier.Common.Azure.ServiceBus;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
     using PullRequestQuantifier.GitHub.Client.Events;
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
 
     public static class Registrar
     {

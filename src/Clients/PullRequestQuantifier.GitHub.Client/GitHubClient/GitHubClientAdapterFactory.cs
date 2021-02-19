@@ -8,8 +8,8 @@
     using Octokit;
     using Octokit.Internal;
     using PullRequestQuantifier.Common;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
     using PullRequestQuantifier.GitHub.Client.GitHubClient.Exceptions;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
 
     /// <inheritdoc cref="IGitHubClientAdapterFactory"/>
     public sealed class GitHubClientAdapterFactory : IGitHubClientAdapterFactory

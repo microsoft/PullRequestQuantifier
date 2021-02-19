@@ -1,14 +1,14 @@
-namespace PullRequestQuantifier.GitHub.Client.Events
+namespace PullRequestQuantifier.Common.Azure.ServiceBus
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Azure.Messaging.ServiceBus;
+    using global::Azure.Messaging.ServiceBus;
     using Microsoft.ApplicationInsights.DataContracts;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json.Linq;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
 
     public class AzureServiceBus : IEventBus
     {
@@ -50,8 +50,10 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 return;
             }
 
-            var message = new ServiceBusMessage(payload.ToString());
-            message.CorrelationId = telemetry.OperationId;
+            var message = new ServiceBusMessage(payload.ToString())
+            {
+                CorrelationId = telemetry.OperationId
+            };
             await sender.SendMessageAsync(message);
         }
 

@@ -1,4 +1,4 @@
-namespace PullRequestQuantifier.GitHub.Client.Events
+namespace PullRequestQuantifier.Common.Azure.ServiceBus
 {
     using System;
     using System.Threading;

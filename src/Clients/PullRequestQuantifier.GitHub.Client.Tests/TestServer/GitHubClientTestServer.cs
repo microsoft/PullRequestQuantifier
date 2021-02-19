@@ -11,9 +11,9 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Moq;
-    using PullRequestQuantifier.GitHub.Client.Events;
+    using PullRequestQuantifier.Common.Azure.ServiceBus;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
     using PullRequestQuantifier.GitHub.Client.GitHubClient;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
 
     [ExcludeFromCodeCoverage]
     public class GitHubClientTestServer : IDisposable
