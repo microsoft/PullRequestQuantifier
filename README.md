@@ -48,7 +48,7 @@ optimal size (typical small, or medium sized PRs) mean:
   Check out the `Excluded` section from your `prquantifier.yaml` context profile.
   - Understand your typical change complexity, drive towards the desired complexity
   by adjusting the label mapping in your `prquantifier.yaml` context profile. 
-  - Only use the labels that matter to you (avoid clutter), [see context specification](./docs/prquantifier-yaml.md)
+  - Only use the labels that matter to you, [see context specification](./docs/prquantifier-yaml.md)
   to customize your `prquantifier.yaml` context profile.
 - Change your engineering behaviors
   - For PRs that fall outside of the desired spectrum, review the details and check
