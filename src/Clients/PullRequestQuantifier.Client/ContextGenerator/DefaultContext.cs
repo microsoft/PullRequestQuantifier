@@ -68,11 +68,9 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                 Thresholds = defaultThresholds,
                 Excluded = new List<string>
                 {
-                    "*.csproj",
                     "prquantifier.yaml",
                     "package-lock.json",
                     "packages.lock.json",
-                    "*.md",
                     "*.sln",
                     "*.snap"
                 },
