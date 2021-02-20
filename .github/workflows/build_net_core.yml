@@ -42,20 +42,21 @@ jobs:
     - name: Pack
       if: github.ref == 'refs/heads/main'
       run: dotnet pack PullRequestQuantifier.sln --configuration Release  /p:PublicRelease=true
-    - name: Push package to NuGet
-      if: github.ref == 'refs/heads/main'
-      run: dotnet nuget push ./src/Clients/PullRequestQuantifier.Client/bin/Release/PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json
 
-    - name: Publish local context generator
-      run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Context ./src/Clients/PullRequestQuantifier.Local.Context/PullRequestQuantifier.Local.Context.csproj --self-contained=false /p:PublishSingleFile=true
-    - name: Publish local client
-      run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
+    # - name: Push package to NuGet
+    #   if: github.ref == 'refs/heads/main'
+    #   run: dotnet nuget push ./src/Clients/PullRequestQuantifier.Client/bin/Release/PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json
+
+    # - name: Publish local context generator
+    #   run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Context ./src/Clients/PullRequestQuantifier.Local.Context/PullRequestQuantifier.Local.Context.csproj --self-contained=false /p:PublishSingleFile=true
+    # - name: Publish local client
+    #   run: dotnet publish -c Release -r win-x64 --output ./release/PullRequestQuantifier.Local.Client ./src/Clients/PullRequestQuantifier.Local.Client/PullRequestQuantifier.Local.Client.csproj --self-contained=false /p:PublishSingleFile=true
     
-    - name: Upload release artifacts
-      if: github.ref == 'refs/heads/main'
-      uses: actions/upload-artifact@v2
-      with:
-        name: release
-        path: release/*
+    # - name: Upload release artifacts
+    #   if: github.ref == 'refs/heads/main'
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: release
+    #     path: release/*
     #todo create release
     #todo upload artifacts to release
