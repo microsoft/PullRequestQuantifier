@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.Client.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -74,6 +75,9 @@
                 pullRequestLink,
                 anonymous);
 
+            var contextFormulaPercentile =
+                quantifierResult.Context.FormulaPercentile.First(f => f.Item1 == quantifierResult.Formula).Item2;
+            var (idealSizeLowerBound, idealSizeUpperBound) = GetIdealChangeCountRange(contextFormulaPercentile);
             var comment = await stubble.RenderAsync(
                 await stream.ReadToEndAsync(),
                 new
@@ -82,9 +86,13 @@
                     quantifierResult.Label,
                     quantifierResult.QuantifiedLinesAdded,
                     quantifierResult.QuantifiedLinesDeleted,
+                    quantifierResult.FormulaLinesChanged,
                     quantifierResult.PercentileAddition,
                     quantifierResult.PercentileDeletion,
                     quantifierResult.FormulaPercentile,
+                    IdealSizeLowerBound = idealSizeLowerBound,
+                    IdealSizeUpperBound = idealSizeUpperBound,
+                    IsIdealSize = quantifierResult.FormulaLinesChanged >= idealSizeLowerBound && quantifierResult.FormulaLinesChanged <= idealSizeUpperBound,
                     Formula = quantifierResult.Formula.ToString(),
                     ContextFileLink = contextFileLink,
                     FeedbackLinkUp = feedbackLinkThumbsUp,
@@ -98,10 +106,34 @@
                             .Select(
                                 g =>
                                     $"{g.Key} : +{g.Sum(v => v.QuantifiedLinesAdded)} -{g.Sum(v => v.QuantifiedLinesDeleted)}")),
-                    CollapseChangesSummarySection = markdownCommentOptions.CollapseChangesSummarySection ? string.Empty : "open",
                     CollapsePullRequestQuantifiedSection = markdownCommentOptions.CollapsePullRequestQuantifiedSection ? string.Empty : "open"
                 });
             return comment;
+        }
+
+        private static (int, int) GetIdealChangeCountRange(SortedDictionary<int, float> contextPercentile)
+        {
+            float idealLowerPercentile = 20;
+            float idealUpperPercentile = 80;
+
+            var percentilesArray = contextPercentile.Values.ToArray();
+            var changeCountsArray = contextPercentile.Keys.ToArray();
+
+            var idxUpperBound = Array.FindIndex(
+                percentilesArray,
+                arrayElement => arrayElement >= idealUpperPercentile);
+
+            var idxLowerBound = Array.FindLastIndex(
+                percentilesArray,
+                arrayElement => arrayElement <= idealLowerPercentile);
+
+            var lowerBoundChangeCount =
+                idealLowerPercentile < percentilesArray[0] ? changeCountsArray[0] : changeCountsArray[idxLowerBound];
+
+            var upperBoundChangeCount =
+                idealUpperPercentile > percentilesArray[^1] ? changeCountsArray[^1] : changeCountsArray[idxUpperBound];
+
+            return (lowerBoundChangeCount, upperBoundChangeCount);
         }
 
         private static string CreateFeedbackLink(
