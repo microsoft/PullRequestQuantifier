@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-
 namespace PullRequestQuantifier.GitHub.Client.Events
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
     using System.Linq;
@@ -106,8 +105,9 @@ namespace PullRequestQuantifier.GitHub.Client.Events
             // delete existing comments created by us
             var existingComments =
                 await gitHubClientAdapter.GetIssueCommentsAsync(payload.Repository.Id, payload.PullRequest.Number);
-            var existingCommentsCreatedByUs = existingComments.Where(ec =>
-                ec.User.Login.Equals($"{gitHubClientAdapter.GitHubAppSettings.Name}[bot]"));
+            var existingCommentsCreatedByUs = existingComments.Where(
+                ec =>
+                    ec.User.Login.Equals($"{gitHubClientAdapter.GitHubAppSettings.Name}[bot]"));
             foreach (var existingComment in existingCommentsCreatedByUs)
             {
                 await gitHubClientAdapter.DeleteIssueCommentAsync(payload.Repository.Id, existingComment.Id);
@@ -123,7 +123,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 payload.PullRequest.User.Login,
                 ShouldPostAnonymousFeedbackLink(payload),
                 new MarkdownCommentOptions
-                    {CollapsePullRequestQuantifiedSection = false, CollapseChangesSummarySection = true});
+                    { CollapsePullRequestQuantifiedSection = false, CollapseChangesSummarySection = true });
             await gitHubClientAdapter.CreateIssueCommentAsync(
                 payload.Repository.Id,
                 payload.PullRequest.Number,
@@ -161,22 +161,28 @@ namespace PullRequestQuantifier.GitHub.Client.Events
             // remove any previous labels applied if it's different
             // labels do not have the property of who applied them
             // so we use string matching against the label options present in the context
+            // if label strings have changed in context since last PR update, this will break
             var existingLabels =
                 await gitHubClientAdapter.GetIssueLabelsAsync(payload.Repository.Id, payload.PullRequest.Number);
-            var labelIntersection = existingLabels.Select(el => el.Name).Intersect(labelOptionsFromContext).ToList();
-            if (labelIntersection.Any() && labelIntersection.First() != quantifierClientResult.Label)
+            var existingLabelsByUs = existingLabels.Select(el => el.Name).Intersect(labelOptionsFromContext).ToList();
+            foreach (var existingLabel in existingLabelsByUs)
             {
+                if (existingLabel == quantifierClientResult.Label)
+                {
+                    continue;
+                }
+
                 await gitHubClientAdapter.RemoveLabelFromIssueAsync(
                     payload.Repository.Id,
                     payload.PullRequest.Number,
-                    labelIntersection.First());
+                    existingLabel);
             }
 
             // apply new label to pull request
             await gitHubClientAdapter.ApplyLabelAsync(
                 payload.Repository.Id,
                 payload.PullRequest.Number,
-                new[] {quantifierClientResult.Label});
+                new[] { quantifierClientResult.Label });
         }
 
         private async Task<string> GetContextFromRepoIfPresent(PullRequestEventPayload payload, IGitHubClientAdapter gitHubClientAdapter)

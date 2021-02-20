@@ -198,7 +198,7 @@
             long repositoryId,
             int issueNumber,
             string labelName);
- 
+
         /// <summary>
         /// Create a new comment on an issue.
         /// </summary>
