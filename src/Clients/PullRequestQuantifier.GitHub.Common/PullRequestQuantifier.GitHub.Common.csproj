@@ -10,7 +10,7 @@
     <PackageReference Include="Octokit" Version="0.48.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj" />
+    <ProjectReference Include="..\..\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj" />
   </ItemGroup>
 
 </Project>

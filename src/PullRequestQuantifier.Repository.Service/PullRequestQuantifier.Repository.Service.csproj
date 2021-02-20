@@ -19,8 +19,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Clients\PullRequestQuantifier.GitHub.Common\PullRequestQuantifier.GitHub.Common.csproj" />
     <ProjectReference Include="..\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj" />
-    <ProjectReference Include="..\PullRequestQuantifier.GitHub.Common\PullRequestQuantifier.GitHub.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\launchSettings.json">
