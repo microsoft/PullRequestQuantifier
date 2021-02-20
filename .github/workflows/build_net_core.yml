@@ -3,7 +3,7 @@ name: .NET Core Build
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    #branches: [ main ]
     tags:
       - 'v*'
   pull_request:
@@ -33,6 +33,11 @@ jobs:
     
     - name: Test
       run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
+
+    - name: Upload coverage
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: bash <(curl -s https://codecov.io/bash)
 
     - name: Pack
       if: github.ref == 'refs/heads/main'
