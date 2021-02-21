@@ -13,8 +13,9 @@ namespace PullRequestQuantifier.GitHub.Client.Events
     using PullRequestQuantifier.Client.Extensions;
     using PullRequestQuantifier.Client.QuantifyClient;
     using PullRequestQuantifier.Common.Azure.Telemetry;
-    using PullRequestQuantifier.GitHub.Client.Models;
+    using PullRequestQuantifier.GitHub.Common.Events;
     using PullRequestQuantifier.GitHub.Common.GitHubClient;
+    using PullRequestQuantifier.GitHub.Common.Models;
 
     public class PullRequestEventHandler : IGitHubEventHandler
     {

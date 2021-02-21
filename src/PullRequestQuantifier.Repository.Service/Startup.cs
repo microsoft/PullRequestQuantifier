@@ -7,7 +7,7 @@ namespace PullRequestQuantifier.Repository.Service
     using Microsoft.Extensions.Hosting;
     using Microsoft.OpenApi.Models;
 
-    public class Startup
+    public sealed class Startup
     {
         private const string NamespaceName = "PullRequestQuantifier.Repository.Service";
 

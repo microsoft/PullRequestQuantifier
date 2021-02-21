@@ -32,7 +32,6 @@
             return response;
         }
 
-        // todo make this async when we go with the IAppTelemetry async.
         private void PublishRateLimitMetrics(HttpRequestMessage request, HttpResponseMessage response)
         {
             request.Headers.TryGetValues("User-Agent", out var userAgent);

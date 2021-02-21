@@ -13,6 +13,7 @@ namespace PullRequestQuantifier.Repository.Service
     using PullRequestQuantifier.Common.Azure.BlobStorage;
     using PullRequestQuantifier.Common.Azure.ServiceBus;
     using PullRequestQuantifier.Common.Azure.Telemetry;
+    using PullRequestQuantifier.GitHub.Common.Events;
     using PullRequestQuantifier.GitHub.Common.GitHubClient;
 
     public static class Registrar
@@ -73,6 +74,15 @@ namespace PullRequestQuantifier.Repository.Service
                 });
             serviceCollection.AddSingleton<IGitHubClientAdapterFactory, GitHubClientAdapterFactory>();
             serviceCollection.TryAddSingleton<IEventBus, AzureServiceBus>();
+
+            serviceCollection.TryAddEnumerable(
+                new[]
+                {
+                    ServiceDescriptor.Singleton<IGitHubEventHandler, InstallationEventHandler>(),
+                    ServiceDescriptor.Singleton<IGitHubEventHandler, InstallationRepositoriesEventHandler>()
+                });
+            serviceCollection.AddHostedService<GitHubEventHost>();
+
             serviceCollection.AddApmForWebHost(configuration, typeof(Registrar).Namespace);
 
             return serviceCollection;

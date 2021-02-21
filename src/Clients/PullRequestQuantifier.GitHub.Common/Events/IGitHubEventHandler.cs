@@ -1,7 +1,7 @@
-namespace PullRequestQuantifier.GitHub.Client.Events
+namespace PullRequestQuantifier.GitHub.Common.Events
 {
     using System.Threading.Tasks;
-    using PullRequestQuantifier.GitHub.Client.Models;
+    using PullRequestQuantifier.GitHub.Common.Models;
 
     public interface IGitHubEventHandler
     {
