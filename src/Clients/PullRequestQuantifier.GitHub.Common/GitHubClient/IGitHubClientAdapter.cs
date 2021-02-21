@@ -188,6 +188,18 @@
             string[] labels);
 
         /// <summary>
+        /// Remove a label from an issue.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <param name="issueNumber">Issue number.</param>
+        /// <param name="labelName">Label name to remove.</param>
+        /// <returns>Removed label.</returns>
+        Task<IReadOnlyList<Label>> RemoveLabelFromIssueAsync(
+            long repositoryId,
+            int issueNumber,
+            string labelName);
+
+        /// <summary>
         /// Create a new comment on an issue.
         /// </summary>
         /// <param name="repositoryId">Repository ID.</param>
