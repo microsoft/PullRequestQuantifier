@@ -74,6 +74,16 @@
                 pullRequestLink,
                 anonymous);
 
+            var detailsByFileExt = quantifierResult.QuantifierInput.Changes
+                .Where(c => !string.IsNullOrEmpty(c.FileExtension))
+                .GroupBy(c => c.FileExtension)
+                .Select(
+                    g =>
+                        $"{g.Key} : +{g.Sum(v => v.QuantifiedLinesAdded)} -{g.Sum(v => v.QuantifiedLinesDeleted)}")
+                .Concat(
+                    quantifierResult.QuantifierInput.Changes
+                        .Where(c => string.IsNullOrEmpty(c.FileExtension))
+                        .Select(c => $"{c.FilePath} : +{c.QuantifiedLinesAdded} -{c.QuantifiedLinesDeleted}"));
             var comment = await stubble.RenderAsync(
                 await stream.ReadToEndAsync(),
                 new
@@ -91,13 +101,7 @@
                     FeedbackLinkNeutral = feedbackLinkNeutral,
                     FeedbackLinkDown = feedbackLinkThumbsDown,
                     TotalFilesChanged = quantifierResult.QuantifierInput.Changes.Count,
-                    Details = string.Join(
-                        Environment.NewLine,
-                        quantifierResult.QuantifierInput.Changes
-                            .GroupBy(c => c.FileExtension)
-                            .Select(
-                                g =>
-                                    $"{g.Key} : +{g.Sum(v => v.QuantifiedLinesAdded)} -{g.Sum(v => v.QuantifiedLinesDeleted)}")),
+                    Details = string.Join(Environment.NewLine, detailsByFileExt),
                     CollapseChangesSummarySection = markdownCommentOptions.CollapseChangesSummarySection ? string.Empty : "open",
                     CollapsePullRequestQuantifiedSection = markdownCommentOptions.CollapsePullRequestQuantifiedSection ? string.Empty : "open"
                 });
