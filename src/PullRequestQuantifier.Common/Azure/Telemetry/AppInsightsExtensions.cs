@@ -1,4 +1,4 @@
-namespace PullRequestQuantifier.GitHub.Client.Telemetry
+namespace PullRequestQuantifier.Common.Azure.Telemetry
 {
     using System;
     using Microsoft.ApplicationInsights;
@@ -13,7 +13,7 @@ namespace PullRequestQuantifier.GitHub.Client.Telemetry
         /// <summary>
         /// Adds components for Application Performance Monitoring for a WebHost.
         /// This includes Application Insights support for:
-        ///    - ILogger<T>: logs
+        ///    - ILogger.<T>: logs
         ///    - IAppTelemetry: metrics
         /// </summary>
         /// <param name="services">The service collection</param>

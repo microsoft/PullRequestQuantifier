@@ -1,10 +1,10 @@
-﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
+﻿namespace PullRequestQuantifier.GitHub.Common.GitHubClient
 {
     using System.Linq;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
 
     public class GitHubClientMessageHandler : HttpClientHandler
     {

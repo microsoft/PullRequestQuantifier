@@ -6,7 +6,7 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.TestServer
     using System.Threading;
     using System.Threading.Tasks;
     using Newtonsoft.Json.Linq;
-    using PullRequestQuantifier.GitHub.Client.Events;
+    using PullRequestQuantifier.Common.Azure.ServiceBus;
 
     [ExcludeFromCodeCoverage]
     public class InMemoryEventBus : IEventBus

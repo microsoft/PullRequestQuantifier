@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient.Exceptions
+﻿namespace PullRequestQuantifier.GitHub.Common.GitHubClient.Exceptions
 {
     using System;
 
