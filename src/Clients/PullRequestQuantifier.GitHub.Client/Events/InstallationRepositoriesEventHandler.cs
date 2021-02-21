@@ -1,19 +1,20 @@
-namespace PullRequestQuantifier.GitHub.Common.Events
+namespace PullRequestQuantifier.GitHub.Client.Events
 {
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;
     using PullRequestQuantifier.Common.Azure.Telemetry;
+    using PullRequestQuantifier.GitHub.Common.Events;
     using PullRequestQuantifier.GitHub.Common.Models;
 
     public class InstallationRepositoriesEventHandler : IGitHubEventHandler
     {
         private readonly IAppTelemetry telemetry;
-        private readonly ILogger<InstallationRepositoriesEventHandler> logger;
+        private readonly ILogger<PullRequestEventHandler> logger;
 
         public InstallationRepositoriesEventHandler(
             IAppTelemetry telemetry,
-            ILogger<InstallationRepositoriesEventHandler> logger)
+            ILogger<PullRequestEventHandler> logger)
         {
             this.telemetry = telemetry;
             this.logger = logger;
