@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.GitHub.Client.GitHubClient
+﻿namespace PullRequestQuantifier.GitHub.Common.GitHubClient
 {
     using System;
     using System.Collections.Generic;
@@ -8,8 +8,8 @@
     using Octokit;
     using Octokit.Internal;
     using PullRequestQuantifier.Common;
-    using PullRequestQuantifier.GitHub.Client.GitHubClient.Exceptions;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
+    using PullRequestQuantifier.GitHub.Common.GitHubClient.Exceptions;
 
     /// <inheritdoc cref="IGitHubClientAdapterFactory"/>
     public sealed class GitHubClientAdapterFactory : IGitHubClientAdapterFactory
