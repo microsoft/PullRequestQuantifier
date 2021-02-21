@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.GitHub.Client.Telemetry
+﻿namespace PullRequestQuantifier.Common.Azure.Telemetry
 {
     using System;
     using System.Collections.Generic;

@@ -3,9 +3,9 @@ namespace PullRequestQuantifier.GitHub.Client.Events
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;
-    using PullRequestQuantifier.GitHub.Client.GitHubClient;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
     using PullRequestQuantifier.GitHub.Client.Models;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
+    using PullRequestQuantifier.GitHub.Common.GitHubClient;
 
     public class InstallationEventHandler : IGitHubEventHandler
     {
