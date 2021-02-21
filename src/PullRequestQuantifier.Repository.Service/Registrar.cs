@@ -13,6 +13,7 @@ namespace PullRequestQuantifier.Repository.Service
     using PullRequestQuantifier.Common.Azure.BlobStorage;
     using PullRequestQuantifier.Common.Azure.ServiceBus;
     using PullRequestQuantifier.Common.Azure.Telemetry;
+    using PullRequestQuantifier.GitHub.Client.Events;
     using PullRequestQuantifier.GitHub.Common.Events;
     using PullRequestQuantifier.GitHub.Common.GitHubClient;
 
@@ -45,7 +46,7 @@ namespace PullRequestQuantifier.Repository.Service
             serviceCollection.AddSingleton<IBlobStorage>(p => new BlobStorage(
                 appConfiguration.BlobStorageAccountName,
                 appConfiguration.BlobStorageKey,
-                true)).AddHostedService<WorkerService>();
+                true));
 
             serviceCollection.Configure<GitHubAppFlavorSettings>(configuration.GetSection(nameof(GitHubAppFlavorSettings)));
             serviceCollection.Configure<AzureServiceBusSettings>(
