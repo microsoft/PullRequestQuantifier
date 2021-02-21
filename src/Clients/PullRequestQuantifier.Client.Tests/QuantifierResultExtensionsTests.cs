@@ -52,6 +52,32 @@
             Assert.StartsWith("### Pull Request Quantified", comment);
         }
 
+        [Fact]
+        public async Task FilesWithoutExt_ShowFullPathInSummary()
+        {
+            // Arrange
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2", 4);
+            gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2", 2);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+            var quantifyClient = new QuantifyClient(string.Empty);
+
+            // Act
+            var quantifierResult = await quantifyClient.Compute(quantifierInput);
+            var comment = await quantifierResult.ToMarkdownCommentAsync(
+                RepositoryLink,
+                ContextFileLink,
+                PullRequestLink,
+                AuthorName);
+
+            // Assert
+            Assert.True(comment.IndexOf("fake2 : +0 -2", StringComparison.Ordinal) > -1);
+            Assert.True(comment.IndexOf(".cs : +3 -0", StringComparison.Ordinal) > -1);
+        }
+
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
