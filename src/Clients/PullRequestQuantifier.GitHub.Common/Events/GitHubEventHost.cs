@@ -1,4 +1,4 @@
-﻿namespace PullRequestQuantifier.GitHub.Client.Events
+﻿namespace PullRequestQuantifier.GitHub.Common.Events
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,7 @@
     using Newtonsoft.Json.Linq;
     using PullRequestQuantifier.Common.Azure.ServiceBus;
     using PullRequestQuantifier.Common.Azure.Telemetry;
-    using PullRequestQuantifier.GitHub.Client.Models;
+    using PullRequestQuantifier.GitHub.Common.Models;
 
     public class GitHubEventHost : IHostedService
     {

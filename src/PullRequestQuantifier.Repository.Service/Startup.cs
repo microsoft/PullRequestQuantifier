@@ -7,10 +7,8 @@ namespace PullRequestQuantifier.Repository.Service
     using Microsoft.Extensions.Hosting;
     using Microsoft.OpenApi.Models;
 
-    public class Startup
+    public sealed class Startup
     {
-        private const string NamespaceName = "PullRequestQuantifier.Repository.Service";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,7 +20,7 @@ namespace PullRequestQuantifier.Repository.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = NamespaceName, Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = typeof(Startup).Namespace, Version = "v1" }); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,7 +30,7 @@ namespace PullRequestQuantifier.Repository.Service
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{NamespaceName} v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{typeof(Startup).Namespace} v1"));
             }
 
             app.UseHttpsRedirection();

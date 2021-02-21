@@ -1,4 +1,4 @@
-namespace PullRequestQuantifier.GitHub.Client.Models
+namespace PullRequestQuantifier.GitHub.Common.Models
 {
     using Newtonsoft.Json;
     using Octokit;
