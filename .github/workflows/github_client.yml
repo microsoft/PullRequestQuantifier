@@ -27,6 +27,7 @@ jobs:
     - name: dotnet publish
       run: dotnet publish src/Clients/PullRequestQuantifier.GitHub.Client/PullRequestQuantifier.GitHub.Client.csproj -c Release -o ${{env.DOTNET_ROOT}}/pullrequestquantifiergithubclient
     - name: Deploy to Azure Web App
+      if: github.ref == 'refs/heads/main'
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'pullrequestquantifier'
