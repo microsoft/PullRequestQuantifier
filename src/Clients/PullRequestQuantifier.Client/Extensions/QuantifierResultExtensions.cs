@@ -110,7 +110,6 @@
                     FeedbackLinkDown = feedbackLinkThumbsDown,
                     TotalFilesChanged = quantifierResult.QuantifierInput.Changes.Count,
                     Details = string.Join(Environment.NewLine, detailsByFileExt),
-                    CollapseChangesSummarySection = markdownCommentOptions.CollapseChangesSummarySection ? string.Empty : "open",
                     CollapsePullRequestQuantifiedSection = markdownCommentOptions.CollapsePullRequestQuantifiedSection ? string.Empty : "open"
                 });
             return comment;
