@@ -11,7 +11,7 @@ on:
     tags:
       - 'v*'
 jobs:
-  build:
+  build-and-publish-release:
 
     runs-on: ubuntu-latest
 
@@ -34,9 +34,15 @@ jobs:
     - name: Test
       run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
 
+    - name: Upload coverage
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: bash <(curl -s https://codecov.io/bash)
+
     - name: Pack
       if: github.ref == 'refs/heads/main'
       run: dotnet pack PullRequestQuantifier.sln --configuration Release  /p:PublicRelease=true
+
     - name: Push package to NuGet
       if: github.ref == 'refs/heads/main'
       run: dotnet nuget push ./src/Clients/PullRequestQuantifier.Client/bin/Release/PullRequestQuantifier.*.nupkg --api-key ${{ secrets.nugetKey }} --source https://api.nuget.org/v3/index.json

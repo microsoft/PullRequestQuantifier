@@ -10,8 +10,8 @@ namespace PullRequestQuantifier.GitHub.Client.Tests.Controllers
     using System.Threading.Tasks;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    using PullRequestQuantifier.GitHub.Client.Models;
     using PullRequestQuantifier.GitHub.Client.Tests.TestServer;
+    using PullRequestQuantifier.GitHub.Common.Models;
     using Xunit;
 
     [ExcludeFromCodeCoverage]

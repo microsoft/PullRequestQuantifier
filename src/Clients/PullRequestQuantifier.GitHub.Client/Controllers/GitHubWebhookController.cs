@@ -9,10 +9,10 @@
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json.Linq;
     using PullRequestQuantifier.Common;
-    using PullRequestQuantifier.GitHub.Client.Events;
-    using PullRequestQuantifier.GitHub.Client.GitHubClient;
-    using PullRequestQuantifier.GitHub.Client.Models;
-    using PullRequestQuantifier.GitHub.Client.Telemetry;
+    using PullRequestQuantifier.Common.Azure.ServiceBus;
+    using PullRequestQuantifier.Common.Azure.Telemetry;
+    using PullRequestQuantifier.GitHub.Common.GitHubClient;
+    using PullRequestQuantifier.GitHub.Common.Models;
 
     [ApiController]
     [Route("[controller]")]
