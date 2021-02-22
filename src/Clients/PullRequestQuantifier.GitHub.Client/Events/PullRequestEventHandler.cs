@@ -123,8 +123,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 payload.PullRequest.HtmlUrl,
                 payload.PullRequest.User.Login,
                 ShouldPostAnonymousFeedbackLink(payload),
-                new MarkdownCommentOptions
-                    { CollapsePullRequestQuantifiedSection = false, CollapseChangesSummarySection = true });
+                new MarkdownCommentOptions { CollapsePullRequestQuantifiedSection = true });
             await gitHubClientAdapter.CreateIssueCommentAsync(
                 payload.Repository.Id,
                 payload.PullRequest.Number,

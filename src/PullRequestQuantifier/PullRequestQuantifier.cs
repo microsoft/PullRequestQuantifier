@@ -18,9 +18,9 @@ namespace PullRequestQuantifier
         }
 
         /// <summary>
-        /// Gets or sets the Context. We allow the context to be set for reloading anytime when there is a new context.
+        /// Gets the Context. We allow the context to be set for reloading anytime when there is a new context.
         /// </summary>
-        public Context Context { get; set; }
+        public Context Context { get; private set; }
 
         /// <inheritdoc />
         public async Task<QuantifierResult> Quantify(QuantifierInput quantifierInput)
@@ -40,7 +40,8 @@ namespace PullRequestQuantifier
                 {
                     quantifierResult = new QuantifierResult
                     {
-                        QuantifierInput = quantifierInput
+                        QuantifierInput = quantifierInput,
+                        Context = Context
                     };
 
                     // involve context and compute
@@ -122,8 +123,9 @@ namespace PullRequestQuantifier
                 quantifierResult.Label = contextThreshold.Label;
                 quantifierResult.Color = contextThreshold.Color;
                 quantifierResult.Formula = contextThreshold.Formula;
+                quantifierResult.FormulaLinesChanged = GetChangeNumber(quantifierResult, contextThreshold.Formula);
 
-                if (GetChangeNumber(quantifierResult, contextThreshold.Formula) <= contextThreshold.Value)
+                if (quantifierResult.FormulaLinesChanged <= contextThreshold.Value)
                 {
                     break;
                 }
@@ -158,23 +160,9 @@ namespace PullRequestQuantifier
 
         private float GetFormulaPercentile(QuantifierResult quantifierResult)
         {
-            var finalValue = quantifierResult.Formula switch
-            {
-                ThresholdFormula.Sum => quantifierResult.QuantifiedLinesAdded + quantifierResult.QuantifiedLinesDeleted,
-                ThresholdFormula.Avg => (quantifierResult.QuantifiedLinesAdded +
-                                         quantifierResult.QuantifiedLinesDeleted) / 2,
-                ThresholdFormula.Min => Math.Min(
-                    quantifierResult.QuantifiedLinesAdded,
-                    quantifierResult.QuantifiedLinesDeleted),
-                ThresholdFormula.Max => Math.Max(
-                    quantifierResult.QuantifiedLinesAdded,
-                    quantifierResult.QuantifiedLinesDeleted),
-                _ => throw new ArgumentOutOfRangeException(),
-            };
-
             var contextFormulaPercentile =
                 Context.FormulaPercentile.First(f => f.Item1 == quantifierResult.Formula).Item2;
-            return GetPercentile(finalValue, contextFormulaPercentile);
+            return GetPercentile(quantifierResult.FormulaLinesChanged, contextFormulaPercentile);
         }
 
         private float GetPercentile(
