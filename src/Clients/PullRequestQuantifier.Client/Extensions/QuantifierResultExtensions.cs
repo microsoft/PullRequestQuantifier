@@ -118,7 +118,7 @@
         private static (int, int) GetIdealChangeCountRange(SortedDictionary<int, float> contextPercentile)
         {
             float idealLowerPercentile = 20;
-            float idealUpperPercentile = 80;
+            float idealUpperPercentile = 60;
 
             var percentilesArray = contextPercentile.Values.ToArray();
             var changeCountsArray = contextPercentile.Keys.ToArray();
