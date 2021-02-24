@@ -3,12 +3,12 @@ namespace PullRequestQuantifier.GitEngine
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.IO;
     using System.IO.Abstractions;
     using System.Linq;
     using System.Threading.Tasks;
     using LibGit2Sharp;
     using PullRequestQuantifier.Abstractions.Git;
+    using PullRequestQuantifier.GitEngine.Extensions;
 
     public sealed class GitEngine : IGitEngine
     {
@@ -41,7 +41,7 @@ namespace PullRequestQuantifier.GitEngine
             {
                 var commits = repo.Commits.QueryBy(new CommitFilter
                 {
-                    IncludeReachableFrom = commitSha1
+                    FirstParentOnly = true
                 });
 
                 Parallel.ForEach(commits, commit =>
@@ -55,7 +55,7 @@ namespace PullRequestQuantifier.GitEngine
                     {
                         var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
 
-                        foreach (var gitFilePatch in GetGitFilePatch(patch))
+                        foreach (var gitFilePatch in patch.GetGitFilePatch())
                         {
                             ret.Add(gitFilePatch);
                         }
@@ -78,7 +78,7 @@ namespace PullRequestQuantifier.GitEngine
             var status = repo.RetrieveStatus(RepoStatusOptions);
 
             var trackedFilesPatch = repo.Diff.Compare<Patch>();
-            ret.AddRange(GetGitFilePatch(trackedFilesPatch, status));
+            ret.AddRange(trackedFilesPatch.GetGitFilePatch(status));
 
             if (status.Untracked.Any())
             {
@@ -87,7 +87,7 @@ namespace PullRequestQuantifier.GitEngine
                     true,
                     new ExplicitPathsOptions { ShouldFailOnUnmatchedPath = false },
                     new CompareOptions { Similarity = SimilarityOptions.Exact });
-                ret.AddRange(GetGitFilePatch(untrackedFilesPatch, status));
+                ret.AddRange(untrackedFilesPatch.GetGitFilePatch(status));
             }
 
             // renamed files (the addition part) is not part of tracked/untracked section
@@ -102,7 +102,7 @@ namespace PullRequestQuantifier.GitEngine
                         true,
                         new ExplicitPathsOptions { ShouldFailOnUnmatchedPath = false },
                         new CompareOptions { Similarity = SimilarityOptions.Exact });
-                    ret.AddRange(GetGitFilePatch(modifiedFilesPatch, status));
+                    ret.AddRange(modifiedFilesPatch.GetGitFilePatch(status));
                 }
             }
 
@@ -137,6 +137,7 @@ namespace PullRequestQuantifier.GitEngine
 
             var commits = repo.Commits.QueryBy(new CommitFilter
             {
+                FirstParentOnly = true,
                 SortBy = CommitSortStrategies.Reverse | CommitSortStrategies.Time
             });
             Parallel.ForEach(commits, commit =>
@@ -155,7 +156,7 @@ namespace PullRequestQuantifier.GitEngine
                 foreach (var parent in commit.Parents)
                 {
                     var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
-                    changes.AddRange(GetGitFilePatch(patch));
+                    changes.AddRange(patch.GetGitFilePatch());
                 }
             });
 
@@ -180,44 +181,6 @@ namespace PullRequestQuantifier.GitEngine
         public string GetRepoRoot(string path)
         {
             return Repository.Discover(path);
-        }
-
-        private IEnumerable<GitFilePatch> GetGitFilePatch(
-            Patch filesPatch,
-            RepositoryStatus status = null)
-        {
-            var ret = new List<GitFilePatch>();
-            using IEnumerator<PatchEntryChanges> patches = filesPatch.GetEnumerator();
-            while (patches.MoveNext()
-                   && patches.Current != null)
-            {
-                // minimum 88 score threshold was chose based on observation, if similarity will be less
-                // than 88 then the deleted file will be marked as deleted and the other one as addition
-                // if the file is part of the rename set the change type explicitly to rename,
-                // otherwise git will set it to added or deleted
-                ChangeKind changeKind = status?.RenamedInWorkDir.Count(r => r.IndexToWorkDirRenameDetails != null &&
-                                                                            (r.IndexToWorkDirRenameDetails.NewFilePath
-                                                                                 .Equals(patches.Current.Path)
-                                                                             || r.IndexToWorkDirRenameDetails
-                                                                                 .OldFilePath
-                                                                                 .Equals(patches.Current.Path))
-                                                                            && r.IndexToWorkDirRenameDetails
-                                                                                .Similarity >= 88) > 0
-                    ? ChangeKind.Renamed
-                    : patches.Current.Status;
-
-                ret.Add(new GitFilePatch(
-                    patches.Current.Path,
-                    new FileInfo(patches.Current.Path).Extension)
-                {
-                    DiffContent = patches.Current.Patch,
-                    AbsoluteLinesAdded = patches.Current.LinesAdded,
-                    AbsoluteLinesDeleted = patches.Current.LinesDeleted,
-                    ChangeType = changeKind.ConvertToChangeType()
-                });
-            }
-
-            return ret;
         }
     }
 }
