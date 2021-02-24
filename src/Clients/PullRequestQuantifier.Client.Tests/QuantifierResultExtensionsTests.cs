@@ -24,17 +24,17 @@
         public QuantifierResultExtensionsTests()
         {
             gitRepoHelpers.CreateRepo();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
+            gitRepoHelpers.CommitFilesToRepo();
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
+            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
         }
 
         [Fact]
         public async Task ToMarkdownCommentAsync_Successful()
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
-            gitRepoHelpers.CommitFilesToRepo();
-            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
-            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
             var quantifierInput = new QuantifierInput();
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
             var quantifyClient = new QuantifyClient(string.Empty);
@@ -79,17 +79,41 @@
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task ToMarkdownCommentAsync_Options_CollapseChangesSummarySection(
-            bool collapseChangesSummarySection)
+        [InlineData(33, false)]
+        [InlineData(0, false)]
+        [InlineData(80, true)]
+        [InlineData(82, true)]
+        [InlineData(182, true)]
+        [InlineData(400, false)]
+        [InlineData(410, false)]
+        [InlineData(1410, false)]
+        [InlineData(10410, false)]
+        public async Task ToMarkdownCommentAsync_IdealSizeCheck(int formulaLinesChanged, bool isIdeal)
         {
             // Arrange
-            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 2);
-            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 4);
-            gitRepoHelpers.CommitFilesToRepo();
-            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake.cs", 5);
-            gitRepoHelpers.AddUntrackedFileToRepoWithNumLines("fake2.cs", 2);
+            var quantifierInput = new QuantifierInput();
+            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
+            var quantifyClient = new QuantifyClient(string.Empty);
+            var quantifierResult = await quantifyClient.Compute(quantifierInput);
+            quantifierResult.FormulaLinesChanged = formulaLinesChanged;
+
+            var comment = await quantifierResult.ToMarkdownCommentAsync(
+                RepositoryLink,
+                ContextFileLink,
+                PullRequestLink,
+                AuthorName);
+
+            // Assert
+            var idealJobIndex = comment.IndexOf("Great job", StringComparison.Ordinal);
+            Assert.True((isIdeal && idealJobIndex > -1) || (!isIdeal && idealJobIndex == -1));
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task ToMarkdownCommentAsync_Options_CollapseQuantificationDetailsSection(bool collapseQuantifiedDetailsSection)
+        {
+            // Arrange
             var quantifierInput = new QuantifierInput();
             quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
             var quantifyClient = new QuantifyClient(string.Empty);
@@ -104,23 +128,25 @@
                 false,
                 new MarkdownCommentOptions
                 {
-                    CollapseChangesSummarySection = collapseChangesSummarySection
+                    CollapsePullRequestQuantifiedSection = collapseQuantifiedDetailsSection
                 });
 
             // Assert
             Assert.True(!string.IsNullOrWhiteSpace(comment));
             Assert.StartsWith("### Pull Request Quantified", comment);
-            if (collapseChangesSummarySection)
+            if (collapseQuantifiedDetailsSection)
             {
-                Assert.True(comment.IndexOf(
-                    await File.ReadAllTextAsync(@"Data/AssertCommentSummaryCollapsed.txt"),
-                    StringComparison.Ordinal) > -1);
+                Assert.True(
+                    comment.IndexOf(
+                        await File.ReadAllTextAsync(@"Data/AssertCommentSummaryCollapsed.txt"),
+                        StringComparison.Ordinal) > -1);
             }
             else
             {
-                Assert.True(comment.IndexOf(
-                    await File.ReadAllTextAsync(@"Data/AssertCommentSummaryNotCollapsed.txt"),
-                    StringComparison.Ordinal) > -1);
+                Assert.True(
+                    comment.IndexOf(
+                        await File.ReadAllTextAsync(@"Data/AssertCommentSummaryNotCollapsed.txt"),
+                        StringComparison.Ordinal) > -1);
             }
         }
     }

@@ -38,6 +38,13 @@ namespace PullRequestQuantifier.Abstractions.Core
         public int QuantifiedLinesDeleted { get; set; }
 
         /// <summary>
+        /// Gets or sets the total number of lines changed.
+        /// It combines the <see cref="QuantifiedLinesAdded"/> and <see cref="QuantifiedLinesDeleted"/>
+        /// based on the <see cref="Formula"/>.
+        /// </summary>
+        public int FormulaLinesChanged { get; set; }
+
+        /// <summary>
         /// Gets or sets the deletion percentile within the context for this quantified results.
         /// </summary>
         public float PercentileDeletion { get; set; }
@@ -53,8 +60,13 @@ namespace PullRequestQuantifier.Abstractions.Core
         public float FormulaPercentile { get; set; }
 
         /// <summary>
-        /// Gets or sets the quantifier input.
+        /// Gets or sets the quantifier input used for this result calculation.
         /// </summary>
         public QuantifierInput QuantifierInput { get; set; }
+
+        /// <summary>
+        /// Gets or sets the context used for this result calculation.
+        /// </summary>
+        public Context Context { get; set; }
     }
 }

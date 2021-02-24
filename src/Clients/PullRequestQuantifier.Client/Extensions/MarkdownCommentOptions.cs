@@ -5,11 +5,8 @@
         public MarkdownCommentOptions()
         {
             CollapsePullRequestQuantifiedSection = true;
-            CollapseChangesSummarySection = true;
         }
 
         public bool CollapsePullRequestQuantifiedSection { get; set; }
-
-        public bool CollapseChangesSummarySection { get; set; }
     }
 }

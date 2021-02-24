@@ -38,7 +38,7 @@ namespace PullRequestQuantifier.GitHub.Client
                             new GitHubJwtFactoryOptions
                             {
                                 AppIntegrationId = int.Parse(gitHubAppSettings.Value.Id), // The GitHub App Id
-                                ExpirationSeconds = 600 // 10 minutes is the maximum time allowed
+                                ExpirationSeconds = 590 // 10 minutes is the maximum time allowed
                             });
                     }
 
