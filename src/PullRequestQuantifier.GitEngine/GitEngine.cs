@@ -181,6 +181,5 @@ namespace PullRequestQuantifier.GitEngine
         {
             return Repository.Discover(path);
         }
-
     }
 }
