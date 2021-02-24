@@ -38,16 +38,14 @@
             string clonePath)
         {
             var repositories = organizations.Select(
-                    o =>
-                        o.Projects.Select(
-                            p =>
-                                p.Repositories.Select(
-                                    r => new
-                                    {
-                                        Organization = o.Name,
-                                        Project = p.Name,
-                                        Repository = r.Name
-                                    })))
+                    o => o.Projects.Select(
+                        p => p.Repositories.Select(
+                            r => new
+                            {
+                                Organization = o.Name,
+                                Project = p.Name,
+                                Repository = r.Name
+                            })))
                 .SelectMany(a => a)
                 .SelectMany(a => a);
 
