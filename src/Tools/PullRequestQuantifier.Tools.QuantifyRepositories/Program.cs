@@ -59,7 +59,14 @@
                 await InitializeResultFile(resultFile);
 
                 var repoPath = Path.Combine(clonePath, repository.Repository);
-                using var repo = new LibGit2Sharp.Repository(LibGit2Sharp.Repository.Discover(repoPath));
+                var repoRoot = LibGit2Sharp.Repository.Discover(repoPath);
+                if (repoRoot == null)
+                {
+                    Console.WriteLine($"No repo found at {repoPath}");
+                    continue;
+                }
+
+                using var repo = new LibGit2Sharp.Repository(repoRoot);
                 var commits = repo.Commits.QueryBy(
                     new CommitFilter
                     {
