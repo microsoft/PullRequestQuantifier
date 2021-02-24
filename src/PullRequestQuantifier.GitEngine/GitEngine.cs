@@ -41,7 +41,7 @@ namespace PullRequestQuantifier.GitEngine
             {
                 var commits = repo.Commits.QueryBy(new CommitFilter
                 {
-                    IncludeReachableFrom = commitSha1
+                    FirstParentOnly = true
                 });
 
                 Parallel.ForEach(commits, commit =>
@@ -137,6 +137,7 @@ namespace PullRequestQuantifier.GitEngine
 
             var commits = repo.Commits.QueryBy(new CommitFilter
             {
+                FirstParentOnly = true,
                 SortBy = CommitSortStrategies.Reverse | CommitSortStrategies.Time
             });
             Parallel.ForEach(commits, commit =>
