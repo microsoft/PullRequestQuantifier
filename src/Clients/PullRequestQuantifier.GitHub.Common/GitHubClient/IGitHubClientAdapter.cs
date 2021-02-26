@@ -17,7 +17,9 @@
         /// <param name="organizationName">Organization name.</param>
         /// <param name="repositoryName">Repository name.</param>
         /// <returns>Found repository.</returns>
-        Task<Repository> GetRepositoryByNameAsync(string organizationName, string repositoryName);
+        Task<Repository> GetRepositoryByNameAsync(
+            string organizationName,
+            string repositoryName);
 
         /// <summary>
         /// Gets the specified repository.
@@ -127,9 +129,11 @@
         /// Get the list of files in pull request.
         /// </summary>
         /// <param name="repositoryId">Repository ID.</param>
-        /// <param name="pullRequestNumber">Pull Reqeust number.</param>
+        /// <param name="pullRequestNumber">Pull Request number.</param>
         /// <returns>List of pull request files.</returns>
-        Task<IReadOnlyList<PullRequestFile>> GetPullRequestFilesAsync(long repositoryId, int pullRequestNumber);
+        Task<IReadOnlyList<PullRequestFile>> GetPullRequestFilesAsync(
+            long repositoryId,
+            int pullRequestNumber);
 
         /// <summary>
         /// Get a pull request.
@@ -137,7 +141,9 @@
         /// <param name="repositoryId">Repository ID.</param>
         /// <param name="pullRequestNumber">Pull Request number.</param>
         /// <returns>Pull request details.</returns>
-        Task<PullRequest> GetPullRequestAsync(long repositoryId, int pullRequestNumber);
+        Task<PullRequest> GetPullRequestAsync(
+            long repositoryId,
+            int pullRequestNumber);
 
         /// <summary>
         /// Get an existing label by name.
@@ -173,7 +179,9 @@
         /// <param name="repositoryId">Repository ID.</param>
         /// <param name="issueNumber">Issue number.</param>
         /// <returns>List of labels on the issue.</returns>
-        Task<IReadOnlyList<Label>> GetIssueLabelsAsync(long repositoryId, int issueNumber);
+        Task<IReadOnlyList<Label>> GetIssueLabelsAsync(
+            long repositoryId,
+            int issueNumber);
 
         /// <summary>
         /// Apply labels to an issue.

@@ -12,7 +12,9 @@
         private const int NotInitializedRepositoryId = 0;
         private readonly IGitHubClient gitHubClient;
 
-        public GitHubClientAdapter(IGitHubClient gitHubClient, GitHubAppSettings gitHubAppSettings)
+        public GitHubClientAdapter(
+            IGitHubClient gitHubClient,
+            GitHubAppSettings gitHubAppSettings)
         {
             this.gitHubClient = gitHubClient;
             GitHubAppSettings = gitHubAppSettings;
@@ -21,7 +23,9 @@
         public GitHubAppSettings GitHubAppSettings { get; }
 
         /// <inheritdoc />
-        public async Task<Repository> GetRepositoryByNameAsync(string organizationName, string repositoryName)
+        public async Task<Repository> GetRepositoryByNameAsync(
+            string organizationName,
+            string repositoryName)
         {
             ArgumentCheck.StringIsNotNullOrWhiteSpace(organizationName, nameof(organizationName));
             ArgumentCheck.StringIsNotNullOrWhiteSpace(repositoryName, nameof(repositoryName));
