@@ -57,6 +57,12 @@
             var quantifyClient = new QuantifyClient(string.Empty);
 
             var resultFile = Path.Combine(repoPath, $"{fileInfoRepoPath.Name}_QuantifierResults.csv");
+
+            if (File.Exists(resultFile))
+            {
+                File.Delete(resultFile);
+            }
+
             await InitializeResultFile(resultFile);
 
             await RunQuantifier(
@@ -86,6 +92,12 @@
             foreach (var repository in repositories)
             {
                 var resultFile = Path.Combine(clonePath, $"{repository.Repository}_QuantifierResults.csv");
+
+                if (File.Exists(resultFile))
+                {
+                    File.Delete(resultFile);
+                }
+
                 await InitializeResultFile(resultFile);
 
                 var repoPath = Path.Combine(clonePath, repository.Repository);
@@ -100,8 +112,9 @@
         {
             await using var streamWriter = new StreamWriter(csvResultPath, true);
             await streamWriter.WriteLineAsync(
-                "CommitSha1,QuantifiedLinesAdded,QuantifiedLinesDeleted,PercentileAddition," +
-                "PercentileDeletion,DiffPercentile,Label,AbsoluteLinesAdded,AbsoluteLinesDeleted");
+                "CommitSha1,QuantifiedLinesAdded,QuantifiedLinesDeleted,AbsoluteLinesAdded," +
+                "AbsoluteLinesDeleted,PercentileAddition," +
+                "PercentileDeletion,DiffPercentile,Label");
         }
 
         private static async Task AddResultsToFile(IReadOnlyDictionary<string, QuantifierResult> results, string csvResultPath)
@@ -113,12 +126,12 @@
                     $"{result.Key}," +
                     $"{result.Value.QuantifiedLinesAdded}," +
                     $"{result.Value.QuantifiedLinesDeleted}," +
+                    $"{result.Value.QuantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded)}," +
+                    $"{result.Value.QuantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)}," +
                     $"{Math.Round(result.Value.PercentileAddition, 2)}," +
                     $"{Math.Round(result.Value.PercentileDeletion, 2)}," +
                     $"{Math.Round(result.Value.FormulaPercentile, 2)}," +
-                    $"{result.Value.Label}," +
-                    $"{result.Value.QuantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded)}," +
-                    $"{result.Value.QuantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)},");
+                    $"{result.Value.Label}");
             }
         }
 
