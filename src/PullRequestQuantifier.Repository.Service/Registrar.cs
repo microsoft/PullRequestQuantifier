@@ -13,9 +13,9 @@ namespace PullRequestQuantifier.Repository.Service
     using PullRequestQuantifier.Common.Azure.BlobStorage;
     using PullRequestQuantifier.Common.Azure.ServiceBus;
     using PullRequestQuantifier.Common.Azure.Telemetry;
-    using PullRequestQuantifier.GitHub.Client.Events;
     using PullRequestQuantifier.GitHub.Common.Events;
     using PullRequestQuantifier.GitHub.Common.GitHubClient;
+    using PullRequestQuantifier.Repository.Service.Events;
 
     public static class Registrar
     {
