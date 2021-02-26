@@ -2,7 +2,7 @@
   "profiles": {
     "PullRequestQuantifier.Tools.QuantifyRepositories": {
       "commandName": "Project",
-      "commandLineArgs": "-clonepath {} -configfile {} -user {} -pat {}"
+      "commandLineArgs": "-RepoPath  E:\\Clone\\TestRepo"
     }
   }
 }

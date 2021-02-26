@@ -42,6 +42,8 @@
 
         public string Pat { get; set; }
 
+        public string RepoPath { get; set; }
+
         private void ParseArgs()
         {
             while (arguments.Count > 0)
@@ -76,6 +78,10 @@
                 else if (optionName == "pat")
                 {
                     Pat = option.Value ?? throw new ArgumentException("Missing argument for -pat");
+                }
+                else if (optionName == "repopath")
+                {
+                    RepoPath = option.Value ?? throw new ArgumentException("Missing argument for -repopath");
                 }
             }
         }
