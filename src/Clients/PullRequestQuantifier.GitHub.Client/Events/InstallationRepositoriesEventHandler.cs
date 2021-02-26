@@ -7,7 +7,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
     using PullRequestQuantifier.GitHub.Common.Events;
     using PullRequestQuantifier.GitHub.Common.Models;
 
-    public class InstallationRepositoriesEventHandler : IGitHubEventHandler
+    public sealed class InstallationRepositoriesEventHandler : IGitHubEventHandler
     {
         private readonly IAppTelemetry telemetry;
         private readonly ILogger<PullRequestEventHandler> logger;

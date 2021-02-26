@@ -8,7 +8,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
     using PullRequestQuantifier.GitHub.Common.GitHubClient;
     using PullRequestQuantifier.GitHub.Common.Models;
 
-    public class InstallationEventHandler : IGitHubEventHandler
+    public sealed class InstallationEventHandler : IGitHubEventHandler
     {
         private readonly IGitHubClientAdapterFactory gitHubClientAdapterFactory;
         private readonly IAppTelemetry telemetry;

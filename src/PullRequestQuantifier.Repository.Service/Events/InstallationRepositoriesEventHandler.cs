@@ -1,4 +1,4 @@
-namespace PullRequestQuantifier.GitHub.Client.Events
+namespace PullRequestQuantifier.Repository.Service.Events
 {
     using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;

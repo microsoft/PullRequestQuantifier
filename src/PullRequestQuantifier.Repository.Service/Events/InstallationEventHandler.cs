@@ -1,24 +1,28 @@
-namespace PullRequestQuantifier.GitHub.Client.Events
+namespace PullRequestQuantifier.Repository.Service.Events
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
+    using GitHubJwt;
+    using LibGit2Sharp;
     using Microsoft.Extensions.Logging;
     using PullRequestQuantifier.Common.Azure.Telemetry;
     using PullRequestQuantifier.GitHub.Common.Events;
-    using PullRequestQuantifier.GitHub.Common.GitHubClient;
     using PullRequestQuantifier.GitHub.Common.Models;
 
     public class InstallationEventHandler : IGitHubEventHandler
     {
-        private readonly IGitHubClientAdapterFactory gitHubClientAdapterFactory;
+        private readonly IReadOnlyDictionary<string, IGitHubJwtFactory> gitHubJwtFactories;
         private readonly IAppTelemetry telemetry;
         private readonly ILogger<InstallationEventHandler> logger;
 
         public InstallationEventHandler(
-            IGitHubClientAdapterFactory gitHubClientAdapterFactory,
+            IReadOnlyDictionary<string, IGitHubJwtFactory> gitHubJwtFactories,
             IAppTelemetry telemetry,
             ILogger<InstallationEventHandler> logger)
         {
-            this.gitHubClientAdapterFactory = gitHubClientAdapterFactory;
+            this.gitHubJwtFactories = gitHubJwtFactories;
             this.telemetry = telemetry;
             this.logger = logger;
         }
@@ -29,9 +33,42 @@ namespace PullRequestQuantifier.GitHub.Client.Events
         {
             var payload =
                 new Octokit.Internal.SimpleJsonSerializer().Deserialize<InstallationEventPayload>(gitHubEvent);
+            var cloneOptions = GetCloneOptions(payload);
 
-            // todo call handle clone,stats
+            foreach (var payloadRepository in payload.Repositories)
+            {
+                var clonePath = Path.Combine(Environment.CurrentDirectory, Guid.NewGuid().ToString());
+
+                try
+                {
+                    Repository.Clone(
+                        $"{payload.Sender.HtmlUrl}/{payloadRepository.Name}.git",
+                        clonePath,
+                        cloneOptions);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+                Directory.Delete(clonePath);
+            }
+
             return Task.CompletedTask;
+        }
+
+        private CloneOptions GetCloneOptions(InstallationEventPayload payload)
+        {
+            var token = gitHubJwtFactories[new Uri(payload.Sender.HtmlUrl).DnsSafeHost].CreateEncodedJwtToken();
+            return new CloneOptions
+            {
+                CredentialsProvider = (url, user, cred) => new UsernamePasswordCredentials
+                {
+                    Username = "PAT",
+                    Password = token
+                }, BranchName = "master"
+            };
         }
     }
 }
