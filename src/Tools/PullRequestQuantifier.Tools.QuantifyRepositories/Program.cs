@@ -16,6 +16,9 @@
     using PullRequestQuantifier.Tools.Common.Model;
     using YamlDotNet.Serialization;
 
+    /// <summary>
+    /// params : -clonepath {} -configfile {} -user {} -pat {} or only if you don; want to clone -RepoPath {}.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public static class Program
     {
@@ -23,14 +26,43 @@
         {
             var commandLine = new CommandLine(args);
 
-            var organizations = new DeserializerBuilder()
+            var organizations = commandLine.ConfigFile != null
+                ? new DeserializerBuilder()
                 .Build()
-                .Deserialize<List<Organization>>(await File.ReadAllTextAsync(commandLine.ConfigFile));
+                .Deserialize<List<Organization>>(await File.ReadAllTextAsync(commandLine.ConfigFile))
+                : new List<Organization>();
 
-            await CloneAdoRepo.Program.Main(args);
-            await Quantify(
-                organizations,
-                commandLine.ClonePath);
+            if (!string.IsNullOrEmpty(commandLine.User)
+                && !string.IsNullOrEmpty(commandLine.Pat)
+                && !string.IsNullOrEmpty(commandLine.ClonePath))
+            {
+                await Quantify(
+                    organizations,
+                    commandLine.ClonePath);
+                await CloneAdoRepo.Program.Main(args);
+            }
+
+            await Quantify(commandLine.RepoPath);
+        }
+
+        private static async Task Quantify(string repoPath)
+        {
+            if (string.IsNullOrWhiteSpace(repoPath))
+            {
+                return;
+            }
+
+            var fileInfoRepoPath = new FileInfo(repoPath);
+
+            var quantifyClient = new QuantifyClient(string.Empty);
+
+            var resultFile = Path.Combine(repoPath, $"{fileInfoRepoPath.Name}_QuantifierResults.csv");
+            await InitializeResultFile(resultFile);
+
+            await RunQuantifier(
+                quantifyClient,
+                resultFile,
+                repoPath);
         }
 
         private static async Task Quantify(
@@ -57,58 +89,10 @@
                 await InitializeResultFile(resultFile);
 
                 var repoPath = Path.Combine(clonePath, repository.Repository);
-                var repoRoot = LibGit2Sharp.Repository.Discover(repoPath);
-                if (repoRoot == null)
-                {
-                    Console.WriteLine($"No repo found at {repoPath}");
-                    continue;
-                }
-
-                using var repo = new LibGit2Sharp.Repository(repoRoot);
-                var commits = repo.Commits.QueryBy(
-                    new CommitFilter
-                    {
-                        FirstParentOnly = true
-                    });
-
-                Console.WriteLine($"Total commits to evaluate : {commits.Count()}. Repo name {repository}.");
-                var sw = new Stopwatch();
-                sw.Reset();
-                sw.Start();
-                var batchSize = 100;
-                var quantifierResults = new ConcurrentDictionary<string, QuantifierResult>();
-                for (int page = 0; page < (commits.Count() / batchSize) + 1; page++)
-                {
-                    var commitBatch = commits.Skip(batchSize * page).Take(batchSize);
-                    var quantifyTasks = commitBatch.Select(
-                        async commit =>
-                        {
-                            try
-                            {
-                                var quantifierInput = new QuantifierInput();
-                                foreach (var parent in commit.Parents)
-                                {
-                                    var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
-
-                                    foreach (var gitFilePatch in patch.GetGitFilePatch())
-                                    {
-                                        quantifierInput.Changes.Add(gitFilePatch);
-                                    }
-                                }
-
-                                var quantifierResult = await quantifyClient.Compute(quantifierInput);
-                                quantifierResults.TryAdd(commit.Sha, quantifierResult);
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                            }
-                        });
-                    await Task.WhenAll(quantifyTasks);
-                    await AddResultsToFile(quantifierResults, resultFile);
-                    quantifierResults = new ConcurrentDictionary<string, QuantifierResult>();
-                    Console.WriteLine($"{(page + 1) * batchSize}/{commits.Count()} {sw.Elapsed}");
-                }
+                await RunQuantifier(
+                    quantifyClient,
+                    resultFile,
+                    repoPath);
             }
         }
 
@@ -135,6 +119,65 @@
                     $"{result.Value.Label}," +
                     $"{result.Value.QuantifierInput.Changes.Sum(c => c.AbsoluteLinesAdded)}," +
                     $"{result.Value.QuantifierInput.Changes.Sum(c => c.AbsoluteLinesDeleted)},");
+            }
+        }
+
+        private static async Task RunQuantifier(
+            QuantifyClient quantifyClient,
+            string resultFile,
+            string repoPath)
+        {
+            var repoRoot = LibGit2Sharp.Repository.Discover(repoPath);
+            if (repoRoot == null)
+            {
+                Console.WriteLine($"No repo found at {repoPath}");
+                return;
+            }
+
+            using var repo = new LibGit2Sharp.Repository(repoRoot);
+            var commits = repo.Commits.QueryBy(
+                new CommitFilter
+                {
+                    FirstParentOnly = true
+                });
+
+            Console.WriteLine($"Total commits to evaluate : {commits.Count()}. Repository path {repoPath}.");
+            var sw = new Stopwatch();
+            sw.Reset();
+            sw.Start();
+            var batchSize = 100;
+            var quantifierResults = new ConcurrentDictionary<string, QuantifierResult>();
+            for (int page = 0; page < (commits.Count() / batchSize) + 1; page++)
+            {
+                var commitBatch = commits.Skip(batchSize * page).Take(batchSize);
+                var quantifyTasks = commitBatch.Select(
+                    async commit =>
+                    {
+                        try
+                        {
+                            var quantifierInput = new QuantifierInput();
+                            foreach (var parent in commit.Parents)
+                            {
+                                var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
+
+                                foreach (var gitFilePatch in patch.GetGitFilePatch())
+                                {
+                                    quantifierInput.Changes.Add(gitFilePatch);
+                                }
+                            }
+
+                            var quantifierResult = await quantifyClient.Compute(quantifierInput);
+                            quantifierResults.TryAdd(commit.Sha, quantifierResult);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+                    });
+                await Task.WhenAll(quantifyTasks);
+                await AddResultsToFile(quantifierResults, resultFile);
+                quantifierResults = new ConcurrentDictionary<string, QuantifierResult>();
+                Console.WriteLine($"{(page + 1) * batchSize}/{commits.Count()} {sw.Elapsed}");
             }
         }
     }
