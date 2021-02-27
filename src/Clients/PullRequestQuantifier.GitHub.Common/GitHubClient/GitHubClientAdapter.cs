@@ -10,15 +10,18 @@
     {
         // this value should be considered as non existing repo
         private const int NotInitializedRepositoryId = 0;
-        private readonly IGitHubClient gitHubClient;
+        private readonly GitHubClient gitHubClient;
 
         public GitHubClientAdapter(
-            IGitHubClient gitHubClient,
+            GitHubClient gitHubClient,
             GitHubAppSettings gitHubAppSettings)
         {
             this.gitHubClient = gitHubClient;
             GitHubAppSettings = gitHubAppSettings;
+            Credentials = gitHubClient.Credentials;
         }
+
+        public Credentials Credentials { get; }
 
         public GitHubAppSettings GitHubAppSettings { get; }
 

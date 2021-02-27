@@ -12,7 +12,7 @@
     using Xunit;
 
     [ExcludeFromCodeCoverage]
-    public sealed class QuantifierResultExtensionsTests
+    public sealed class QuantifierResultExtensionsTests : IDisposable
     {
         private const string RepositoryLink = "http://www.test.com";
         private const string ContextFileLink = "http://www.test1.com";
@@ -150,6 +150,11 @@
                         await File.ReadAllTextAsync(@"Data/AssertCommentSummaryNotCollapsed.txt"),
                         StringComparison.Ordinal) > -1);
             }
+        }
+
+        public void Dispose()
+        {
+            gitRepoHelpers.DeleteRepoDirectory();
         }
     }
 }

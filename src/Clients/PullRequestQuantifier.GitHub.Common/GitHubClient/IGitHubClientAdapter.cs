@@ -9,6 +9,8 @@
     /// </summary>
     public interface IGitHubClientAdapter
     {
+        Credentials Credentials { get; }
+
         GitHubAppSettings GitHubAppSettings { get; }
 
         /// <summary>
