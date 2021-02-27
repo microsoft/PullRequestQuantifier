@@ -2,9 +2,11 @@ namespace PullRequestQuantifier.Repository.Service
 {
     using System;
     using System.Collections.Generic;
+    using System.IO.Abstractions;
     using Azure.Identity;
     using GitHubJwt;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Configuration.AzureAppConfiguration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Logging;
@@ -31,8 +33,11 @@ namespace PullRequestQuantifier.Repository.Service
             builder.AddAzureAppConfiguration(
                     options =>
                         options.Connect(
-                                new Uri(endPoint), managedIdentityCredential)
-                            .ConfigureKeyVault(kv => kv.SetCredential(managedIdentityCredential)))
+                                new Uri(endPoint),
+                                managedIdentityCredential)
+                            .ConfigureKeyVault(kv => kv.SetCredential(managedIdentityCredential))
+                            .Select(KeyFilter.Any)
+                            .Select(KeyFilter.Any, typeof(Registrar).Namespace))
                 .Build();
         }
 
@@ -41,12 +46,13 @@ namespace PullRequestQuantifier.Repository.Service
             IConfiguration configuration)
         {
             serviceCollection.AddLogging(b => b.AddConsole());
-            var appConfiguration = configuration.GetSection(nameof(AppConfiguration)).Get<AppConfiguration>();
+            var azureBlobSettings = configuration.GetSection(nameof(AzureBlobSettings)).Get<AzureBlobSettings>();
 
-            serviceCollection.AddSingleton<IBlobStorage>(p => new BlobStorage(
-                appConfiguration.BlobStorageAccountName,
-                appConfiguration.BlobStorageKey,
-                true));
+            serviceCollection.AddSingleton<IBlobStorage>(
+                p => new BlobStorage(
+                    azureBlobSettings.AccountName,
+                    azureBlobSettings.AccountKey,
+                    true));
 
             serviceCollection.Configure<GitHubAppFlavorSettings>(configuration.GetSection(nameof(GitHubAppFlavorSettings)));
             serviceCollection.Configure<AzureServiceBusSettings>(
@@ -67,7 +73,7 @@ namespace PullRequestQuantifier.Repository.Service
                             new GitHubJwtFactoryOptions
                             {
                                 AppIntegrationId = int.Parse(gitHubAppSettings.Value.Id), // The GitHub App Id
-                                ExpirationSeconds = 600 // 10 minutes is the maximum time allowed
+                                ExpirationSeconds = 590 // 10 minutes is the maximum time allowed
                             });
                     }
 
@@ -76,6 +82,7 @@ namespace PullRequestQuantifier.Repository.Service
             serviceCollection.AddSingleton<IGitHubClientAdapterFactory, GitHubClientAdapterFactory>();
             serviceCollection.TryAddSingleton<IEventBus, AzureServiceBus>();
 
+            serviceCollection.TryAddTransient<IFileSystem, FileSystem>();
             serviceCollection.TryAddEnumerable(
                 new[]
                 {

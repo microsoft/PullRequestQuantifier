@@ -1,5 +1,6 @@
 ﻿namespace PullRequestQuantifier.Client.Tests
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using PullRequestQuantifier.Abstractions.Core;
@@ -9,7 +10,7 @@
     using Xunit;
 
     [ExcludeFromCodeCoverage]
-    public sealed class QuantifyClientTests
+    public sealed class QuantifyClientTests : IDisposable
     {
         private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();
         private readonly GitEngine gitEngine = new GitEngine();
@@ -115,6 +116,11 @@
             Assert.Equal(0, quantifierResult.PercentileAddition);
             Assert.Equal(0, quantifierResult.PercentileDeletion);
             Assert.Equal(0, quantifierResult.FormulaPercentile);
+        }
+
+        public void Dispose()
+        {
+            gitRepoHelpers.DeleteRepoDirectory();
         }
     }
 }
