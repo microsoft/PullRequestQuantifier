@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.3.0" />
+    <PackageReference Include="CsvHelper" Version="25.0.0" />
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     <PackageReference Include="System.IO.Abstractions" Version="13.2.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" />
@@ -23,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Clients\PullRequestQuantifier.GitHub.Common\PullRequestQuantifier.GitHub.Common.csproj" />
     <ProjectReference Include="..\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj" />
+    <ProjectReference Include="..\Tools\PullRequestQuantifier.Tools.QuantifyRepositories\PullRequestQuantifier.Tools.QuantifyRepositories.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\launchSettings.json">
