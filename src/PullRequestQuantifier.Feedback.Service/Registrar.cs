@@ -32,12 +32,12 @@ namespace PullRequestQuantifier.Feedback.Service
             IConfiguration configuration)
         {
             serviceCollection.AddLogging(b => b.AddConsole());
-            var appConfiguration = configuration.GetSection(nameof(AppConfiguration)).Get<AppConfiguration>();
+            var azureBlobSettings = configuration.GetSection(nameof(AzureBlobSettings)).Get<AzureBlobSettings>();
 
             serviceCollection.Configure<FeedbackForm>(configuration.GetSection(nameof(FeedbackForm)));
             serviceCollection.AddSingleton<IBlobStorage>(p => new BlobStorage(
-                appConfiguration.BlobStorageAccountName,
-                appConfiguration.BlobStorageKey,
+                azureBlobSettings.AccountName,
+                azureBlobSettings.AccountKey,
                 true));
 
             return serviceCollection;

@@ -8,7 +8,7 @@
     using Xunit;
 
     [ExcludeFromCodeCoverage]
-    public sealed class GitEngineTests
+    public sealed class GitEngineTests : IDisposable
     {
         private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();
 
@@ -149,6 +149,11 @@
             Assert.Equal(2, changes.Length);
             Assert.Contains(changes, c => c.FilePath.Equals("fake3.cs", StringComparison.InvariantCultureIgnoreCase));
             Assert.Contains(changes, c => c.FilePath.Equals("fake4.cs", StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public void Dispose()
+        {
+            gitRepoHelpers.DeleteRepoDirectory();
         }
     }
 }
