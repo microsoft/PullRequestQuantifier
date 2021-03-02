@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.Common.Azure.BlobStorage
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Auth;
@@ -108,17 +109,32 @@
             // Create the CloudTable object that represents the tableName table.
             CloudTable table = cloudTableClient.GetTableReference(tableName);
 
-            // Create the batch operation.
-            var batchOperation = new TableBatchOperation();
-
-            foreach (var entity in entities)
+            // Azure table batch operation has a maximum of 100 operations at a time
+            var tableResults = new List<TableResult>();
+            var entityList = entities.ToList();
+            if (!entityList.Any())
             {
-                // Add entities to the batch insert operation.
-                batchOperation.InsertOrReplace(entity);
+                return tableResults;
             }
 
-            // Execute the batch operation.
-            return await table.ExecuteBatchAsync(batchOperation);
+            var batchSize = 100;
+            for (var page = 0; page < (entityList.Count / batchSize) + 1; page++)
+            {
+                var entityBatch = entityList.Skip(batchSize * page).Take(batchSize);
+                var batchOperation = new TableBatchOperation();
+
+                // Add entities to the batch insert operation.
+                foreach (var entity in entityBatch)
+                {
+                    batchOperation.InsertOrReplace(entity);
+                }
+
+                // Execute the batch operation.
+                var batchResults = await table.ExecuteBatchAsync(batchOperation);
+                tableResults.AddRange(batchResults);
+            }
+
+            return tableResults;
         }
 
         /// <inheritdoc />
