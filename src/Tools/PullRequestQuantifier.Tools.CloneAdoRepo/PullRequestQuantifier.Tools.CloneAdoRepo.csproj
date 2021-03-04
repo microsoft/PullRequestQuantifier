@@ -5,6 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>PullRequestQuantifier.Tools.CloneAdoRepo</AssemblyName>
     <RootNamespace>PullRequestQuantifier.Tools.CloneAdoRepo</RootNamespace>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>
