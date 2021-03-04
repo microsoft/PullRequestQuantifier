@@ -190,7 +190,7 @@
                 await Task.WhenAll(quantifyTasks);
                 await AddResultsToFile(quantifierResults, resultFile);
                 quantifierResults = new ConcurrentDictionary<string, QuantifierResult>();
-                Console.WriteLine($"{(page + 1) * batchSize}/{commits.Count()} {sw.Elapsed}");
+                Console.WriteLine($"{page * batchSize}/{commits.Count()} {sw.Elapsed}");
             }
         }
     }
