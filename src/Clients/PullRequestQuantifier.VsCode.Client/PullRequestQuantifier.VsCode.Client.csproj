@@ -35,7 +35,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <None Include="..\PullRequestQuantifier.Client\Extensions\ConsoleOutput.mustache">
+        <None Include="..\PullRequestQuantifier.Client\Extensions\Mustache\ConsoleOutput.mustache">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </None>

@@ -27,10 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Extensions\QuantifierComment.mustache">
+    <EmbeddedResource Include="Extensions\Mustache\QuantifierComment.mustache">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Extensions\ConsoleOutput.mustache">
+    <EmbeddedResource Include="Extensions\Mustache\ConsoleOutput.mustache">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
