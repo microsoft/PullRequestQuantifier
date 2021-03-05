@@ -28,8 +28,8 @@
 
             var organizations = commandLine.ConfigFile != null
                 ? new DeserializerBuilder()
-                .Build()
-                .Deserialize<List<Organization>>(await File.ReadAllTextAsync(commandLine.ConfigFile))
+                    .Build()
+                    .Deserialize<List<Organization>>(await File.ReadAllTextAsync(commandLine.ConfigFile))
                 : new List<Organization>();
 
             if (!string.IsNullOrEmpty(commandLine.User)
@@ -169,9 +169,10 @@
                         try
                         {
                             var quantifierInput = new QuantifierInput();
-                            foreach (var parent in commit.Parents)
+                            var firstParent = commit.Parents.FirstOrDefault();
+                            if (firstParent != null)
                             {
-                                var patch = repo.Diff.Compare<Patch>(parent.Tree, commit.Tree);
+                                var patch = repo.Diff.Compare<Patch>(firstParent.Tree, commit.Tree);
 
                                 foreach (var gitFilePatch in patch.GetGitFilePatch())
                                 {
