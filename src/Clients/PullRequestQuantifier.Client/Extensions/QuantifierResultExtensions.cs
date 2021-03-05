@@ -104,7 +104,9 @@
                     IdealSizeUpperBound = idealSizeUpperBound,
                     IsIdealSize = quantifierResult.FormulaLinesChanged >= idealSizeLowerBound && quantifierResult.FormulaLinesChanged <= idealSizeUpperBound,
                     Formula = quantifierResult.Formula.ToString(),
-                    ContextFileLink = contextFileLink,
+                    ContextFileLink = !string.IsNullOrWhiteSpace(contextFileLink)
+                        ? contextFileLink :
+                        "https://github.com/microsoft/PullRequestQuantifier/blob/main/docs/prquantifier-yaml.md",
                     FeedbackLinkUp = feedbackLinkThumbsUp,
                     FeedbackLinkNeutral = feedbackLinkNeutral,
                     FeedbackLinkDown = feedbackLinkThumbsDown,
