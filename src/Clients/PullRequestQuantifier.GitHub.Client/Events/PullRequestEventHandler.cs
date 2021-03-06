@@ -91,17 +91,22 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 quantifierClientResult,
                 quantifyClient.Context.Thresholds.Select(t => t.Label));
 
+            var quantifierContextLink = !string.IsNullOrWhiteSpace(context)
+                ? $"{payload.Repository.HtmlUrl}/blob/{payload.Repository.DefaultBranch}/prquantifier.yaml"
+                : string.Empty;
             await UpdateCommentOnPullRequest(
                 payload,
                 gitHubClientAdapter,
-                quantifierClientResult);
+                quantifierClientResult,
+                quantifierContextLink);
             return quantifierClientResult;
         }
 
         private async Task UpdateCommentOnPullRequest(
             PullRequestEventPayload payload,
             IGitHubClientAdapter gitHubClientAdapter,
-            QuantifierResult quantifierClientResult)
+            QuantifierResult quantifierClientResult,
+            string quantifierContextLink)
         {
             // delete existing comments created by us
             var existingComments =
@@ -115,8 +120,6 @@ namespace PullRequestQuantifier.GitHub.Client.Events
             }
 
             // create a new comment on the issue
-            var defaultBranch = payload.Repository.DefaultBranch;
-            var quantifierContextLink = $"{payload.Repository.HtmlUrl}/blob/{defaultBranch}/prquantifier.yaml";
             var comment = await quantifierClientResult.ToMarkdownCommentAsync(
                 payload.Repository.HtmlUrl,
                 quantifierContextLink,
