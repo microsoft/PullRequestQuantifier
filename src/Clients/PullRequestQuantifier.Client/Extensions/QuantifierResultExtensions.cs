@@ -21,7 +21,7 @@
 
             using var stream = new StreamReader(
                 Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                    $"{typeof(QuantifierResultExtensions).Namespace}.ConsoleOutput.mustache") !);
+                    $"{typeof(QuantifierResultExtensions).Namespace}.Mustache.ConsoleOutput.mustache") !);
 
             var consoleOutput = await stubble.RenderAsync(
                 await stream.ReadToEndAsync(),
@@ -54,7 +54,7 @@
 
             using var stream = new StreamReader(
                 Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                    $"{typeof(QuantifierResultExtensions).Namespace}.QuantifierComment.mustache") !);
+                    $"{typeof(QuantifierResultExtensions).Namespace}.Mustache.QuantifierComment.mustache") !);
 
             var feedbackLinkThumbsUp = CreateFeedbackLink(
                 "ThumbsUp",
@@ -104,7 +104,9 @@
                     IdealSizeUpperBound = idealSizeUpperBound,
                     IsIdealSize = quantifierResult.FormulaLinesChanged >= idealSizeLowerBound && quantifierResult.FormulaLinesChanged <= idealSizeUpperBound,
                     Formula = quantifierResult.Formula.ToString(),
-                    ContextFileLink = contextFileLink,
+                    ContextFileLink = !string.IsNullOrWhiteSpace(contextFileLink)
+                        ? contextFileLink :
+                        "https://github.com/microsoft/PullRequestQuantifier/blob/main/docs/prquantifier-yaml.md",
                     FeedbackLinkUp = feedbackLinkThumbsUp,
                     FeedbackLinkNeutral = feedbackLinkNeutral,
                     FeedbackLinkDown = feedbackLinkThumbsDown,
