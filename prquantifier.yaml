@@ -6,6 +6,7 @@ Excluded:
 - '*.md'
 - '*.sln'
 - '*.mustache'
+- '*.txt'
 GitOperationType:
 - Add
 - Delete
