@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.Common.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Xunit;
 
@@ -80,6 +81,7 @@
         {
             // act
             ArgumentCheck.NonEmptyGuid(Guid.NewGuid(), nameof(ArgumentCheck));
+            ArgumentCheck.NonEmptyGuid(Guid.NewGuid().ToString(), nameof(ArgumentCheck), "D");
 
             // assert that we don't throw exception
             Assert.True(true);
@@ -90,6 +92,26 @@
         {
             // act, assert
             Assert.Throws<ArgumentException>(() => ArgumentCheck.NonEmptyGuid("value", nameof(ArgumentCheck)));
+            Assert.Throws<ArgumentException>(() => ArgumentCheck.NonEmptyGuid("value", nameof(ArgumentCheck), "D"));
+        }
+
+        [Fact]
+        public void NonEmptyArrayPositive()
+        {
+            // act
+            ArgumentCheck.NonEmptyArray(new[] { string.Empty }, nameof(ArgumentCheck));
+
+            // assert that we don't throw exception
+            Assert.True(true);
+        }
+
+        [Fact]
+        public void NonEmptyArrayNegative()
+        {
+            // act, assert
+            Assert.Throws<ArgumentException>(() => ArgumentCheck.NonEmptyArray(
+                new List<string>().ToArray(),
+                nameof(ArgumentCheck)));
         }
     }
 }
