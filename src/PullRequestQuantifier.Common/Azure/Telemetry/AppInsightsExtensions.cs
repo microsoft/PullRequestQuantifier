@@ -1,6 +1,7 @@
 namespace PullRequestQuantifier.Common.Azure.Telemetry
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.ApplicationInsights;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ namespace PullRequestQuantifier.Common.Azure.Telemetry
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.ApplicationInsights;
 
+    [ExcludeFromCodeCoverage]
     public static class AppInsightsExtensions
     {
         /// <summary>

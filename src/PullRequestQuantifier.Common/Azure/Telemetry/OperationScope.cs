@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.ApplicationInsights;
     using Microsoft.ApplicationInsights.Extensibility;
     using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -12,6 +13,7 @@
     /// either RequestTelemetry or DependencyTelemetry based on if current call is root
     /// This class is returned in using statement in order to emit metric when it's being disposed.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public sealed class OperationScope<T> : IDisposable
         where T : OperationTelemetry, new()
     {
