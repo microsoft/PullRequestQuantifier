@@ -53,26 +53,44 @@ namespace PullRequestQuantifier.Repository.Service.Events
 
                 try
                 {
-                    var installationToken = await GetInstallationToken(payload);
                     var dnsSafeHost = new Uri(payload.Installation.HtmlUrl).DnsSafeHost;
+                    var gitHubClientAdapter =
+                        await gitHubClientAdapterFactory.GetGitHubClientAdapterAsync(
+                            payload.Installation.Id,
+                            dnsSafeHost);
+                    var installationToken = gitHubClientAdapter.Credentials.Password;
                     Repository.Clone(
                         $"https://x-access-token:{installationToken}@{dnsSafeHost}/{payload.Installation.Account.Login}/{payloadRepository.Name}.git",
                         clonePath);
+
                     await Tools.QuantifyRepositories.Program.Main(new[] { "-repoPath", clonePath });
+
                     using var streamReader = new StreamReader(fileSystem.Path.Combine(clonePath, $"{repoDirectory}_QuantifierResults.csv"));
                     using var csv = new CsvReader(streamReader, CultureInfo.InvariantCulture);
                     csv.Context.RegisterClassMap<CommitStatsMap>();
-                    var repositoryStats = csv.GetRecords<CommitStats>();
-                    repositoryStats = repositoryStats.Select(
+                    var commitStats = csv.GetRecords<CommitStats>();
+                    commitStats = commitStats.Select(
                         r =>
                         {
                             r.PartitionKey = $"{payload.Installation.Account.Id}-{payloadRepository.Id}";
                             r.RowKey = r.CommitSha1;
                             return r;
                         }).ToList();
+                    var commitStatsMap = commitStats.ToDictionary(c => c.CommitSha1);
+
+                    // get all closed pull requests
+                    var closedPrs = await gitHubClientAdapter.GetClosedPullRequestsAsync(payloadRepository.Id);
+                    foreach (var pr in closedPrs)
+                    {
+                        var prLeadTime = pr.MergedAt?.Subtract(pr.CreatedAt);
+                        if (prLeadTime != null && commitStatsMap.TryGetValue(pr.MergeCommitSha, out var commitStat))
+                        {
+                            commitStat.PullRequestLeadTime = (TimeSpan)prLeadTime;
+                        }
+                    }
 
                     await blobStorage.CreateTableAsync(nameof(CommitStats));
-                    await blobStorage.InsertOrReplaceTableEntitiesAsync(nameof(CommitStats), repositoryStats);
+                    await blobStorage.InsertOrReplaceTableEntitiesAsync(nameof(CommitStats), commitStatsMap.Values);
                 }
                 catch (Exception e)
                 {
@@ -82,15 +100,6 @@ namespace PullRequestQuantifier.Repository.Service.Events
 
                 fileSystem.DeleteDirectory(clonePath);
             }
-        }
-
-        private async Task<string> GetInstallationToken(InstallationEventPayload payload)
-        {
-            var gitHubClientAdapter =
-                await gitHubClientAdapterFactory.GetGitHubClientAdapterAsync(
-                    payload.Installation.Id,
-                    new Uri(payload.Sender.HtmlUrl).DnsSafeHost);
-            return gitHubClientAdapter.Credentials.Password;
         }
     }
 }

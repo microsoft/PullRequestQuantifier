@@ -1,5 +1,6 @@
 namespace PullRequestQuantifier.Repository.Service.Models
 {
+    using System;
     using Microsoft.WindowsAzure.Storage.Table;
 
     public sealed class CommitStats : TableEntity
@@ -21,5 +22,14 @@ namespace PullRequestQuantifier.Repository.Service.Models
         public int AbsoluteLinesAdded { get; set; }
 
         public int AbsoluteLinesDeleted { get; set; }
+
+        public TimeSpan PullRequestLeadTime { get; set; }
+
+        // Workaround the fact that TableEntity does not automatically store a `TimeSpan`
+        public long PullRequestLeadTimeTicks
+        {
+            get => PullRequestLeadTime.Ticks;
+            set => PullRequestLeadTime = TimeSpan.FromTicks(value);
+        }
     }
 }

@@ -1,17 +1,20 @@
 namespace PullRequestQuantifier.Repository.Service.Models
 {
-    using System.Globalization;
     using CsvHelper.Configuration;
 
     public sealed class CommitStatsMap : ClassMap<CommitStats>
     {
         public CommitStatsMap()
         {
-            AutoMap(CultureInfo.InvariantCulture);
-            Map(m => m.PartitionKey).Ignore();
-            Map(m => m.RowKey).Ignore();
-            Map(m => m.Timestamp).Ignore();
-            Map(m => m.ETag).Ignore();
+            Map(m => m.CommitSha1);
+            Map(m => m.QuantifiedLinesAdded);
+            Map(m => m.QuantifiedLinesDeleted);
+            Map(m => m.PercentileAddition);
+            Map(m => m.PercentileDeletion);
+            Map(m => m.DiffPercentile);
+            Map(m => m.Label);
+            Map(m => m.AbsoluteLinesAdded);
+            Map(m => m.AbsoluteLinesDeleted);
         }
     }
 }
