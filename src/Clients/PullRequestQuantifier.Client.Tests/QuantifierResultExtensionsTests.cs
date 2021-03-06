@@ -49,7 +49,7 @@
 
             // Assert
             Assert.True(!string.IsNullOrWhiteSpace(comment));
-            Assert.StartsWith("### Pull Request Quantified", comment);
+            Assert.StartsWith("### ![](https://img.shields.io/static/v1?label=Quantified&message=Extra%20Small&color=green)", comment);
         }
 
         [Fact]
@@ -135,7 +135,7 @@
 
             // Assert
             Assert.True(!string.IsNullOrWhiteSpace(comment));
-            Assert.StartsWith("### Pull Request Quantified", comment);
+            Assert.StartsWith("### ![](https://img.shields.io/static/v1?label=Quantified&message=Extra%20Small&color=green)", comment);
             if (collapseQuantifiedDetailsSection)
             {
                 Assert.True(
