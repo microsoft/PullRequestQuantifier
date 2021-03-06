@@ -1,8 +1,10 @@
 ﻿namespace PullRequestQuantifier.Common.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public sealed class ArgumentCheckTests
     {
         [Fact]
