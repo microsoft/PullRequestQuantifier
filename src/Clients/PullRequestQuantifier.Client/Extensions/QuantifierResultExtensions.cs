@@ -92,8 +92,14 @@
                 await stream.ReadToEndAsync(),
                 new
                 {
-                    quantifierResult.Color,
+                    // lower th color str because of a bug in shield service
+                    // https://img.shields.io/static/v1?label=Quantified&message=Extra%20Small&color=Red is not respecting the red color,
+                    // but https://img.shields.io/static/v1?label=Quantified&message=Extra%20Small&color=red is working
+                    Color = quantifierResult.Color.ToLower(),
                     quantifierResult.Label,
+
+                    // encode the label in case contains space
+                    EncodedLabel = Uri.EscapeUriString(quantifierResult.Label),
                     quantifierResult.QuantifiedLinesAdded,
                     quantifierResult.QuantifiedLinesDeleted,
                     quantifierResult.FormulaLinesChanged,
