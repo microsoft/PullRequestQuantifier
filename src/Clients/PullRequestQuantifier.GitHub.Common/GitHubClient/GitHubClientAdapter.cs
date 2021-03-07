@@ -180,6 +180,21 @@
         }
 
         /// <inheritdoc />
+        public async Task<IReadOnlyList<PullRequest>> GetClosedPullRequestsAsync(long repositoryId)
+        {
+            return await gitHubClient.PullRequest.GetAllForRepository(
+                repositoryId,
+                new PullRequestRequest
+                {
+                    State = ItemStateFilter.Closed
+                },
+                new ApiOptions
+                {
+                    PageSize = 100
+                });
+        }
+
+        /// <inheritdoc />
         public async Task<Label> CreateLabelAsync(
             long repositoryId,
             NewLabel label)

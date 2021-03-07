@@ -148,6 +148,13 @@
             int pullRequestNumber);
 
         /// <summary>
+        /// Get list of closed pull requests for a repository.
+        /// </summary>
+        /// <param name="repositoryId">Repository ID.</param>
+        /// <returns>List of pull requests.</returns>
+        Task<IReadOnlyList<PullRequest>> GetClosedPullRequestsAsync(long repositoryId);
+
+        /// <summary>
         /// Get an existing label by name.
         /// </summary>
         /// <param name="repositoryId">Repository ID.</param>

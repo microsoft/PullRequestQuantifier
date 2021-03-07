@@ -193,6 +193,8 @@
                 quantifierResults = new ConcurrentDictionary<string, QuantifierResult>();
                 Console.WriteLine($"{page * batchSize}/{commits.Count()} {sw.Elapsed}");
             }
+
+            Console.WriteLine("Completed!");
         }
     }
 }
