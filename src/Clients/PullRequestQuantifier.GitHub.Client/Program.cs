@@ -1,9 +1,11 @@
 namespace PullRequestQuantifier.GitHub.Client
 {
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static void Main(string[] args)
