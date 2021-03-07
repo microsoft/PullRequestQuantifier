@@ -1,12 +1,14 @@
 ﻿namespace PullRequestQuantifier.Client.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
     using PullRequestQuantifier.Client.ContextGenerator;
     using PullRequestQuantifier.Common.Tests;
     using Xunit;
 
+    [ExcludeFromCodeCoverage]
     public sealed class ContextGeneratorTests : IDisposable
     {
         private readonly GitRepoTestHelpers gitRepoHelpers = new GitRepoTestHelpers();

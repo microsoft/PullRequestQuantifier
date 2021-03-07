@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -44,6 +45,7 @@
             return Task.CompletedTask;
         }
 
+        [ExcludeFromCodeCoverage]
         private async Task HandleGitHubEvent(string gitHubEvent, DateTimeOffset messageEnqueueTime)
         {
             var eventJtoken = JToken.Parse(gitHubEvent);
@@ -75,6 +77,7 @@
                 ("EventType", eventType));
         }
 
+        [ExcludeFromCodeCoverage]
         private Task ErrorHandler(Exception exception)
         {
             logger.LogError(exception, "Error during event processing.");
