@@ -45,9 +45,27 @@ namespace PullRequestQuantifier.Repository.Service.Events
         {
             var payload =
                 new Octokit.Internal.SimpleJsonSerializer().Deserialize<InstallationEventPayload>(gitHubEvent);
+            if (Enum.TryParse(
+                payload.Action,
+                true,
+                out GitHubEventActions parsedAction) && parsedAction != GitHubEventActions.Created)
+            {
+                logger.LogInformation("Ignoring installation event with {action} action", payload.Action);
+                return;
+            }
 
+            logger.LogInformation("Handling installation event for {account}", payload.Installation.Account.Login);
             foreach (var payloadRepository in payload.Repositories)
             {
+                if (payloadRepository.Fork)
+                {
+                    logger.LogInformation(
+                        "Ignoring forked repository {account}/{repository}",
+                        payload.Installation.Account.Login,
+                        payloadRepository.Name);
+                    continue;
+                }
+
                 var repoDirectory = Guid.NewGuid().ToString();
                 var clonePath = fileSystem.Path.Combine(fileSystem.Path.GetTempPath(), repoDirectory);
 
@@ -59,7 +77,10 @@ namespace PullRequestQuantifier.Repository.Service.Events
                             payload.Installation.Id,
                             dnsSafeHost);
                     var installationToken = gitHubClientAdapter.Credentials.Password;
-                    logger.LogInformation("Cloning repository {account}/{repository}", payload.Installation.Account.Login, payloadRepository.Name);
+                    logger.LogInformation(
+                        "Cloning repository {account}/{repository}",
+                        payload.Installation.Account.Login,
+                        payloadRepository.Name);
                     Repository.Clone(
                         $"https://x-access-token:{installationToken}@{dnsSafeHost}/{payload.Installation.Account.Login}/{payloadRepository.Name}.git",
                         clonePath);
@@ -73,7 +94,7 @@ namespace PullRequestQuantifier.Repository.Service.Events
                     commitStats = commitStats.Select(
                         r =>
                         {
-                            r.PartitionKey = $"{payload.Installation.Account.Id}-{payloadRepository.Id}";
+                            r.PartitionKey = $"{payload.Installation.Account.Login}-{payloadRepository.Name}";
                             r.RowKey = r.CommitSha1;
                             return r;
                         }).ToList();
@@ -93,8 +114,13 @@ namespace PullRequestQuantifier.Repository.Service.Events
                     }
 
                     // upload only the commits for which there was a PR
-                    var commitStatsToUpload = commitStatsMap.Values.Where(c => c.PullRequestId != 0);
+                    var commitStatsToUpload = commitStatsMap.Values.Where(c => c.PullRequestId != 0).ToList();
 
+                    logger.LogInformation(
+                        "Calculated {commitCount} commits to upload for {account}/{repository}",
+                        commitStatsToUpload.Count,
+                        payload.Installation.Account.Login,
+                        payloadRepository.Name);
                     await blobStorage.CreateTableAsync(nameof(CommitStats));
                     await blobStorage.InsertOrReplaceTableEntitiesAsync(nameof(CommitStats), commitStatsToUpload);
                 }
@@ -107,8 +133,10 @@ namespace PullRequestQuantifier.Repository.Service.Events
                         payloadRepository.Name);
                     throw;
                 }
-
-                fileSystem.DeleteDirectory(clonePath);
+                finally
+                {
+                    fileSystem.DeleteDirectory(clonePath);
+                }
             }
         }
     }

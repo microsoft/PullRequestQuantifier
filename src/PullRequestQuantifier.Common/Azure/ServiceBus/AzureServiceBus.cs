@@ -41,7 +41,8 @@ namespace PullRequestQuantifier.Common.Azure.ServiceBus
                 this.settings.SubscriptionName,
                 new ServiceBusProcessorOptions
                 {
-                    MaxConcurrentCalls = 10
+                    MaxConcurrentCalls = 10,
+                    MaxAutoLockRenewalDuration = TimeSpan.FromDays(3) // auto lock renewal max 3 days to allow us to process long running events
                 });
         }
 
