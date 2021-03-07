@@ -57,6 +57,15 @@ namespace PullRequestQuantifier.Repository.Service.Events
             logger.LogInformation("Handling installation event for {account}", payload.Installation.Account.Login);
             foreach (var payloadRepository in payload.Repositories)
             {
+                if (payloadRepository.Fork)
+                {
+                    logger.LogInformation(
+                        "Ignoring forked repo {account}/{repository}",
+                        payload.Installation.Account.Login,
+                        payloadRepository.Name);
+                    continue;
+                }
+
                 var repoDirectory = Guid.NewGuid().ToString();
                 var clonePath = fileSystem.Path.Combine(fileSystem.Path.GetTempPath(), repoDirectory);
 
