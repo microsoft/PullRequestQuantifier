@@ -45,6 +45,14 @@ namespace PullRequestQuantifier.Repository.Service.Events
         {
             var payload =
                 new Octokit.Internal.SimpleJsonSerializer().Deserialize<InstallationEventPayload>(gitHubEvent);
+            if (Enum.TryParse(
+                payload.Action,
+                true,
+                out GitHubEventActions parsedAction) && parsedAction != GitHubEventActions.Created)
+            {
+                logger.LogInformation("Ignoring installation event with {action}", payload.Action);
+                return;
+            }
 
             foreach (var payloadRepository in payload.Repositories)
             {
@@ -59,7 +67,10 @@ namespace PullRequestQuantifier.Repository.Service.Events
                             payload.Installation.Id,
                             dnsSafeHost);
                     var installationToken = gitHubClientAdapter.Credentials.Password;
-                    logger.LogInformation("Cloning repository {account}/{repository}", payload.Installation.Account.Login, payloadRepository.Name);
+                    logger.LogInformation(
+                        "Cloning repository {account}/{repository}",
+                        payload.Installation.Account.Login,
+                        payloadRepository.Name);
                     Repository.Clone(
                         $"https://x-access-token:{installationToken}@{dnsSafeHost}/{payload.Installation.Account.Login}/{payloadRepository.Name}.git",
                         clonePath);
@@ -107,8 +118,10 @@ namespace PullRequestQuantifier.Repository.Service.Events
                         payloadRepository.Name);
                     throw;
                 }
-
-                fileSystem.DeleteDirectory(clonePath);
+                finally
+                {
+                    fileSystem.DeleteDirectory(clonePath);
+                }
             }
         }
     }
