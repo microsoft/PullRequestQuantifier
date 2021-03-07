@@ -59,6 +59,7 @@ namespace PullRequestQuantifier.Repository.Service.Events
                             payload.Installation.Id,
                             dnsSafeHost);
                     var installationToken = gitHubClientAdapter.Credentials.Password;
+                    logger.LogInformation("Cloning repository {account}/{repository}", payload.Installation.Account.Login, payloadRepository.Name);
                     Repository.Clone(
                         $"https://x-access-token:{installationToken}@{dnsSafeHost}/{payload.Installation.Account.Login}/{payloadRepository.Name}.git",
                         clonePath);
@@ -86,15 +87,24 @@ namespace PullRequestQuantifier.Repository.Service.Events
                         if (prLeadTime != null && commitStatsMap.TryGetValue(pr.MergeCommitSha, out var commitStat))
                         {
                             commitStat.PullRequestLeadTime = (TimeSpan)prLeadTime;
+                            commitStat.PullRequestId = pr.Id;
+                            commitStat.PullRequestAuthor = pr.User.Login;
                         }
                     }
 
+                    // upload only the commits for which there was a PR
+                    var commitStatsToUpload = commitStatsMap.Values.Where(c => c.PullRequestId != 0);
+
                     await blobStorage.CreateTableAsync(nameof(CommitStats));
-                    await blobStorage.InsertOrReplaceTableEntitiesAsync(nameof(CommitStats), commitStatsMap.Values);
+                    await blobStorage.InsertOrReplaceTableEntitiesAsync(nameof(CommitStats), commitStatsToUpload);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    logger.LogError(
+                        e,
+                        "Error during processing installation event for {account}/{repository}",
+                        payload.Installation.Account.Login,
+                        payloadRepository.Name);
                     throw;
                 }
 

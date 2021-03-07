@@ -23,6 +23,10 @@ namespace PullRequestQuantifier.Repository.Service.Models
 
         public int AbsoluteLinesDeleted { get; set; }
 
+        public long PullRequestId { get; set; }
+
+        public string PullRequestAuthor { get; set; }
+
         public TimeSpan PullRequestLeadTime { get; set; }
 
         // Workaround the fact that TableEntity does not automatically store a `TimeSpan`
