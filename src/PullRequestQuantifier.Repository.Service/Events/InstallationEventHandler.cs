@@ -50,10 +50,11 @@ namespace PullRequestQuantifier.Repository.Service.Events
                 true,
                 out GitHubEventActions parsedAction) && parsedAction != GitHubEventActions.Created)
             {
-                logger.LogInformation("Ignoring installation event with {action}", payload.Action);
+                logger.LogInformation("Ignoring installation event with {action} action", payload.Action);
                 return;
             }
 
+            logger.LogInformation("Handling installation event for {account}", payload.Installation.Account.Login);
             foreach (var payloadRepository in payload.Repositories)
             {
                 var repoDirectory = Guid.NewGuid().ToString();
