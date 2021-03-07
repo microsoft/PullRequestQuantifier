@@ -1,11 +1,14 @@
 ﻿namespace PullRequestQuantifier.GitHub.Common.GitHubClient
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using Octokit;
     using PullRequestQuantifier.Common;
 
     /// <inheritdoc cref="IGitHubClientAdapter"/>
+    /// pass through functions, for unit testing reason, no coverage necessary
+    [ExcludeFromCodeCoverage]
     public sealed class GitHubClientAdapter : IGitHubClientAdapter
     {
         // this value should be considered as non existing repo

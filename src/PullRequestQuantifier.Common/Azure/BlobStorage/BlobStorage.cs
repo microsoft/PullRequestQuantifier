@@ -1,6 +1,7 @@
 ﻿namespace PullRequestQuantifier.Common.Azure.BlobStorage
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.WindowsAzure.Storage;
@@ -8,6 +9,7 @@
     using Microsoft.WindowsAzure.Storage.Table;
 
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public sealed class BlobStorage : IBlobStorage
     {
         private readonly CloudTableClient cloudTableClient;

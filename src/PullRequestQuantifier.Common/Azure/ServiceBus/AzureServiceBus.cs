@@ -1,6 +1,7 @@
 namespace PullRequestQuantifier.Common.Azure.ServiceBus
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
     using global::Azure.Messaging.ServiceBus;
@@ -10,6 +11,7 @@ namespace PullRequestQuantifier.Common.Azure.ServiceBus
     using Newtonsoft.Json.Linq;
     using PullRequestQuantifier.Common.Azure.Telemetry;
 
+    [ExcludeFromCodeCoverage]
     public class AzureServiceBus : IEventBus
     {
         private readonly AzureServiceBusSettings settings;
