@@ -60,7 +60,7 @@ namespace PullRequestQuantifier.Repository.Service.Events
                 if (payloadRepository.Fork)
                 {
                     logger.LogInformation(
-                        "Ignoring forked repo {account}/{repository}",
+                        "Ignoring forked repository {account}/{repository}",
                         payload.Installation.Account.Login,
                         payloadRepository.Name);
                     continue;
