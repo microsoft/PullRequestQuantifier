@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Microsoft.ApplicationInsights;
@@ -10,6 +11,7 @@
     using Microsoft.ApplicationInsights.Extensibility.Implementation;
     using Microsoft.ApplicationInsights.Metrics;
 
+    [ExcludeFromCodeCoverage]
     public sealed class AppTelemetry : IAppTelemetry, IDisposable
     {
         private readonly TelemetryClient appInsights;

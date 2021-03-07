@@ -1,0 +1,97 @@
+{
+  "action": "added",
+  "installation": {
+    "id": 43,
+    "account": {
+      "login": "dradboia",
+      "id": 2376,
+      "node_id": "MDQ6VXNlcjIzNzY=",
+      "avatar_url": "https://avatars.microsoft.githubenterprise.com/u/2376?",
+      "gravatar_id": "",
+      "url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia",
+      "html_url": "https://microsoft.githubenterprise.com/dradboia",
+      "followers_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/followers",
+      "following_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/following{/other_user}",
+      "gists_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/gists{/gist_id}",
+      "starred_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/starred{/owner}{/repo}",
+      "subscriptions_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/subscriptions",
+      "organizations_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/orgs",
+      "repos_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/repos",
+      "events_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/events{/privacy}",
+      "received_events_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "repository_selection": "selected",
+    "access_tokens_url": "https://microsoft.githubenterprise.com/api/v3/app/installations/43/access_tokens",
+    "repositories_url": "https://microsoft.githubenterprise.com/api/v3/installation/repositories",
+    "html_url": "https://microsoft.githubenterprise.com/settings/installations/43",
+    "app_id": 19,
+    "app_slug": "pull-request-quantifier-dev",
+    "target_id": 2376,
+    "target_type": "User",
+    "permissions": {
+      "contents": "read",
+      "metadata": "read",
+      "pull_requests": "write"
+    },
+    "events": [
+      "pull_request"
+    ],
+    "created_at": "2021-03-06T12:33:22.000-08:00",
+    "updated_at": "2021-03-06T12:39:10.000-08:00",
+    "single_file_name": null,
+    "has_multiple_single_files": false,
+    "single_file_paths": [
+
+    ],
+    "suspended_by": null,
+    "suspended_at": null
+  },
+  "repository_selection": "selected",
+  "repositories_added": [
+    {
+      "id": 269,
+      "node_id": "MDEwOlJlcG9zaXRvcnkyNjk=",
+      "name": "PullRequestQuantifierTest",
+      "full_name": "dradboia/PullRequestQuantifierTest",
+      "private": true
+    }
+  ],
+  "repositories_removed": [
+
+  ],
+  "requester": null,
+  "enterprise": {
+    "id": 1,
+    "slug": "microsoft",
+    "name": "microsoft",
+    "node_id": "MDEwOkVudGVycHJpc2Ux",
+    "avatar_url": "https://avatars.microsoft.githubenterprise.com/b/1?",
+    "description": "Microsoft Instance of GHAE",
+    "website_url": "https://aka.ms/ghae",
+    "html_url": "https://microsoft.githubenterprise.com/enterprises/microsoft",
+    "created_at": "2020-10-28T17:32:53Z",
+    "updated_at": "2021-03-05T19:23:50Z"
+  },
+  "sender": {
+    "login": "dradboia",
+    "id": 2376,
+    "node_id": "MDQ6VXNlcjIzNzY=",
+    "avatar_url": "https://avatars.microsoft.githubenterprise.com/u/2376?",
+    "gravatar_id": "",
+    "url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia",
+    "html_url": "https://microsoft.githubenterprise.com/dradboia",
+    "followers_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/followers",
+    "following_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/following{/other_user}",
+    "gists_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/gists{/gist_id}",
+    "starred_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/starred{/owner}{/repo}",
+    "subscriptions_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/subscriptions",
+    "organizations_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/orgs",
+    "repos_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/repos",
+    "events_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/events{/privacy}",
+    "received_events_url": "https://microsoft.githubenterprise.com/api/v3/users/dradboia/received_events",
+    "type": "User",
+    "site_admin": false
+  }
+}

@@ -1,5 +1,6 @@
 namespace PullRequestQuantifier.GitHub.Common.Models
 {
+    using System.Diagnostics.CodeAnalysis;
     using Newtonsoft.Json;
     using Octokit;
 
@@ -7,6 +8,7 @@ namespace PullRequestQuantifier.GitHub.Common.Models
     /// This model has to be created by us as it is not present in
     /// Octokit.NET library.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class InstallationRepositoriesEventPayload
     {
         public string Action { get; protected set; }
