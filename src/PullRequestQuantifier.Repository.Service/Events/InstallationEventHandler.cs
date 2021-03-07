@@ -114,8 +114,13 @@ namespace PullRequestQuantifier.Repository.Service.Events
                     }
 
                     // upload only the commits for which there was a PR
-                    var commitStatsToUpload = commitStatsMap.Values.Where(c => c.PullRequestId != 0);
+                    var commitStatsToUpload = commitStatsMap.Values.Where(c => c.PullRequestId != 0).ToList();
 
+                    logger.LogInformation(
+                        "Calculated {commitCount} commits to upload for {account}/{repository}",
+                        commitStatsToUpload.Count,
+                        payload.Installation.Account.Login,
+                        payloadRepository.Name);
                     await blobStorage.CreateTableAsync(nameof(CommitStats));
                     await blobStorage.InsertOrReplaceTableEntitiesAsync(nameof(CommitStats), commitStatsToUpload);
                 }
