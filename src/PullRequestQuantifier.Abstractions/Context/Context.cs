@@ -75,5 +75,14 @@
         /// Gets or sets FormulaPercentile. Used in quantifier final computation.
         /// </summary>
         public IEnumerable<(ThresholdFormula, SortedDictionary<int, float>)> FormulaPercentile { get; set; }
+
+        /// <summary>
+        /// Shallow copy.
+        /// </summary>
+        /// <returns>returns a shallow copy.</returns>
+        public Context ShallowCopy()
+        {
+            return (Context)MemberwiseClone();
+        }
     }
 }
