@@ -94,7 +94,7 @@ namespace PullRequestQuantifier.Repository.Service.Events
                     commitStats = commitStats.Select(
                         r =>
                         {
-                            r.PartitionKey = $"{payload.Installation.Account.Id}-{payloadRepository.Id}";
+                            r.PartitionKey = $"{payload.Installation.Account.Login}-{payloadRepository.Name}";
                             r.RowKey = r.CommitSha1;
                             return r;
                         }).ToList();
