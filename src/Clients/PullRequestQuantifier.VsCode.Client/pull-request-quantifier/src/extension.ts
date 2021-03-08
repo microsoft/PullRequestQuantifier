@@ -9,7 +9,18 @@ const moreInfoUrl: string = "https://github.com/microsoft/PullRequestQuantifier"
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): void {
 
-	let outputTemplate: string = fs.readFileSync(context.asAbsolutePath("./out/ConsoleOutput.mustache")).toString();
+	let exeDir;
+	let exeFile = "PullRequestQuantifier.VsCode.Client";
+	const platform = process.platform;
+	if (platform === "darwin") {
+		exeDir = "osx-x64";
+	} else if (platform === "win32") {
+		exeDir = "win10-x64";
+		exeFile = "PullRequestQuantifier.VsCode.Client.exe";
+	} else {
+		exeDir = "linux-x64";
+	}
+	let outputTemplate: string = fs.readFileSync(context.asAbsolutePath(`./out/${exeDir}/ConsoleOutput.mustache`)).toString();
 	outputTemplate = escapeRegExp(outputTemplate);
 	outputTemplate = outputTemplate.replace(/{{(.*?)}}/g, "(.*)");
 	const outputRegex: RegExp = new RegExp(outputTemplate);
@@ -25,7 +36,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		});
 	});
 
-	const exePath: string = context.asAbsolutePath("./out/PullRequestQuantifier.VsCode.Client.exe");
+	const exePath: string = context.asAbsolutePath(`./out/${exeDir}/${exeFile}`);
 	const statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 999);
 	statusBarItem.command = showMoreInfoCommand;
 
