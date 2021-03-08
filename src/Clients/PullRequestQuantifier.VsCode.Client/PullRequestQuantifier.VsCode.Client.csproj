@@ -15,6 +15,7 @@
         <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
         <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
        
+        <RemoveDir Directories="$(NodeJsRoot)\node_modules" />
         <RemoveDir Directories="$(NodeJsRoot)\out" />
         <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm install" />
         <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run compile" />
