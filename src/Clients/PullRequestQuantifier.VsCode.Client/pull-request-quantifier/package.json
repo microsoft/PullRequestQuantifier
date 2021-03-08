@@ -4,18 +4,16 @@
 	"description": "A highly customizable framework to quantify a pull request within a repository context.",
 	"publisher": "ms",
 	"version": "0.0.2",
+	"homepage": "https://github.com/microsoft/PullRequestQuantifier/blob/main/src/Clients/PullRequestQuantifier.VsCode.Client/README.md",
 	"repository": {
 		"url": "https://github.com/microsoft/PullRequestQuantifier.git",
 		"type": "git"
-	},
-	"galleryBanner": {
-		"color": "#C80000",
-		"theme": "dark"
 	},
 	"engines": {
 		"vscode": "^1.52.0"
 	},
 	"categories": [
+		"Programming Languages",
 		"Visualization",
 		"Other"
 	],
