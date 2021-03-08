@@ -23,7 +23,7 @@
         {
             // get historical changes
             var historicalChanges = gitEngine.GetGitHistoricalChangesToParent(repoPath);
-            var context = DefaultContext.Value;
+            var context = DefaultContext.Value.ShallowCopy();
 
             // if there are no history changes into the repo then return the default context.
             if (historicalChanges.Count == 0)
