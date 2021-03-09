@@ -15,17 +15,20 @@
         <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
         <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
        
+        <RemoveDir Directories="$(NodeJsRoot)\node_modules" />
         <RemoveDir Directories="$(NodeJsRoot)\out" />
         <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm install" />
         <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run compile" />
 
         <!-- Include the dlls in the js output -->
         <ItemGroup>
-            <_CopyItemsDlls Include="bin\$(Configuration)\net5.0\publish\*" />
-            <_CopyItemsRuntime Include="bin\$(Configuration)\net5.0\publish\runtimes\$(RuntimeIdentifier)\**" />
+            <_CopyItemsDllsWin Include="bin\$(Configuration)\net5.0\win10-x64\publish\*" />
+            <_CopyItemsDllsLinux Include="bin\$(Configuration)\net5.0\linux-x64\publish\*" />
+            <_CopyItemsDllsOsx Include="bin\$(Configuration)\net5.0\osx-x64\publish\*" />
         </ItemGroup>
-        <Copy SourceFiles="@(_CopyItemsDlls)" DestinationFolder="$(NodeJsRoot)\out\%(RecursiveDir)" />
-        <Copy SourceFiles="@(_CopyItemsRuntime)" DestinationFolder="$(NodeJsRoot)\out\runtimes\$(RuntimeIdentifier)\%(RecursiveDir)" />
+        <Copy SourceFiles="@(_CopyItemsDllsWin)" DestinationFolder="$(NodeJsRoot)\out\win10-x64\%(RecursiveDir)" />
+        <Copy SourceFiles="@(_CopyItemsDllsLinux)" DestinationFolder="$(NodeJsRoot)\out\linux-x64\%(RecursiveDir)" />
+        <Copy SourceFiles="@(_CopyItemsDllsOsx)" DestinationFolder="$(NodeJsRoot)\out\osx-x64\%(RecursiveDir)" />
 
         <Exec WorkingDirectory="$(NodeJsRoot)" Command="npm run package" />
     </Target>
