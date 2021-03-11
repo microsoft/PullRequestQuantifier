@@ -34,7 +34,7 @@ namespace PullRequestQuantifier.Common.Azure.ServiceBus
                 this.settings.ConnectionString,
                 new ServiceBusClientOptions
                 {
-                    TransportType = ServiceBusTransportType.AmqpTcp
+                    TransportType = ServiceBusTransportType.AmqpWebSockets
                 });
 
             // create a sender for the topic
