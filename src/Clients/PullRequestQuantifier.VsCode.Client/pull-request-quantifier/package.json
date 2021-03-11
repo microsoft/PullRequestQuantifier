@@ -2,8 +2,8 @@
 	"name": "pull-request-quantifier",
 	"displayName": "Pull Request Quantifier",
 	"description": "A highly customizable framework to quantify a pull request within a repository context.",
-	"publisher": "ms",
-	"version": "0.0.2",
+	"publisher": "ms-1es",
+	"version": "0.1.0",
 	"homepage": "https://github.com/microsoft/PullRequestQuantifier/blob/main/src/Clients/PullRequestQuantifier.VsCode.Client/README.md",
 	"repository": {
 		"url": "https://github.com/microsoft/PullRequestQuantifier.git",
@@ -23,7 +23,8 @@
 		"Request",
 		"Size",
 		"Label",
-		"Changes"
+		"Changes",
+		"Code velocity"
 	],
 	"activationEvents": [
 		"onStartupFinished"

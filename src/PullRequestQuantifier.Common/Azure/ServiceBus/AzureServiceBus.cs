@@ -30,7 +30,12 @@ namespace PullRequestQuantifier.Common.Azure.ServiceBus
             this.logger = logger;
             this.settings = settings.Value;
 
-            serviceBusClient = new ServiceBusClient(this.settings.ConnectionString);
+            serviceBusClient = new ServiceBusClient(
+                this.settings.ConnectionString,
+                new ServiceBusClientOptions
+                {
+                    TransportType = ServiceBusTransportType.AmqpWebSockets
+                });
 
             // create a sender for the topic
             sender = serviceBusClient.CreateSender(this.settings.TopicName);
