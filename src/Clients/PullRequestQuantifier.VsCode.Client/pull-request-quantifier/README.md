@@ -8,6 +8,8 @@ A highly customizable framework to quantify a pull request within a repository c
 - Uses git history to provide a repository level context to the pull request
 - Provides customizations through a yaml file for fine grained behavior control
 
+If your team uses GitHub for source code management, checkout the [PullRequestQuantifier GitHub app](https://github.com/marketplace/pull-request-quantifier)!
+
 ## Usage
 
 Whenever a file is saved in VSCode, if that file is part of a git repo, the PullRequestQuantifier extension will evaluate changes
@@ -18,6 +20,11 @@ and display information in the status bar about how it is quantified.
 Click on the info to show a more detailed output.
 
 ![](https://raw.githubusercontent.com/microsoft/PullRequestQuantifier/main/docs/images/client-vscode-moreinfo.png)
+
+### Customization
+
+The behavior of the extension can be customized to exclude/include file patterns, customize thresholds and labels, etc.
+See [here](https://github.com/microsoft/PullRequestQuantifier/blob/main/docs/prquantifier-yaml.md) for a detailed explanation.
 
 #
 
