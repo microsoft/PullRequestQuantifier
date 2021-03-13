@@ -9,7 +9,7 @@ jobs:
   build-vscode-extension:
     name: "Build VSCode extension vsix"
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -24,6 +24,7 @@ jobs:
       env:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     - name: Build
+
       run: dotnet build src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --no-restore
     - name: dotnet publish win10-x64
       run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -r win10-x64
