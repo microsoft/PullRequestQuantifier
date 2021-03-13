@@ -1,0 +1,41 @@
+name: Build VSCode extension
+
+on:
+  workflow_dispatch:
+  push:
+    #branches: [ main ]
+
+jobs:
+  build-vscode-extension:
+    name: "Build VSCode extension vsix"
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Install dependencies
+      run: dotnet restore src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj
+      env:
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    - name: Build
+      run: dotnet build src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --no-restore
+    - name: dotnet publish win10-x64
+      run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -r win10-x64
+    - name: dotnet publish linux-x64
+      run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -r linux-x64
+    - name: dotnet publish osx-x64
+      run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -r osx-x64
+    - name: dotnet publish vsix
+      run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -p:PackageVsix=true
+    - name: Upload release artifacts
+      #if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: vsix
+        path: src/Clients/PullRequestQuantifier.VsCode.Client/**/*.vsix
