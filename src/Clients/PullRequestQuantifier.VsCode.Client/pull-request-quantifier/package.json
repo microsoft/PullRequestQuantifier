@@ -3,7 +3,7 @@
 	"displayName": "Pull Request Quantifier",
 	"description": "A highly customizable framework to quantify a pull request within a repository context.",
 	"publisher": "ms-1es",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"homepage": "https://github.com/microsoft/PullRequestQuantifier/blob/main/src/Clients/PullRequestQuantifier.VsCode.Client/README.md",
 	"repository": {
 		"url": "https://github.com/microsoft/PullRequestQuantifier.git",
