@@ -79,38 +79,6 @@
         }
 
         [Theory]
-        [InlineData(33, false)]
-        [InlineData(0, false)]
-        [InlineData(80, true)]
-        [InlineData(82, true)]
-        [InlineData(182, true)]
-        [InlineData(200, true)]
-        [InlineData(201, false)]
-        [InlineData(400, false)]
-        [InlineData(410, false)]
-        [InlineData(1410, false)]
-        [InlineData(10410, false)]
-        public async Task ToMarkdownCommentAsync_IdealSizeCheck(int formulaLinesChanged, bool isIdeal)
-        {
-            // Arrange
-            var quantifierInput = new QuantifierInput();
-            quantifierInput.Changes.AddRange(gitEngine.GetGitChanges(gitRepoHelpers.RepoPath));
-            var quantifyClient = new QuantifyClient(string.Empty);
-            var quantifierResult = await quantifyClient.Compute(quantifierInput);
-            quantifierResult.FormulaLinesChanged = formulaLinesChanged;
-
-            var comment = await quantifierResult.ToMarkdownCommentAsync(
-                RepositoryLink,
-                ContextFileLink,
-                PullRequestLink,
-                AuthorName);
-
-            // Assert
-            var idealJobIndex = comment.IndexOf("Great job", StringComparison.Ordinal);
-            Assert.True((isIdeal && idealJobIndex > -1) || (!isIdeal && idealJobIndex == -1));
-        }
-
-        [Theory]
         [InlineData(true)]
         [InlineData(false)]
         public async Task ToMarkdownCommentAsync_Options_CollapseQuantificationDetailsSection(bool collapseQuantifiedDetailsSection)
