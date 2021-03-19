@@ -6,8 +6,11 @@
 A highly **customizable framework** to quantify a pull request within a repository
 context **to drive a optimal PR experience**.
 
-[Install our free GitHub App <br>](https://github.com/marketplace/pull-request-quantifier)
+[Install our free GitHub App](https://github.com/marketplace/pull-request-quantifier)
+
 <span><a href="https://github.com/marketplace/pull-request-quantifier"><img src="./docs/images/client-github_2.png" width="400"/></a></span>
+
+[VSCode extension](https://marketplace.visualstudio.com/items?itemName=ms-1es.pull-request-quantifier)
 
 ### Highlights
 
