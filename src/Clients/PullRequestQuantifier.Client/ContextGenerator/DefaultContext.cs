@@ -70,6 +70,7 @@ namespace PullRequestQuantifier.Client.ContextGenerator
                 {
                     "prquantifier.yaml",
                     "package-lock.json",
+                    "yarn.lock",
                     "packages.lock.json",
                     "requirements.txt",
                     "*.sln",
