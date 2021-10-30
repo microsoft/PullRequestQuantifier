@@ -13,6 +13,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
     using PullRequestQuantifier.Abstractions.Git;
     using PullRequestQuantifier.Client.Extensions;
     using PullRequestQuantifier.Client.QuantifyClient;
+    using PullRequestQuantifier.Common;
     using PullRequestQuantifier.Common.Azure.Telemetry;
     using PullRequestQuantifier.GitHub.Common.Events;
     using PullRequestQuantifier.GitHub.Common.GitHubClient;
@@ -80,9 +81,9 @@ namespace PullRequestQuantifier.GitHub.Client.Events
 
             var quantifierInput = await GetQuantifierInputFromPullRequest(payload, gitHubClientAdapter);
 
-            var context = await GetContextFromRepoIfPresent(payload, gitHubClientAdapter);
+            var contextResult = await GetContextFromRepoIfPresent(payload, gitHubClientAdapter);
 
-            var quantifyClient = new QuantifyClient(context);
+            var quantifyClient = new QuantifyClient(contextResult.context);
             var quantifierClientResult = await quantifyClient.Compute(quantifierInput);
 
             await ApplyLabelToPullRequest(
@@ -91,8 +92,8 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 quantifierClientResult,
                 quantifyClient.Context.Thresholds.Select(t => t.Label));
 
-            var quantifierContextLink = !string.IsNullOrWhiteSpace(context)
-                ? $"{payload.Repository.HtmlUrl}/blob/{payload.Repository.DefaultBranch}/prquantifier.yaml"
+            var quantifierContextLink = !string.IsNullOrWhiteSpace(contextResult.context)
+                ? $"{payload.Repository.HtmlUrl}/blob/{payload.Repository.DefaultBranch}/{contextResult.contextPath}"
                 : string.Empty;
             await UpdateCommentOnPullRequest(
                 payload,
@@ -188,27 +189,42 @@ namespace PullRequestQuantifier.GitHub.Client.Events
                 new[] { quantifierClientResult.Label });
         }
 
-        private async Task<string> GetContextFromRepoIfPresent(PullRequestEventPayload payload, IGitHubClientAdapter gitHubClientAdapter)
+        private async Task<(string context, string contextPath)> GetContextFromRepoIfPresent(PullRequestEventPayload payload, IGitHubClientAdapter gitHubClientAdapter)
         {
             // get context if present
-            string context = null;
+            byte[] rawContext = { };
+            string contextPath = string.Empty;
             try
             {
-                var rawContext = await gitHubClientAdapter.GetRawFileAsync(
+                rawContext = await gitHubClientAdapter.GetRawFileAsync(
                     payload.Repository.Owner.Login,
                     payload.Repository.Name,
-                    "/prquantifier.yaml");
-                context = Encoding.UTF8.GetString(rawContext);
+                    $"/{Constants.RootContextFilePath}");
+                contextPath = Constants.RootContextFilePath;
             }
             catch (NotFoundException)
             {
+                try
+                {
+                    // try reading from .github folder as a fallback
+                    rawContext = await gitHubClientAdapter.GetRawFileAsync(
+                        payload.Repository.Owner.Login,
+                        payload.Repository.Name,
+                        $"/{Constants.GitHubFolderContextFilePath}");
+                    contextPath = Constants.GitHubFolderContextFilePath;
+                }
+                catch
+                {
+                    // ignored
+                }
             }
             catch
             {
                 // ignored
             }
 
-            return context;
+            var context = Encoding.UTF8.GetString(rawContext);
+            return (context, contextPath);
         }
 
         private async Task<QuantifierInput> GetQuantifierInputFromPullRequest(PullRequestEventPayload payload, IGitHubClientAdapter gitHubClientAdapter)
