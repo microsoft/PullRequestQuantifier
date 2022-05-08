@@ -145,7 +145,8 @@
         [Fact]
         public async Task HandleEvent_FromNoDiffToDiff_SetNewLabelCorrectly()
         {
-            var previousLabel = new Label(1L, string.Empty, "No Changes", "1", string.Empty, string.Empty, true);
+            var previousLabelName = "No Changes";
+            var previousLabel = new Label(1L, string.Empty, previousLabelName, "1", string.Empty, string.Empty, true);
             var newLabelName = "Extra Small";
             var diff = @"diff --git a/a.txt b/a.txt
 new file mode 100644
@@ -174,7 +175,7 @@ index 0000000..9daeafb
             // assert
             gitHubClientAdapter.Verify(
                 f =>
-                    f.RemoveLabelFromIssueAsync(It.IsAny<long>(), It.IsAny<int>(), "No Changes"),
+                    f.RemoveLabelFromIssueAsync(It.IsAny<long>(), It.IsAny<int>(), previousLabelName),
                 Times.Once);
 
             gitHubClientAdapter.Verify(
