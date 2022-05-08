@@ -85,12 +85,13 @@ namespace PullRequestQuantifier.GitHub.Client.Events
 
             var quantifyClient = new QuantifyClient(contextResult.context);
             var quantifierClientResult = await quantifyClient.Compute(quantifierInput);
+            var labels = quantifyClient.Context.Thresholds.Select(t => t.Label).Union(new[] { "No Changes" });
 
             await ApplyLabelToPullRequest(
                 payload,
                 gitHubClientAdapter,
                 quantifierClientResult,
-                quantifyClient.Context.Thresholds.Select(t => t.Label));
+                labels);
 
             var quantifierContextLink = !string.IsNullOrWhiteSpace(contextResult.context)
                 ? $"{payload.Repository.HtmlUrl}/blob/{payload.Repository.DefaultBranch}/{contextResult.contextPath}"
