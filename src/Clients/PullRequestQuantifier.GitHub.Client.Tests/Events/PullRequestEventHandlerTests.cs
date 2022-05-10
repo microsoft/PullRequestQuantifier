@@ -113,36 +113,6 @@
         }
 
         [Fact]
-        public async Task HandleEvent_FromDiffToNoDiff_SetNewLabelCorrectly()
-        {
-            var previousLabelName = "Small";
-            var previousLabel = new Label(1L, string.Empty, previousLabelName, "1", string.Empty, string.Empty, true);
-            var newLabelName = "No Changes";
-
-            // setup
-            var installationEventHandler = new PullRequestEventHandler(
-                gitHubClientAdapterFactory.Object,
-                appTelemetry.Object,
-                new Mock<ILogger<PullRequestEventHandler>>().Object);
-
-            gitHubClientAdapter.Setup(f => f.GetIssueLabelsAsync(It.IsAny<long>(), It.IsAny<int>()))
-                .ReturnsAsync(new List<Label> { previousLabel });
-
-            // act
-            await installationEventHandler.HandleEvent(await File.ReadAllTextAsync(@"Data/PulRequestPayload.txt"));
-
-            // assert
-            gitHubClientAdapter.Verify(
-                f =>
-                    f.RemoveLabelFromIssueAsync(It.IsAny<long>(), It.IsAny<int>(), previousLabelName),
-                Times.Once);
-
-            gitHubClientAdapter.Verify(
-                f =>
-                f.ApplyLabelAsync(It.IsAny<long>(), It.IsAny<int>(), new[] { newLabelName }), Times.Once);
-        }
-
-        [Fact]
         public async Task HandleEvent_FromNoDiffToDiff_SetNewLabelCorrectly()
         {
             var previousLabelName = "No Changes";
