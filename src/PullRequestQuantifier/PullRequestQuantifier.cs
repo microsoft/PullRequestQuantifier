@@ -2,6 +2,7 @@ namespace PullRequestQuantifier
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Drawing;
     using System.Linq;
     using System.Threading.Tasks;
@@ -109,7 +110,7 @@ namespace PullRequestQuantifier
         {
             if (quantifierResult.QuantifiedLinesDeleted == 0 && quantifierResult.QuantifiedLinesAdded == 0)
             {
-                quantifierResult.Label = "No Changes";
+                quantifierResult.Label = Constants.NoChangesLabelName;
                 quantifierResult.Color = nameof(Color.Green);
                 return;
             }

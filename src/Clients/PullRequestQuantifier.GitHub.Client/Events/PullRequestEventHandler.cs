@@ -85,7 +85,7 @@ namespace PullRequestQuantifier.GitHub.Client.Events
 
             var quantifyClient = new QuantifyClient(contextResult.context);
             var quantifierClientResult = await quantifyClient.Compute(quantifierInput);
-            var labels = quantifyClient.Context.Thresholds.Select(t => t.Label).Union(new[] { "No Changes" });
+            var labels = quantifyClient.Context.Thresholds.Select(t => t.Label).Union(new[] { Constants.NoChangesLabelName });
 
             await ApplyLabelToPullRequest(
                 payload,

@@ -4,5 +4,6 @@ namespace PullRequestQuantifier.Common
     {
         public const string RootContextFilePath = "prquantifier.yaml";
         public const string GitHubFolderContextFilePath = ".github/prquantifier.yaml";
+        public const string NoChangesLabelName = "No Changes";
     }
 }
