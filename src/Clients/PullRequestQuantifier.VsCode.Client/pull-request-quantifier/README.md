@@ -43,7 +43,7 @@ optimal size (typical small, or medium sized PRs) mean:
   - Similarity in low PR complexity drives similar review times. 
 - Review quality is likely higher as complexity is lower:
   - Bugs are more likely to be detected.
-  - Code inconsistencies are more likely to be detetcted.
+  - Code inconsistencies are more likely to be detected.
 - Knowledge sharing is improved within the participants:
   - Small portions can be assimilated better.
 - Better engineering practices are exercised:
