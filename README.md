@@ -18,6 +18,10 @@ context **to drive a optimal PR experience**.
 - Uses git history to provide a repository level context to the pull request
 - Provides customizations through a yaml file for fine grained behavior control
 
+### Prerequisites
+
+- [.NET 5.0 runtime](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) is required for the framework to work properly.
+
 #
 
 <details open>
