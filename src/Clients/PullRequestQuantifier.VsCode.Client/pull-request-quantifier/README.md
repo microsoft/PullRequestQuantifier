@@ -10,6 +10,10 @@ A highly customizable framework to quantify a pull request within a repository c
 
 If your team uses GitHub for source code management, checkout the [PullRequestQuantifier GitHub app](https://github.com/marketplace/pull-request-quantifier)!
 
+### Prerequisites
+
+- [.NET 5.0 runtime](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) is required for the extension to work properly.
+
 ## Usage
 
 Whenever a file is saved in VSCode, if that file is part of a git repo, the PullRequestQuantifier extension will evaluate changes
