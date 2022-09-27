@@ -32,6 +32,41 @@ context **to drive a optimal PR experience**.
 Optimal pull request sizes drive a better predictable PR flow as they strike a
 balance between between PR complexity and PR review overhead. PRs within the
 optimal size (typical small, or medium sized PRs) mean:
+\
+﻿# Pull Request Quantifier
+![.NET Core Build](https://github.com/microsoft/PullRequestQuantifier/workflows/.NET%20Core%20Build/badge.svg)
+![Nuget](https://img.shields.io/nuget/v/PullRequestQuantifier.Client)
+[![codecov](https://codecov.io/gh/microsoft/PullRequestQuantifier/branch/main/graph/badge.svg?token=3YH6267UFS)](https://codecov.io/gh/microsoft/PullRequestQuantifier)
+
+A highly **customizable framework** to quantify a pull request within a repository
+context **to drive a optimal PR experience**.
+
+[Install our free GitHub App](https://github.com/marketplace/pull-request-quantifier)
+
+<span><a href="https://github.com/marketplace/pull-request-quantifier"><img src="./docs/images/client-github_2.png" width="400"/></a></span>
+
+[VSCode extension](https://marketplace.visualstudio.com/items?itemName=ms-1es.pull-request-quantifier)
+
+### Highlights
+
+- Counts pull request changes with high accuracy
+- Uses git history to provide a repository level context to the pull request
+- Provides customizations through a yaml file for fine grained behavior control
+
+### Prerequisites
+
+- [.NET 5.0 runtime](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) is required for the framework to work properly.
+
+#
+
+<details open>
+  <summary display="inline"> <strong>Why proper sizing of changes matters</strong> </summary>
+  <p/>
+  <p/>  
+
+Optimal pull request sizes drive a better predictable PR flow as they strike a
+balance between between PR complexity and PR review overhead. PRs within the
+optimal size (typical small, or medium sized PRs) mean:
 
 - Fast and predictable releases to production: 
   - Optimal size changes are more likely to be reviewed faster with fewer
