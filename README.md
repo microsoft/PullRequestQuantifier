@@ -1,4 +1,4 @@
-﻿# Pull Request Quantifier
+﻿# Pull Request Quantifier 
 ![.NET Core Build](https://github.com/microsoft/PullRequestQuantifier/workflows/.NET%20Core%20Build/badge.svg)
 ![Nuget](https://img.shields.io/nuget/v/PullRequestQuantifier.Client)
 [![codecov](https://codecov.io/gh/microsoft/PullRequestQuantifier/branch/main/graph/badge.svg?token=3YH6267UFS)](https://codecov.io/gh/microsoft/PullRequestQuantifier)
@@ -210,4 +210,53 @@ Use of Microsoft trademarks or logos in modified versions of this project must n
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 </details>
 
+- Change your engineering behaviors
+  - For PRs that fall outside of the desired spectrum, review the details and check
+  if:
+    - Your PR could be split in smaller, self-contained PRs instead
+    - Your PR only solves one particular issue. (For example, don't refactor and
+    code new features in the same PR).
 
+#### How to interpret the change counts in git diff output
+
+- One line was added: `+1 -0`
+- One line was deleted: `+0 -1`
+- One line was modified: `+1 -1` (git diff doesn't know about modified, it will
+interpret that line like one addition plus one deletion)
+- Change percentiles: Change characteristics (addition, deletion, modification)
+of this PR in relation to all other PRs within the repository.
+
+</details>
+
+## 
+
+<details open>
+  <summary display="inline"> <strong>Clients</strong> </summary>
+<p/>
+  <p/>
+ The following open source clients are supported:
+
+| - | Name | Example |
+|------|------|---------|
+| <a href="./src/Clients/PullRequestQuantifier.Local.Client"><img src="./docs/images/cli-icon.png" width="50"/></a>  | [CLI](./src/Clients/PullRequestQuantifier.Local.Client) | ![](./docs/images/client-cli.png) |
+| <a href="./src/Clients/PullRequestQuantifier.Vsix.Client"><img src="./docs/images/visual-studio-icon.png" width="50"/></a>  | [Visual Studio](./src/Clients/PullRequestQuantifier.Vsix.Client) | ![](./docs/images/client-vsix.png) |
+| <a href="./src/Clients/PullRequestQuantifier.GitHub.Client"><img src="./docs/images/github-icon.png" width="50"/></a>  | [GitHub](./src/Clients/PullRequestQuantifier.GitHub.Client) | ![](./docs/images/client-github.png) |
+
+
+</details>
+
+
+##
+
+<details>
+  <summary display="inline"> <strong>How to develop new clients</strong> </summary>
+  <p/>
+  <p/>
+Three steps
+
+1. Load the context, if available
+1. Call Quantifier
+1. Output the results
+
+```c#
+// 1. point to the context file (with behavior specifica
