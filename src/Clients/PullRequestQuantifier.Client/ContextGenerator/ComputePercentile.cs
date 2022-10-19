@@ -7,7 +7,7 @@
     {
         /// <summary>
         /// Compute the percentile position of the value within  the data array.
-        /// In other words showing the percent of values form data array bellow our given value.
+        /// In other words showing the percent of values form data array below our given value.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="value">The given value.</param>
@@ -32,9 +32,9 @@
             }
 
             // get the number of values less or equal then our value for which we calculate the percentile
-            int idxBellowValues = Array.FindLastIndex(data, d => d <= value) + 1;
+            int idxBelowValues = Array.FindLastIndex(data, d => d <= value) + 1;
 
-            return idxBellowValues / (data.Length + 0f) * 100f;
+            return idxBelowValues / (data.Length + 0f) * 100f;
         }
     }
 }
