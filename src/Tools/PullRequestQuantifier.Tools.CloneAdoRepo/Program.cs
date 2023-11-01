@@ -63,8 +63,8 @@
                         Console.WriteLine($"Cloning {repository.Name} repository!");
                         Directory.CreateDirectory(path);
                         await Task.Run(() => Repository.Clone(
-                            $"https://{Uri.EscapeUriString(organization.Name)}@dev.azure.com/{Uri.EscapeUriString(organization.Name)}/" +
-                            $"{Uri.EscapeUriString(project.Name)}/_git/{Uri.EscapeUriString(repository.Name)}",
+                            $"https://{Uri.EscapeDataString(organization.Name)}@dev.azure.com/{Uri.EscapeDataString(organization.Name)}/" +
+                            $"{Uri.EscapeDataString(project.Name)}/_git/{Uri.EscapeDataString(repository.Name)}",
                             path,
                             cloneOptions));
                     }

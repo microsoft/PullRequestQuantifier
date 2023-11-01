@@ -75,7 +75,9 @@
         // Otherwise this runs into access issues during direct deletion sometimes.
         private void DeleteRepoDirectory()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             var dirInfo = fileSystem.DirectoryInfo.FromDirectoryName(repoPath);
+#pragma warning restore CS0618 // Type or member is obsolete
             if (dirInfo.Exists)
             {
                 try

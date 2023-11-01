@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
 
     <!-- Prevent NerdBank from loading in mono (which omnisharp uses on linux) /-->
     <GenerateAssemblyVersionInfo Condition="'$(MSBuildRuntimeType)'=='Mono'">false</GenerateAssemblyVersionInfo>
@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.3.37" PrivateAssets="All" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" Condition="'$(StyleCopEnabled)'=='true'" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="*" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="*" PrivateAssets="All" Condition="'$(StyleCopEnabled)'=='true'" />
   </ItemGroup>
 </Project>

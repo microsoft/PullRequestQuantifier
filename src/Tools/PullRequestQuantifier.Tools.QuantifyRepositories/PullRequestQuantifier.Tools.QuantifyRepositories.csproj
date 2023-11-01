@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
-    <PackageReference Include="YamlDotNet" Version="9.1.4" />
+    <PackageReference Include="YamlDotNet" Version="13.7.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +16,10 @@
     <ProjectReference Include="..\..\PullRequestQuantifier.GitEngine\PullRequestQuantifier.GitEngine.csproj" />
     <ProjectReference Include="..\PullRequestQuantifier.Tools.CloneAdoRepo\PullRequestQuantifier.Tools.CloneAdoRepo.csproj" />
     <ProjectReference Include="..\PullRequestQuantifier.Tools.Common\PullRequestQuantifier.Tools.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Nerdbank.GitVersioning" Version="3.6.133" />
   </ItemGroup>
 
 </Project>

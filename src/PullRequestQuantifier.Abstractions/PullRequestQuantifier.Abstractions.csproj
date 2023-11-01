@@ -9,14 +9,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ignore" Version="0.1.32" />
-        <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
-        <PackageReference Include="YamlDotNet" Version="9.1.4" />
-        <PackageReference Include="System.Text.Json" Version="5.0.0" />
+        <PackageReference Include="Ignore" Version="0.1.50" />
+        <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
+        <PackageReference Include="YamlDotNet" Version="13.7.1" />
+        <PackageReference Include="System.Text.Json" Version="7.0.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\PullRequestQuantifier.Common\PullRequestQuantifier.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Update="Nerdbank.GitVersioning" Version="3.6.133" />
     </ItemGroup>
 
 </Project>

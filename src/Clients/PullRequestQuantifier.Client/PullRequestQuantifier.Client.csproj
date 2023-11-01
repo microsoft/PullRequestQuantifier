@@ -10,13 +10,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Text.Json" Version="5.0.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="13.2.6" />
-    <PackageReference Include="Ignore" Version="0.1.32" />
-    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
-    <PackageReference Include="YamlDotNet" Version="9.1.4" />
-    <PackageReference Include="Stubble.Core" Version="1.9.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
+    <PackageReference Include="System.IO.Abstractions" Version="19.2.69" />
+    <PackageReference Include="Ignore" Version="0.1.50" />
+    <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
+    <PackageReference Include="YamlDotNet" Version="13.7.1" />
+    <PackageReference Include="Stubble.Core" Version="1.10.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +33,10 @@
     <EmbeddedResource Include="Extensions\Mustache\ConsoleOutput.mustache">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Nerdbank.GitVersioning" Version="3.6.133" />
   </ItemGroup>
     <!--
       The following solves the problem that 'dotnet pack' does not include the DLLs from referenced projects.

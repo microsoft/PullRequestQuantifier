@@ -20,7 +20,7 @@ context **to drive a optimal PR experience**.
 
 ### Prerequisites
 
-- [.NET 5.0 runtime](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) is required for the framework to work properly.
+- [.NET 7.0 runtime](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) is required for the framework to work properly.
 
 #
 
