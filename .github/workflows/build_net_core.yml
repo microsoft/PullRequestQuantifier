@@ -32,7 +32,7 @@ jobs:
       run: dotnet build PullRequestQuantifier.sln --configuration Release --no-restore
     
     - name: Test
-      run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
+      run: dotnet test PullRequestQuantifier.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml --results-directory ./coverlet-results
 
     - name: Upload coverage
       env:

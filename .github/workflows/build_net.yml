@@ -41,6 +41,7 @@ jobs:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
         
     - name: Test
-      run: dotnet test PullRequestQuantifier.sln --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml -r ./coverlet-results
+      run: dotnet test PullRequestQuantifier.sln --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings.xml --results-directory ./coverlet-results
+      
        
     #todo upload artifacts to release
