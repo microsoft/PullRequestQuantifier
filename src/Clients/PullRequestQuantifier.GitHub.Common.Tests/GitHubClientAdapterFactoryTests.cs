@@ -36,7 +36,7 @@ namespace PullRequestQuantifier.GitHub.Common.Tests
                 }
             };
 
-            mockGitHubJwtFactory.Setup(f => f.CreateEncodedJwtToken()).Returns(Guid.NewGuid().ToString);
+            mockGitHubJwtFactory.Setup(f => f.CreateEncodedJwtToken(null)).Returns(Guid.NewGuid().ToString);
         }
 
         [Fact]

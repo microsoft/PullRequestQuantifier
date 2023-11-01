@@ -28,6 +28,7 @@ namespace PullRequestQuantifier.Common.Azure.Telemetry
             string name)
         {
             var instrumentationKey = GetInstrumentationKey(configuration);
+#pragma warning disable CS0618 // Type or member is obsolete
             var options = new Microsoft.ApplicationInsights.AspNetCore.Extensions.ApplicationInsightsServiceOptions
             {
                 InstrumentationKey = instrumentationKey,
@@ -40,6 +41,7 @@ namespace PullRequestQuantifier.Common.Azure.Telemetry
                     TrackExceptions = true
                 }
             };
+#pragma warning restore CS0618 // Type or member is obsolete
 
             services.AddApplicationInsightsTelemetry(options);
             services.AddApmCommon(configuration, name, instrumentationKey);
@@ -73,7 +75,9 @@ namespace PullRequestQuantifier.Common.Azure.Telemetry
 
                 builder.AddConsole();
 
+#pragma warning disable CS0618 // Type or member is obsolete
                 builder.AddApplicationInsights(instrumentationKey);
+#pragma warning restore CS0618 // Type or member is obsolete
 
                 var logLevelConfig = loggingConfig.GetSection("LogLevel");
                 builder
