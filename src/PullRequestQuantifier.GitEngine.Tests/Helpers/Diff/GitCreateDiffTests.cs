@@ -27,5 +27,20 @@
             Assert.True(change.DiffContent.IndexOf("-# Introduction", StringComparison.Ordinal) > -1);
             Assert.True(change.DiffContent.IndexOf("+# Introduction - test PG", StringComparison.Ordinal) > -1);
         }
+
+        [Fact]
+        public void CreateDiff_SameContent_Test()
+        {
+            // Setup
+            using var gitDiff = new GitCreateDiff();
+
+            // Act
+            var change = gitDiff.CreateDiff(
+                File.ReadAllText(@"Data/0CA446AAB9D09EAC8625B53E3DF8DA661976C458-same1.md"),
+                File.ReadAllText(@"Data/0CA446AAB9D09EAC8625B53E3DF8DA661976C458-same2.md"));
+
+            // Assert
+            Assert.Null(change);
+        }
     }
 }
