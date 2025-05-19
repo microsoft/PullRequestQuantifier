@@ -20,7 +20,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="YamlDotNet" Version="13.7.1" />
-        <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
+        <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
     </ItemGroup>
 
     <ItemGroup>
