@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>PullRequestQuantifier.Tools.CloneAdoRepo</AssemblyName>
     <RootNamespace>PullRequestQuantifier.Tools.CloneAdoRepo</RootNamespace>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
