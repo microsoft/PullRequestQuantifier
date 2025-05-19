@@ -76,7 +76,7 @@
         private void DeleteRepoDirectory()
         {
 #pragma warning disable CS0618 // Type or member is obsolete
-            var dirInfo = fileSystem.DirectoryInfo.FromDirectoryName(repoPath);
+            var dirInfo = fileSystem.DirectoryInfo.New(repoPath);
 #pragma warning restore CS0618 // Type or member is obsolete
             if (dirInfo.Exists)
             {

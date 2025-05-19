@@ -11,10 +11,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.11.0" />
+    <PackageReference Include="Azure.Identity" Version="1.14.0" />
     <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
-    <PackageReference Include="System.IO.Abstractions" Version="19.2.69" />
+    <PackageReference Include="System.IO.Abstractions" Version="21.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.13" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
