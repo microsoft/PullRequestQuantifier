@@ -30,8 +30,8 @@ jobs:
       run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -r win-x64
     - name: dotnet publish linux-x64
       run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -r linux-x64
-    - name: dotnet publish osx-64
-      run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -r osx-64
+    - name: dotnet publish osx-arm64
+      run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -r osx-arm64
     - name: dotnet publish vsix
       run: dotnet publish src/Clients/PullRequestQuantifier.VsCode.Client/PullRequestQuantifier.VsCode.Client.csproj --configuration Release --self-contained false -p:PackageVsix=true
     - name: Upload release artifacts
