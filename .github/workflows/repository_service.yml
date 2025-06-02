@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: dotnet build src/PullRequestQuantifier.Repository.Service/PullRequestQuantifier.Repository.Service.csproj --configuration Release --no-restore
     - name: dotnet publish
-      run: dotnet publish src/PullRequestQuantifier.Repository.Service/PullRequestQuantifier.Repository.Service.csproj -c Release -o ${{env.DOTNET_ROOT}}/pullrequestquantifierreposervice
+      run: dotnet publish src/PullRequestQuantifier.Repository.Service/PullRequestQuantifier.Repository.Service.csproj -c Release -o "${{env.DOTNET_ROOT}}/pullrequestquantifierreposervice"
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
