@@ -35,10 +35,10 @@
         {
             var credentials = new NetworkCredential(userName, pat);
             var cloneOptions = new CloneOptions();
-            cloneOptions.FetchOptions.CredentialsProvider = (url, user, cred) => new UsernamePasswordCredentials
+            cloneOptions.FetchOptions.CredentialsProvider = (url, user, cred) => new SecureUsernamePasswordCredentials
             {
                 Username = credentials.UserName,
-                Password = credentials.Password
+                Password = credentials.SecurePassword
             };
 
             foreach (var organization in organizations)
