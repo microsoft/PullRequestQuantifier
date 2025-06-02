@@ -34,14 +34,17 @@
             string pat)
         {
             var credentials = new NetworkCredential(userName, pat);
-            var cloneOptions = new CloneOptions();
-            cloneOptions.FetchOptions = new FetchOptions
+            var fetchOptions = new FetchOptions
             {
                 CredentialsProvider = (url, user, cred) => new SecureUsernamePasswordCredentials
                 {
                     Username = credentials.UserName,
-                    Password = credentials.Password // Use .Password, not .SecurePassword
+                    Password = credentials.Password
                 }
+            };
+            var cloneOptions = new CloneOptions
+            {
+                FetchOptions = fetchOptions
             };
 
             foreach (var organization in organizations)
