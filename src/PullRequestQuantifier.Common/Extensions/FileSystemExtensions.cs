@@ -9,7 +9,7 @@ namespace PullRequestQuantifier.Common.Extensions
         public static void DeleteDirectory(this IFileSystem fileSystem, string path)
         {
 #pragma warning disable CS0618 // Do not catch general exception types
-            var dirInfo = fileSystem.DirectoryInfo.FromDirectoryName(path);
+            var dirInfo = fileSystem.DirectoryInfo.New(path);
 #pragma warning restore CS0618 // Do not catch general exception types
 
             if (dirInfo.Exists)

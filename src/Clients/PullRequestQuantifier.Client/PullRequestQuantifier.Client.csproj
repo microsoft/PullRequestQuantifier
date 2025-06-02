@@ -11,10 +11,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Text.Json" Version="7.0.3" />
-    <PackageReference Include="System.IO.Abstractions" Version="19.2.69" />
+   <PackageReference Include="System.Text.Json" Version="9.0.5" />
+    <PackageReference Include="System.IO.Abstractions" Version="21.2.1" />
     <PackageReference Include="Ignore" Version="0.1.50" />
-    <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
+    <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
     <PackageReference Include="YamlDotNet" Version="13.7.1" />
     <PackageReference Include="Stubble.Core" Version="1.10.8" />
   </ItemGroup>
