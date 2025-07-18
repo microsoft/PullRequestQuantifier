@@ -69,6 +69,8 @@
                 diffContent = value;
                 fileDiff = DiffParserHelper.Parse(value).First();
                 DiffLines = fileDiff.Chunks.SelectMany(c => c.Changes);
+                AbsoluteLinesAdded = fileDiff.Additions;
+                AbsoluteLinesDeleted = fileDiff.Deletions;
             }
         }
 
